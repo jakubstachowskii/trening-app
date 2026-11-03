@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Postępy — dopracowany styl B</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+button{font:inherit}
+.press{transition:transform 150ms cubic-bezier(0.2,0.8,0.2,1)}
+.press:active{transform:scale(0.97)}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes draw{from{stroke-dashoffset:900}to{stroke-dashoffset:0}}
+@keyframes bar{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.rise{animation:rise 400ms cubic-bezier(0.2,0.8,0.2,1) both}
+.d1{animation-delay:50ms}.d2{animation-delay:100ms}.d3{animation-delay:150ms}.d4{animation-delay:200ms}
+.draw{stroke-dasharray:900;animation:draw 900ms cubic-bezier(0.2,0.8,0.2,1) 150ms both}
+.area{animation:fade 400ms ease 600ms both}
+.bar{transform-origin:bottom;animation:bar 400ms cubic-bezier(0.2,0.9,0.3,1) both}
+.rm .rise,.rm .area{animation:fade 150ms ease both}
+.rm .draw,.rm .bar{animation:none}
+.rm .press:active{transform:none}
+@media (prefers-reduced-motion: reduce){.rise,.area{animation:fade 150ms ease both}.draw,.bar{animation:none}.press:active{transform:none}}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="width: 900px; height: 964px; box-sizing: border-box; padding: 40px; display: flex; gap: 40px; align-items: flex-start; background: #1E1F22; font-family: -apple-system, 'SF Pro Text', Inter, system-ui, sans-serif">
+<sc-for list="{{modes}}" as="c" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 12px; width: 390px">
+<div style="font-size: 15px; font-weight: 700; color: #E8E8EA">{{c.title}}</div>
+<div style="{{c.sPhone}}">
+<div style="{{c.sScroll}}">
+
+<div class="rise" style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="{{c.sLarge}}">Postępy</h1>
+<button class="press" style="{{c.sPicker}}">
+<span>Wyciskanie na ławce</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+</button>
+</div>
+
+<div class="rise d1" style="{{c.sCard}}">
+<div role="group" aria-label="Rodzaj wykresu" style="{{c.sSeg}}">
+<sc-for list="{{c.metrics}}" as="q" hint-placeholder-count="3">
+<button aria-pressed="{{q.on}}" onClick="{{q.pick}}" style="{{q.s}}">{{q.label}}</button>
+</sc-for>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: flex-end; margin: 16px 0 8px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span style="{{c.sFoot}}">{{chart.caption}}</span>
+<div style="display: flex; align-items: baseline; gap: 4px"><span style="{{c.sMetric}}">{{chart.last}}</span><span style="{{c.sSub}}">{{chart.unit}}</span></div>
+</div>
+<span style="{{c.sChipAccent}}">{{chart.delta}}</span>
+</div>
+<sc-if value="{{show}}" hint-placeholder-val="{{true}}">
+<svg role="img" aria-label="{{chart.aria}}" width="326" height="150" viewBox="0 0 326 150" style="display: block; width: 100%; height: auto">
+<line x1="0" y1="140" x2="326" y2="140" stroke="{{c.separator}}" stroke-width="1"></line>
+<line x1="0" y1="75" x2="326" y2="75" stroke="{{c.separator}}" stroke-width="1" stroke-dasharray="3 5"></line>
+<path class="area" d="{{chart.area}}" fill="{{c.accentSoft}}"></path>
+<path class="draw" d="{{chart.line}}" fill="none" stroke="{{c.accent}}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+<circle class="area" cx="{{chart.ex}}" cy="{{chart.ey}}" r="6" fill="{{c.accent}}" stroke="{{c.surface}}" stroke-width="3"></circle>
+</svg>
+</sc-if>
+<div style="display: flex; justify-content: space-between; margin-top: 8px">
+<span style="{{c.sCap}}">sie</span><span style="{{c.sCap}}">wrz</span><span style="{{c.sCap}}">paź</span><span style="{{c.sCap}}">lis</span>
+</div>
+</div>
+
+<div class="rise d2" style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; padding: 0 4px">
+<span style="{{c.sHeadline}}">Objętość tygodniowa</span>
+<span style="{{c.sFootAccent}}">+17% w 12 tyg.</span>
+</div>
+<div style="{{c.sCard}}">
+<div role="img" aria-label="Objętość tygodniowa z 12 tygodni, rośnie z 14,2 do 18,4 tony" style="display: flex; align-items: flex-end; gap: 8px; height: 96px">
+<sc-for list="{{c.bars}}" as="b" hint-placeholder-count="12">
+<div class="bar" style="{{b.s}}"></div>
+</sc-for>
+</div>
+</div>
+</div>
+
+<div class="rise d3" style="display: flex; flex-direction: column; gap: 8px">
+<span style="{{c.sSectionHead}}">Rekordy</span>
+<div style="{{c.sGroup}}">
+<sc-for list="{{c.records}}" as="r" hint-placeholder-count="4">
+<div style="{{r.s}}">
+<span style="{{c.sBody}}">{{r.name}}</span>
+<div style="display: flex; flex-direction: column; align-items: flex-end">
+<span style="{{c.sRecVal}}">{{r.val}}</span>
+<span style="{{c.sCap}}">{{r.date}}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div class="rise d4" style="display: flex; flex-direction: column; gap: 8px">
+<span style="{{c.sSectionHead}}">Serie w tym tygodniu</span>
+<div style="{{c.sCard}}">
+<div style="display: flex; gap: 16px; align-items: center">
+<svg role="img" aria-label="Schemat mięśni: najwięcej serii na klatkę i ramiona" width="110" height="210" viewBox="0 0 120 230" style="flex: none; color: {{c.accent}}">
+<circle cx="60" cy="18" r="13" fill="{{c.fill}}"></circle>
+<rect x="34" y="36" width="52" height="84" rx="16" fill="{{c.fill}}"></rect>
+<circle cx="31" cy="46" r="11" fill="currentColor" opacity="{{mm.sh}}"></circle>
+<circle cx="89" cy="46" r="11" fill="currentColor" opacity="{{mm.sh}}"></circle>
+<rect x="38" y="42" width="21" height="26" rx="8" fill="currentColor" opacity="{{mm.ch}}"></rect>
+<rect x="61" y="42" width="21" height="26" rx="8" fill="currentColor" opacity="{{mm.ch}}"></rect>
+<rect x="46" y="72" width="28" height="42" rx="8" fill="currentColor" opacity="{{mm.ab}}"></rect>
+<rect x="14" y="58" width="14" height="58" rx="7" fill="currentColor" opacity="{{mm.ar}}"></rect>
+<rect x="92" y="58" width="14" height="58" rx="7" fill="currentColor" opacity="{{mm.ar}}"></rect>
+<rect x="38" y="124" width="20" height="96" rx="10" fill="currentColor" opacity="{{mm.lg}}"></rect>
+<rect x="62" y="124" width="20" height="96" rx="10" fill="currentColor" opacity="{{mm.lg}}"></rect>
+</svg>
+<div style="display: flex; flex-direction: column; gap: 8px; flex: 1">
+<sc-for list="{{c.muscles}}" as="x" hint-placeholder-count="6">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between"><span style="{{c.sFootStrong}}">{{x.name}}</span><span style="{{c.sFootNum}}">{{x.sets}}</span></div>
+<div style="{{c.sTrack}}"><div style="{{x.sFill}}"></div></div>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div aria-hidden="true" style="{{c.sEdgeTop}}"></div>
+<div aria-hidden="true" style="{{c.sEdgeBottom}}"></div>
+<nav aria-label="Główne karty" style="{{c.sTab}}">
+<sc-for list="{{c.tabs}}" as="it" hint-placeholder-count="5">
+<button aria-label="{{it.label}}" style="{{it.s}}">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{it.d}}"></path></svg>
+<span style="font-size: 10px; line-height: 12px; font-weight: 600">{{it.label}}</span>
+</button>
+</sc-for>
+</nav>
+</div>
+</div>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"akcent":{"editor":"enum","options":["niebieski","indygo","pomarancz","malina","zielen"],"default":"niebieski","section":"Podgląd"},"ograniczRuch":{"editor":"boolean","default":false,"section":"Podgląd"},"ograniczPrzezroczystosc":{"editor":"boolean","default":false,"section":"Podgląd"},"$preview":{"width":900,"height":964}}'>
+var TK = {
+  dark: { label: '#F5F6FA', label2: '#A3A8B8', label3: '#80859A', separator: 'rgba(255,255,255,0.10)', accent: '#8B90FF', accentText: '#A9ACFF', onAccent: '#0B0C14', accentSoft: 'rgba(139,144,255,0.16)', success: '#5BD38A', warning: '#F5B84A', danger: '#FF6B6B', glassBar: 'rgba(34,36,46,0.58)', glassControl: 'rgba(40,42,54,0.72)', glassEdge: 'rgba(255,255,255,0.16)', shadow: '0 8px 24px rgba(0,0,0,0.40)', selected: '#3A3A40' },
+  variants: {
+    granat: { bg: '#07080C', surface: '#15171E', raised: '#1D2029', fill: '#262A34' },
+    czern: { bg: '#000000', surface: '#121214', raised: '#1C1C1F', fill: '#2A2A2E' },
+    grafit: { bg: '#0E0F12', surface: '#1A1C21', raised: '#22252B', fill: '#2C3037' }
+  },
+  light: { bg: '#F2F2F7', surface: '#FFFFFF', raised: '#FFFFFF', fill: '#E8E8EF', label: '#111218', label2: '#5C5F6B', label3: '#8A8D99', separator: 'rgba(17,18,24,0.10)', accent: '#4F55E8', accentText: '#3F46D4', onAccent: '#FFFFFF', accentSoft: 'rgba(79,85,232,0.12)', success: '#1E8E4E', warning: '#A35F00', danger: '#D92D20', glassBar: 'rgba(255,255,255,0.62)', glassControl: 'rgba(255,255,255,0.78)', glassEdge: 'rgba(255,255,255,0.95)', shadow: '0 8px 24px rgba(17,18,24,0.14)', selected: '#FFFFFF' },
+  type: { largeTitle: [34, 41, 700], title1: [28, 34, 700], title2: [22, 28, 700], title3: [20, 25, 600], headline: [17, 22, 600], body: [17, 22, 400], callout: [16, 21, 400], subheadline: [15, 20, 400], footnote: [13, 18, 400], caption1: [12, 16, 400], caption2: [11, 13, 500], metric: [34, 38, 700], timer: [44, 48, 700] },
+  radius: { card: 28, inner: 12, small: 8, capsule: 999 }
+};
+var ICONS = [['Start', 'M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z'], ['Plany', 'M9 3h6a1 1 0 0 1 1 1v1H8V4a1 1 0 0 1 1-1zM8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M8 11h8M8 15h5'], ['Ćwiczenia', 'M6.5 6.5v11M3.5 9v6M17.5 6.5v11M20.5 9v6M6.5 12h11'], ['Postępy', 'M4 20V11M10 20V5M16 20v-6M21 20H3'], ['Historia', 'M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z']];
+var ACC_NAME = { indygo: 'Indygo', niebieski: 'Niebieski', pomarancz: 'Pomarańcz', malina: 'Malina', zielen: 'Zieleń' };
+var ACC = {
+  indygo: { d: { accent: '#8B90FF', accentText: '#A9ACFF', accentSoft: 'rgba(139,144,255,0.16)' }, l: { accent: '#4F55E8', accentText: '#3F46D4', accentSoft: 'rgba(79,85,232,0.12)' } },
+  niebieski: { d: { accent: '#4DA3FF', accentText: '#7AB8FF', accentSoft: 'rgba(77,163,255,0.16)' }, l: { accent: '#0A6BDB', accentText: '#0A5FC4', accentSoft: 'rgba(10,107,219,0.12)' } },
+  pomarancz: { d: { accent: '#FF9A3D', accentText: '#FFB070', accentSoft: 'rgba(255,154,61,0.16)' }, l: { accent: '#C2500A', accentText: '#A84500', accentSoft: 'rgba(194,80,10,0.12)' } },
+  malina: { d: { accent: '#FF6F9F', accentText: '#FF8FB4', accentSoft: 'rgba(255,111,159,0.16)' }, l: { accent: '#C8205C', accentText: '#B01B52', accentSoft: 'rgba(200,32,92,0.12)' } },
+  zielen: { d: { accent: '#3DD68C', accentText: '#5FE0A0', accentSoft: 'rgba(61,214,140,0.16)' }, l: { accent: '#157F45', accentText: '#126E3C', accentSoft: 'rgba(21,127,69,0.12)' } }
+};
+function pal(mode, a) { var acc = ACC[a] || ACC.niebieski; return mode === 'light' ? Object.assign({ mode: 'light' }, TK.light, acc.l) : Object.assign({ mode: 'dark' }, TK.dark, TK.variants.czern, acc.d); }
+function ty(k) { var t = TK.type[k]; return 'font-size:' + t[0] + 'px;line-height:' + t[1] + 'px;font-weight:' + t[2] + ';' + (k === 'metric' || k === 'timer' ? 'font-variant-numeric:tabular-nums;letter-spacing:-0.02em;' : '') + (t[0] >= 20 ? 'letter-spacing:-0.01em;' : ''); }
+function glass(c, level, noGlass) {
+  if (noGlass) return 'background:' + c.raised + ';border:1px solid ' + c.separator + ';';
+  var g = level === 'bar' ? [c.glassBar, 22] : [c.glassControl, 16];
+  return 'background:' + g[0] + ';backdrop-filter:blur(' + g[1] + 'px) saturate(180%);-webkit-backdrop-filter:blur(' + g[1] + 'px) saturate(180%);border:1px solid ' + c.glassEdge + ';';
+}
+
+var SERIES = {
+  e1rm: { label: '1RM', caption: 'Szacowane 1RM · 12 tygodni', unit: 'kg', delta: '+12,5%', data: [100, 101.5, 103, 102, 105, 106.5, 107, 109, 108.5, 110, 111, 112.5] },
+  top: { label: 'Najcięższa', caption: 'Najcięższa seria · 12 tygodni', unit: 'kg', delta: '+13,9%', data: [90, 90, 92.5, 92.5, 95, 95, 97.5, 97.5, 100, 100, 100, 102.5] },
+  vol: { label: 'Objętość', caption: 'Objętość z ćwiczenia · 12 tygodni', unit: 't', delta: '+40%', data: [2.0, 2.2, 2.1, 2.4, 2.3, 2.5, 2.6, 2.4, 2.7, 2.8, 2.6, 2.8] }
+};
+var VOL = [14.2, 15.0, 14.8, 16.1, 15.7, 16.9, 17.2, 16.5, 17.8, 18.0, 17.6, 18.4];
+var MUSCLES = [['Klatka', 12], ['Ramiona', 10], ['Plecy', 9], ['Barki', 8], ['Nogi', 6], ['Brzuch', 3]];
+function pl(n) { return String(n).replace('.', ','); }
+function chartOf(key) {
+  var s = SERIES[key]; var d = s.data; var min = Math.min.apply(null, d), max = Math.max.apply(null, d);
+  var pts = d.map(function (v, i) { return [8 + i * (310 / 11), 14 + (1 - (v - min) / (max - min)) * 118]; });
+  var line = pts.map(function (p, i) { return (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' ');
+  var last = pts[pts.length - 1];
+  return { line: line, area: line + ' L' + last[0].toFixed(1) + ' 140 L8 140 Z', ex: last[0].toFixed(1), ey: last[1].toFixed(1), last: pl(d[d.length - 1]), unit: s.unit, caption: s.caption, delta: s.delta, aria: s.caption + ': od ' + pl(d[0]) + ' do ' + pl(d[d.length - 1]) + ' ' + s.unit };
+}
+
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { metric: 'e1rm', show: true }; }
+  componentWillUnmount() { clearTimeout(this.to); }
+  pick(k) { var self = this; this.setState({ metric: k, show: false }); clearTimeout(this.to); this.to = setTimeout(function () { self.setState({ show: true }); }, 30); }
+  renderVals() {
+    var self = this; var R = TK.radius; var metric = this.state.metric;
+    var v = this.props.akcent ?? 'niebieski'; var rm = this.props.ograniczRuch ?? false; var nog = this.props.ograniczPrzezroczystosc ?? false;
+    var vmin = 12, vmax = Math.max.apply(null, VOL);
+    var modes = ['dark', 'light'].map(function (mode) {
+      var c = pal(mode, v);
+      c.title = mode === 'dark' ? 'Ciemny · ' + ACC_NAME[v] : 'Jasny · ' + ACC_NAME[v];
+      var rgba0 = function (h) { var n = [1, 3, 5].map(function (i) { return parseInt(h.slice(i, i + 2), 16); }); return 'rgba(' + n.join(',') + ',0)'; };
+      c.sEdgeTop = 'position:absolute;left:0;right:0;top:0;height:56px;pointer-events:none;background:linear-gradient(' + c.bg + ' 35%, ' + rgba0(c.bg) + ')';
+      c.sEdgeBottom = 'position:absolute;left:0;right:0;bottom:0;height:130px;pointer-events:none;background:linear-gradient(' + rgba0(c.bg) + ', ' + c.bg + ' 75%)';
+      c.sPhone = 'position:relative;width:390px;height:844px;border-radius:48px;overflow:hidden;background:' + c.bg + ';color:' + c.label + ';box-shadow:0 0 0 1px ' + c.separator + ',0 24px 60px rgba(0,0,0,0.25)';
+      c.sScroll = 'height:844px;overflow-y:auto;box-sizing:border-box;padding:62px 16px 120px;display:flex;flex-direction:column;gap:24px';
+      c.sCard = 'display:flex;flex-direction:column;padding:16px;border-radius:' + R.card + 'px;background:' + c.surface;
+      c.sGroup = 'display:flex;flex-direction:column;padding:0 16px;border-radius:' + R.card + 'px;background:' + c.surface;
+      c.sLarge = 'margin:0;' + ty('largeTitle');
+      c.sHeadline = ty('headline');
+      c.sSectionHead = ty('headline') + 'padding:0 4px';
+      c.sBody = ty('body');
+      c.sSub = ty('subheadline') + 'color:' + c.label2;
+      c.sFoot = ty('footnote') + 'color:' + c.label2;
+      c.sFootStrong = ty('footnote') + 'font-weight:600';
+      c.sFootNum = ty('footnote') + 'font-variant-numeric:tabular-nums;color:' + c.label2;
+      c.sFootAccent = ty('footnote') + 'font-weight:600;color:' + c.accentText;
+      c.sCap = ty('caption1') + 'color:' + c.label2;
+      c.sMetric = ty('metric');
+      c.sRecVal = ty('headline') + 'font-variant-numeric:tabular-nums;color:' + c.accentText;
+      c.sChipAccent = 'display:inline-flex;align-items:center;min-height:28px;padding:0 10px;border-radius:999px;background:' + c.accentSoft + ';color:' + c.accentText + ';' + ty('footnote') + 'font-weight:600';
+      c.sPicker = 'align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:' + R.capsule + 'px;cursor:pointer;color:' + c.label + ';' + ty('subheadline') + 'font-weight:600;' + glass(c, 'control', nog);
+      c.sSeg = 'display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:2px;padding:2px;border-radius:' + R.inner + 'px;background:' + c.fill;
+      c.sTrack = 'height:6px;border-radius:3px;overflow:hidden;background:' + c.fill;
+      c.sTab = 'position:absolute;left:16px;right:16px;bottom:24px;height:64px;border-radius:32px;display:flex;justify-content:space-around;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,0.20);' + glass(c, 'bar', nog);
+      c.tabs = ICONS.map(function (it, i) { return { label: it[0], d: it[1], s: 'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:56px;min-height:48px;border:0;background:transparent;cursor:pointer;color:' + (i === 3 ? c.accentText : c.label2) }; });
+      c.metrics = Object.keys(SERIES).map(function (k) {
+        var on = k === metric;
+        return { label: SERIES[k].label, on: on, pick: function () { self.pick(k); }, s: 'min-height:44px;border:0;cursor:pointer;border-radius:10px;' + ty('footnote') + 'font-weight:600;' + (on ? 'background:' + c.selected + ';color:' + c.label + ';box-shadow:0 1px 3px rgba(0,0,0,0.20)' : 'background:transparent;color:' + c.label2) };
+      });
+      c.bars = VOL.map(function (x, i) { return { s: 'flex:1;height:' + Math.round(18 + (x - vmin) / (vmax - vmin) * 78) + 'px;border-radius:4px;animation-delay:' + (150 + i * 30) + 'ms;background:' + (i === VOL.length - 1 ? c.accent : c.fill) }; });
+      var rec = [['Szacowane 1RM', '112,5 kg', '27 paź'], ['Najcięższa seria', '102,5 kg × 3', '27 paź'], ['Najwięcej powtórzeń', '80 kg × 12', '14 paź'], ['Objętość w treningu', '1 920 kg', '30 paź']];
+      c.records = rec.map(function (r, i) { return { name: r[0], val: r[1], date: r[2], s: 'display:flex;justify-content:space-between;align-items:center;min-height:60px;' + (i ? 'border-top:1px solid ' + c.separator : '') }; });
+      c.muscles = MUSCLES.map(function (m) { return { name: m[0], sets: m[1] + ' ' + (m[1] % 10 >= 2 && m[1] % 10 <= 4 && (m[1] % 100 < 12 || m[1] % 100 > 14) ? 'serie' : 'serii'), sFill: 'height:100%;border-radius:3px;width:' + Math.round(m[1] / 12 * 100) + '%;background:' + c.accent }; });
+      return c;
+    });
+    var op = function (n) { return (0.25 + 0.75 * n / 12).toFixed(2); };
+    return { modes: modes, chart: chartOf(metric), show: this.state.show, mm: { ch: op(12), ar: op(10), sh: op(8), lg: op(6), ab: op(3) }, rootClass: rm ? 'rm' : '' };
+  }
+}
+</script>
+</body>
+</html>

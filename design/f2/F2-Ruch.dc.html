@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Ruch — design system</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+button{font:inherit}
+.press{transition:transform 150ms cubic-bezier(0.2,0.8,0.2,1)}
+.press:active{transform:scale(0.97)}
+@keyframes popin{0%{opacity:0;transform:scale(.3)}60%{opacity:1;transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.popin{animation:popin 420ms cubic-bezier(0.3,1.5,0.5,1) both}
+.rm .popin{animation:fade 150ms ease both}
+.rm .press:active{transform:none}
+@media (prefers-reduced-motion: reduce){.popin{animation:fade 150ms ease both}.press:active{transform:none}}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="width: 1280px; height: 520px; box-sizing: border-box; padding: 40px; display: flex; flex-direction: column; gap: 20px; background: #1E1F22; color: #F5F6FA; font-family: -apple-system, 'SF Pro Text', Inter, system-ui, sans-serif">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h1 style="margin: 0; font-size: 34px; line-height: 41px; font-weight: 700">Ruch</h1>
+<span style="font-size: 15px; color: #A3A8B8">Ruch tylko jako informacja zwrotna. Kliknij „Odtwórz”. W Tweaks włączysz ograniczenie ruchu: wtedy zostaje samo zanikanie.</span>
+</div>
+<button class="press" onClick="{{playAll}}" style="flex: none; min-height: 52px; padding: 0 24px; border: 0; border-radius: 999px; background: #8B90FF; color: #0B0C14; font-size: 17px; font-weight: 600; cursor: pointer">Odtwórz</button>
+</div>
+<div style="display: flex; gap: 20px; flex: 1">
+<div style="flex: 1; display: flex; flex-direction: column; gap: 6px; padding: 16px 20px; border-radius: 28px; background: #121214">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="5">
+<div style="display: flex; align-items: center; gap: 16px; min-height: 60px">
+<div style="width: 190px; display: flex; flex-direction: column">
+<span style="font-size: 15px; font-weight: 600">{{r.name}}</span>
+<span style="font-size: 12px; color: #A3A8B8">{{r.meta}}</span>
+</div>
+<div style="flex: 1; position: relative; height: 44px; border-radius: 999px; background: #2A2A2E">
+<div style="{{r.sDot}}"></div>
+</div>
+</div>
+</sc-for>
+</div>
+<div style="width: 360px; display: flex; flex-direction: column; gap: 16px; padding: 20px; border-radius: 28px; background: #121214">
+<span style="font-size: 17px; font-weight: 600">Odhaczenie serii</span>
+<div style="display: flex; align-items: center; gap: 12px; padding: 4px 8px; min-height: 52px; border-radius: 12px; background: {{rowBg}}">
+<span style="width: 28px; font-size: 15px; font-weight: 700">1</span>
+<span style="flex: 1; font-size: 15px; font-variant-numeric: tabular-nums">82,5 kg × 8</span>
+<button aria-label="Seria 1" aria-pressed="{{done}}" onClick="{{toggle}}" style="{{sCheck}}">
+<sc-if value="{{done}}" hint-placeholder-val="{{false}}">
+<svg class="popin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+</sc-if>
+</button>
+</div>
+<span style="font-size: 13px; line-height: 18px; color: #A3A8B8">Sprężyna z odbiciem (420 ms) i lekka wibracja. Kolor wiersza zmienia się w 250 ms.</span>
+<span style="font-size: 17px; font-weight: 600; margin-top: 8px">Naciśnięcie</span>
+<button class="press" style="min-height: 52px; border: 0; border-radius: 999px; background: #2A2A2E; color: #F5F6FA; font-size: 17px; font-weight: 600; cursor: pointer">Przytrzymaj mnie</button>
+<span style="font-size: 13px; line-height: 18px; color: #A3A8B8">Skala 0,97 przez 150 ms.</span>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"ograniczRuch":{"editor":"boolean","default":false,"section":"Podgląd"},"$preview":{"width":1280,"height":520}}'>
+var MOTION = [
+  ['Szybki', '150 ms · standard', 'transform 150ms cubic-bezier(0.2,0.8,0.2,1)'],
+  ['Bazowy', '250 ms · standard', 'transform 250ms cubic-bezier(0.2,0.8,0.2,1)'],
+  ['Wolny', '400 ms · standard', 'transform 400ms cubic-bezier(0.2,0.8,0.2,1)'],
+  ['Sprężyna delikatna', 'tłumienie 20 · sztywność 180', 'transform 350ms cubic-bezier(0.2,0.9,0.3,1)'],
+  ['Sprężyna z odbiciem', 'tłumienie 12 · sztywność 220', 'transform 420ms cubic-bezier(0.3,1.5,0.5,1)']
+];
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { on: false, done: false, sysRm: false }; }
+  componentDidMount() { var self = this; try { this.mq = window.matchMedia('(prefers-reduced-motion: reduce)'); this.onMq = function () { self.setState({ sysRm: self.mq.matches }); }; this.onMq(); this.mq.addEventListener('change', this.onMq); } catch (e) {} }
+  componentWillUnmount() { try { this.mq.removeEventListener('change', this.onMq); } catch (e) {} }
+  renderVals() {
+    var self = this; var rm = (this.props.ograniczRuch ?? false) || this.state.sysRm; var on = this.state.on; var done = this.state.done;
+    return {
+      rootClass: rm ? 'rm' : '',
+      playAll: function () { self.setState({ on: !self.state.on }); },
+      rows: MOTION.map(function (m) {
+        return {
+          name: m[0], meta: m[1],
+          sDot: 'position:absolute;top:4px;left:4px;width:36px;height:36px;border-radius:18px;background:#8B90FF;' +
+            'transition:' + (rm ? 'none' : m[2]) + ';transform:translateX(' + (on ? '490px' : '0') + ')'
+        };
+      }),
+      done: done,
+      toggle: function () { self.setState({ done: !self.state.done }); },
+      rowBg: (done ? 'rgba(139,144,255,0.16)' : 'transparent') + ';transition:background-color ' + (rm ? '0ms' : '250ms') + ' ease',
+      sCheck: 'width:44px;height:44px;border-radius:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-sizing:border-box;' + (done ? 'background:#8B90FF;color:#0B0C14;border:0' : 'background:transparent;color:#F5F6FA;border:2px solid #A3A8B8')
+    };
+  }
+}
+</script>
+</body>
+</html>

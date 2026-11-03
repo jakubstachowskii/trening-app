@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Start — trzy kierunki</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&amp;family=Barlow:wght@400;500;600;700&amp;family=Geist+Mono:wght@500;600;700&amp;family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+button{font:inherit}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes popin{0%{opacity:0;transform:scale(.4)}60%{opacity:1;transform:scale(1.15)}100%{transform:scale(1)}}
+.rise{animation:rise .55s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}.d4{animation-delay:.24s}.d5{animation-delay:.30s}
+.grow{transform-origin:left center;animation:grow .9s cubic-bezier(.2,.8,.2,1) .35s both}
+.popin{animation:popin .45s cubic-bezier(.3,1.6,.5,1) both}
+.rm .rise,.rm .popin{animation:fade .2s ease both}
+.rm .grow{animation:none}
+@media (prefers-reduced-motion: reduce){.rise,.popin{animation:fade .2s ease both}.grow{animation:none}}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="width: 1330px; height: 964px; box-sizing: border-box; padding: 40px; display: flex; gap: 40px; align-items: flex-start; background: {{rootBg}}; font-family: Inter, system-ui, sans-serif">
+<sc-for list="{{dirs}}" as="t" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 12px; width: 390px">
+<div style="font-size: 15px; font-weight: 700; color: {{rootText}}">{{t.name}}</div>
+<div style="{{t.sPhone}}">
+<div style="{{t.sScroll}}">
+
+<div class="rise" style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="{{t.sLabel}}">Wtorek, 3 listopada</span>
+<h1 style="{{t.sH1}}">Twój tydzień</h1>
+</div>
+<button aria-label="Ustawienia" style="{{t.sIconBtn}}">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{icons.gear}}"></path></svg>
+</button>
+</div>
+
+<div class="rise d1" style="{{t.sHero}}">
+<span style="{{t.sHeroLabel}}">Następny trening</span>
+<h2 style="{{t.sHeroTitle}}">Push A</h2>
+<span style="{{t.sHeroMeta}}">Plan PPL · tydzień 4 z 8</span>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<span style="{{t.sHeroChip}}">5 ćwiczeń</span>
+<span style="{{t.sHeroChip}}">ok. 60 min</span>
+<span style="{{t.sHeroChip}}">Klatka · Barki · Triceps</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="{{t.sHeroTrack}}"><div class="grow" style="{{t.sHeroFill}}"></div></div>
+<span style="{{t.sHeroMeta}}">11 z 24 treningów planu</span>
+</div>
+<button style="{{t.sHeroBtn}}">Zacznij trening</button>
+</div>
+
+<div class="rise d2" style="{{t.sCard}}">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px">
+<span style="{{t.sLabel}}">Ten tydzień</span>
+<span style="{{t.sChipA}}">2 z 4</span>
+</div>
+<div style="display: flex; justify-content: space-between">
+<sc-for list="{{t.week}}" as="d" hint-placeholder-count="7">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px">
+<span style="{{d.sLetter}}">{{d.l}}</span>
+<div class="popin" style="{{d.sDot}}">
+<sc-if value="{{d.done}}" hint-placeholder-val="{{true}}">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{icons.check}}"></path></svg>
+</sc-if>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div class="rise d3" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+<div style="{{t.sCard}}">
+<span style="{{t.sLabel}}">Objętość tygodnia</span>
+<div style="display: flex; align-items: baseline; gap: 6px; margin-top: 10px">
+<span style="{{t.sBig}}">18,4</span><span style="{{t.sUnit}}">t</span>
+</div>
+<span style="{{t.sUp}}">+6% do zeszłego</span>
+</div>
+<div style="{{t.sCard}}">
+<span style="{{t.sLabel}}">Seria treningów</span>
+<div style="display: flex; align-items: baseline; gap: 6px; margin-top: 10px">
+<span style="{{t.sBig}}">7</span><span style="{{t.sUnit}}">tygodni</span>
+</div>
+<span style="{{t.sMutedSmall}}">bez przerwy</span>
+</div>
+</div>
+
+<div class="rise d4" style="{{t.sCard}}">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px">
+<span style="{{t.sLabel}}">Ostatnie 12 tygodni</span>
+<span style="{{t.sMutedSmall}}">31 treningów</span>
+</div>
+<div role="img" aria-label="Mapa treningów z 12 tygodni, 31 treningów" style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-auto-flow: column; grid-template-rows: repeat(7, 14px); gap: 5px">
+<sc-for list="{{t.heat}}" as="c" hint-placeholder-count="84">
+<div style="{{c.s}}"></div>
+</sc-for>
+</div>
+</div>
+
+<div class="rise d5" style="{{t.sCard}}">
+<div style="display: flex; gap: 14px; align-items: center">
+<div style="{{t.sBadge}}">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{icons.trophy}}"></path></svg>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+<span style="{{t.sLabel}}">Nowy rekord · 2 dni temu</span>
+<span style="{{t.sH3}}">Wyciskanie na ławce</span>
+<span style="{{t.sRecord}}">102,5 kg × 3</span>
+</div>
+</div>
+</div>
+
+</div>
+<nav aria-label="Główne karty" style="{{t.sTab}}">
+<sc-for list="{{t.tabs}}" as="it" hint-placeholder-count="5">
+<button aria-label="{{it.label}}" style="{{it.s}}">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{it.d}}"></path></svg>
+<span style="font-size: 10px; font-weight: 600">{{it.label}}</span>
+</button>
+</sc-for>
+</nav>
+</div>
+</div>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"ciemny":{"editor":"boolean","default":true,"section":"Podgląd"},"ograniczRuch":{"editor":"boolean","default":false,"section":"Podgląd"},"$preview":{"width":1330,"height":964}}'>
+var ICONS = {
+  home: 'M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',
+  plans: 'M9 3h6a1 1 0 0 1 1 1v1H8V4a1 1 0 0 1 1-1zM8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M8 11h8M8 15h5',
+  dumbbell: 'M6.5 6.5v11M3.5 9v6M17.5 6.5v11M20.5 9v6M6.5 12h11',
+  chart: 'M4 20V11M10 20V5M16 20v-6M21 20H3',
+  clock: 'M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z',
+  check: 'M5 12.5l4.5 4.5L19 7.5',
+  trophy: 'M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3',
+  gear: 'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z'
+};
+
+function palette(dark) {
+  var A = dark
+    ? { bg: '#101113', s1: '#1A1C20', s2: '#272A30', line: '#30343B', text: '#F3F4F6', muted: '#A3A9B2', accent: '#FF7A1A', accentText: '#FF9448', onAccent: '#141414', soft: 'rgba(255,122,26,0.16)' }
+    : { bg: '#F3F3F1', s1: '#FFFFFF', s2: '#ECECE8', line: '#DCDCD7', text: '#141519', muted: '#5A5F67', accent: '#F26A0F', accentText: '#A84500', onAccent: '#141519', soft: 'rgba(242,106,15,0.14)' };
+  A.id = 'A'; A.name = 'A · Grafit'; A.fD = "'Geist', system-ui, sans-serif"; A.fB = A.fD; A.fN = "'Geist Mono', ui-monospace, monospace";
+  A.r = 20; A.rb = 14; A.h1 = 30; A.h2 = 26; A.h3 = 17; A.big = 30; A.w = 700; A.tt = 'none'; A.ls = '-0.02em';
+  A.btnBg = A.accent; A.btnFg = A.onAccent; A.edge = '';
+  A.hero = 'accent';
+
+  var B = dark
+    ? { bg: '#07080C', s1: '#15171E', s2: '#20232C', line: 'rgba(255,255,255,0.10)', text: '#F5F6FA', muted: '#A3A8B8', accent: '#8B90FF', accentText: '#A9ACFF', onAccent: '#0B0C14', soft: 'rgba(139,144,255,0.16)', glassBg: 'rgba(32,34,46,0.58)', glassEdge: 'rgba(255,255,255,0.16)' }
+    : { bg: '#F2F2F7', s1: '#FFFFFF', s2: '#E8E8EF', line: 'rgba(0,0,0,0.08)', text: '#111218', muted: '#5C5F6B', accent: '#4F55E8', accentText: '#3F46D4', onAccent: '#FFFFFF', soft: 'rgba(79,85,232,0.12)', glassBg: 'rgba(255,255,255,0.62)', glassEdge: 'rgba(255,255,255,0.95)' };
+  B.id = 'B'; B.name = 'B · Szkło'; B.fD = "-apple-system, 'SF Pro Display', Inter, system-ui, sans-serif"; B.fB = "-apple-system, 'SF Pro Text', Inter, system-ui, sans-serif"; B.fN = B.fD;
+  B.r = 26; B.rb = 26; B.h1 = 34; B.h2 = 28; B.h3 = 17; B.big = 32; B.w = 700; B.tt = 'none'; B.ls = '-0.01em';
+  B.btnBg = B.accent; B.btnFg = B.onAccent; B.glass = true;
+  B.edge = dark ? 'border:1px solid rgba(255,255,255,0.06);' : '';
+  B.hero = 'card';
+
+  var C = dark
+    ? { bg: '#0B0B0B', s1: '#161616', s2: '#242424', line: '#2C2C2C', text: '#FAFAF5', muted: '#A9A9A2', accent: '#C8F031', accentText: '#C8F031', onAccent: '#0B0B0B', soft: 'rgba(200,240,49,0.14)' }
+    : { bg: '#F7F7F2', s1: '#FFFFFF', s2: '#ECECE4', line: '#DCDCD3', text: '#0B0B0B', muted: '#575750', accent: '#C8F031', accentText: '#4C6100', onAccent: '#0B0B0B', soft: 'rgba(150,190,0,0.16)' };
+  C.id = 'C'; C.name = 'C · Sport'; C.fD = "'Barlow Condensed', 'Arial Narrow', sans-serif"; C.fB = "'Barlow', system-ui, sans-serif"; C.fN = C.fD;
+  C.r = 6; C.rb = 6; C.h1 = 46; C.h2 = 44; C.h3 = 22; C.big = 44; C.w = 800; C.tt = 'uppercase'; C.ls = '0.01em';
+  C.btnBg = dark ? C.accent : '#0B0B0B'; C.btnFg = dark ? C.onAccent : C.accent;
+  C.edge = 'border:1px solid ' + C.line + ';';
+  C.hero = 'accent';
+  if (!dark) C.heatInk = '#6E8C00';
+  return [A, B, C];
+}
+
+function build(t) {
+  var isC = t.id === 'C';
+  t.sPhone = 'position:relative;width:390px;height:844px;border-radius:48px;overflow:hidden;background:' + t.bg + ';color:' + t.text + ';font-family:' + t.fB + ';box-shadow:0 0 0 1px ' + t.line + ',0 24px 60px rgba(0,0,0,0.22)';
+  t.sScroll = 'height:844px;overflow-y:auto;box-sizing:border-box;padding:62px 20px 128px;display:flex;flex-direction:column;gap:14px';
+  t.sCard = 'background:' + t.s1 + ';border-radius:' + t.r + 'px;padding:16px;box-sizing:border-box;' + t.edge;
+  t.sH1 = 'margin:0;font-family:' + t.fD + ';font-size:' + t.h1 + 'px;font-weight:' + t.w + ';text-transform:' + t.tt + ';letter-spacing:' + t.ls + ';line-height:1.02';
+  t.sH3 = 'font-family:' + t.fD + ';font-size:' + t.h3 + 'px;font-weight:' + (isC ? 800 : 650) + ';text-transform:' + t.tt + ';letter-spacing:' + t.ls + ';line-height:1.15';
+  t.sLabel = 'font-size:13px;color:' + t.muted + ';' + (isC ? 'text-transform:uppercase;letter-spacing:0.08em;font-weight:700;' : 'font-weight:500;');
+  t.sMutedSmall = 'font-size:13px;color:' + t.muted;
+  t.sBig = 'font-family:' + t.fN + ';font-size:' + t.big + 'px;font-weight:' + (isC ? 800 : 700) + ';font-variant-numeric:tabular-nums;letter-spacing:' + (isC ? '0' : '-0.03em') + ';line-height:1';
+  t.sUnit = 'font-size:15px;font-weight:600;color:' + t.muted;
+  t.sUp = 'display:inline-block;margin-top:8px;font-size:13px;font-weight:600;color:' + t.accentText;
+  t.sRecord = 'font-family:' + t.fN + ';font-size:' + (isC ? 30 : 22) + 'px;font-weight:' + (isC ? 800 : 700) + ';font-variant-numeric:tabular-nums;color:' + t.accentText;
+  t.sChipA = 'display:inline-flex;align-items:center;padding:5px 10px;border-radius:' + (isC ? '4px' : '999px') + ';background:' + t.soft + ';color:' + t.accentText + ';font-size:13px;font-weight:700';
+  t.sIconBtn = 'width:44px;height:44px;border-radius:' + (isC ? '6px' : '22px') + ';border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;color:' + t.text + ';' + (t.glass ? 'background:' + t.glassBg + ';backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid ' + t.glassEdge : 'background:' + t.s1 + ';' + t.edge);
+  t.sBadge = 'flex:none;width:52px;height:52px;border-radius:' + (isC ? '6px' : '16px') + ';display:flex;align-items:center;justify-content:center;background:' + t.soft + ';color:' + t.accentText;
+
+  // Karta "Następny trening": A i C pełny akcent, B jasna karta z akcentem w przycisku
+  var onHero = t.hero === 'accent' ? (isC && !t.darkMode ? t.onAccent : t.onAccent) : t.text;
+  var heroBg = t.hero === 'accent' ? t.accent : t.s1;
+  t.sHero = 'display:flex;flex-direction:column;gap:12px;padding:20px;border-radius:' + t.r + 'px;background:' + heroBg + ';color:' + onHero + ';' + (t.hero === 'accent' ? '' : t.edge);
+  t.sHeroLabel = 'font-size:13px;font-weight:700;' + (isC ? 'text-transform:uppercase;letter-spacing:0.08em;' : '') + 'color:' + (t.hero === 'accent' ? onHero : t.muted) + ';opacity:' + (t.hero === 'accent' ? '0.78' : '1');
+  t.sHeroTitle = 'margin:0;font-family:' + t.fD + ';font-size:' + t.h2 + 'px;font-weight:' + t.w + ';text-transform:' + t.tt + ';letter-spacing:' + t.ls + ';line-height:1';
+  t.sHeroMeta = 'font-size:14px;font-weight:500;opacity:' + (t.hero === 'accent' ? '0.8' : '1') + ';color:' + (t.hero === 'accent' ? onHero : t.muted);
+  t.sHeroChip = 'display:inline-flex;align-items:center;padding:6px 10px;border-radius:' + (isC ? '4px' : '999px') + ';font-size:13px;font-weight:600;background:' + (t.hero === 'accent' ? 'rgba(0,0,0,0.12)' : t.s2);
+  t.sHeroTrack = 'height:6px;border-radius:3px;overflow:hidden;background:' + (t.hero === 'accent' ? 'rgba(0,0,0,0.16)' : t.s2);
+  t.sHeroFill = 'height:100%;width:46%;border-radius:3px;background:' + (t.hero === 'accent' ? onHero : t.accent);
+  t.sHeroBtn = 'display:flex;align-items:center;justify-content:center;min-height:52px;width:100%;border:0;cursor:pointer;margin-top:4px;border-radius:' + t.rb + 'px;font-family:' + (isC ? t.fD : t.fB) + ';font-size:' + (isC ? '22px' : '17px') + ';font-weight:700;text-transform:' + t.tt + ';letter-spacing:' + (isC ? '0.04em' : '0') + ';' + (t.hero === 'accent' ? 'background:' + onHero + ';color:' + t.accent : 'background:' + t.btnBg + ';color:' + t.btnFg);
+
+  var letters = ['P', 'W', 'Ś', 'C', 'P', 'S', 'N'];
+  var state = ['done', 'today', 'done', 'plan', 'plan', 'plan', 'rest'];
+  state = ['done', 'rest', 'done', 'today', 'plan', 'plan', 'rest'];
+  t.week = letters.map(function (l, i) {
+    var s = state[i];
+    var base = 'width:36px;height:36px;border-radius:' + (isC ? '4px' : '18px') + ';display:flex;align-items:center;justify-content:center;box-sizing:border-box;animation-delay:' + (0.3 + i * 0.05) + 's;';
+    var look = s === 'done' ? 'background:' + t.accent + ';color:' + t.onAccent
+      : s === 'today' ? 'border:2px solid ' + t.accentText + ';background:transparent'
+      : s === 'plan' ? 'border:1.5px dashed ' + t.muted + ';background:transparent'
+      : 'background:' + t.s2;
+    return { l: l, done: s === 'done', sDot: base + look, sLetter: 'font-size:12px;font-weight:' + (s === 'today' ? 800 : 600) + ';color:' + (s === 'today' ? t.accentText : t.muted) };
+  });
+
+  var heat = [];
+  for (var i = 0; i < 84; i++) {
+    var v = ((i * 37 + 11) % 10);
+    var lvl = v < 5 ? 0 : v < 7 ? 1 : v < 9 ? 2 : 3;
+    if (i > 77 && i !== 79 && i !== 81) lvl = 0;
+    var op = [1, 0.35, 0.65, 1][lvl];
+    heat.push({ s: 'border-radius:' + (isC ? '2px' : '4px') + ';background:' + (lvl === 0 ? t.s2 : (t.heatInk || t.accent)) + ';opacity:' + op });
+  }
+  t.heat = heat;
+  t.tabs = tabs(t, 0);
+  return t;
+}
+
+function tabs(t, active) {
+  var items = [['Start', ICONS.home], ['Plany', ICONS.plans], ['Ćwiczenia', ICONS.dumbbell], ['Postępy', ICONS.chart], ['Historia', ICONS.clock]];
+  return items.map(function (it, i) {
+    var on = i === active;
+    return { label: it[0], d: it[1], s: 'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:56px;min-height:48px;border:0;background:transparent;cursor:pointer;color:' + (on ? t.accentText : t.muted) };
+  });
+}
+
+function tabBar(t) {
+  if (t.glass) return 'position:absolute;left:14px;right:14px;bottom:24px;height:66px;border-radius:33px;display:flex;justify-content:space-around;align-items:center;background:' + t.glassBg + ';backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);border:1px solid ' + t.glassEdge + ';box-shadow:0 10px 30px rgba(0,0,0,0.20)';
+  return 'position:absolute;left:0;right:0;bottom:0;height:86px;padding-bottom:22px;box-sizing:border-box;display:flex;justify-content:space-around;align-items:center;background:' + t.s1 + ';border-top:1px solid ' + t.line;
+}
+
+class Component extends DCLogic {
+  renderVals() {
+    var dark = this.props.ciemny ?? true;
+    var rm = this.props.ograniczRuch ?? false;
+    var dirs = palette(dark).map(function (t) { t.darkMode = dark; build(t); t.sTab = tabBar(t); return t; });
+    return {
+      dirs: dirs,
+      icons: ICONS,
+      rootBg: dark ? '#1E1F22' : '#E4E4E0',
+      rootText: dark ? '#E8E8EA' : '#1A1A1C',
+      rootClass: rm ? 'rm' : ''
+    };
+  }
+}
+</script>
+</body>
+</html>

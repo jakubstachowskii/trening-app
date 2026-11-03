@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Odstępy, promienie, cienie, szkło — design system</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+button{font:inherit}
+</style>
+</helmet>
+<div style="width: 1280px; height: 640px; box-sizing: border-box; padding: 40px; display: flex; flex-direction: column; gap: 24px; background: #1E1F22; color: #F5F6FA; font-family: -apple-system, 'SF Pro Text', Inter, system-ui, sans-serif">
+<h1 style="margin: 0; font-size: 34px; line-height: 41px; font-weight: 700">Odstępy, promienie, cienie, szkło</h1>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; flex: 1">
+
+<div style="display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: 28px; background: #121214">
+<span style="font-size: 17px; font-weight: 600">Odstępy (siatka 4 pt)</span>
+<sc-for list="{{space}}" as="s" hint-placeholder-count="8">
+<div style="display: flex; align-items: center; gap: 12px; min-height: 28px">
+<span style="width: 48px; font-size: 13px; color: #A3A8B8">{{s.name}}</span>
+<div style="{{s.sBar}}"></div>
+<span style="font-size: 13px; font-variant-numeric: tabular-nums">{{s.v}}</span>
+</div>
+</sc-for>
+<div style="display: flex; flex-direction: column; gap: 4px; margin-top: 8px; font-size: 13px; line-height: 18px; color: #A3A8B8">
+<span>Margines ekranu: 20</span><span>Wnętrze karty: 16</span><span>Między sekcjami: 24</span><span>Między elementami: 12</span>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 14px; padding: 20px; border-radius: 28px; background: #121214">
+<span style="font-size: 17px; font-weight: 600">Promienie koncentryczne</span>
+<div style="padding: 16px; border-radius: 28px; background: #1C1C1F; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.10)">
+<div style="height: 88px; border-radius: 12px; background: #2A2A2E; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #A3A8B8">12 = 28 − 16</div>
+</div>
+<span style="font-size: 13px; line-height: 18px; color: #A3A8B8">Karta 28, wcięcie 16, element w środku 12. Krzywizny są równoległe.</span>
+<div style="display: flex; gap: 10px; align-items: center">
+<div style="width: 44px; height: 44px; border-radius: 8px; background: #2A2A2E"></div>
+<span style="font-size: 13px; color: #A3A8B8">mały: 8 · wykresy: 4</span>
+</div>
+<button style="min-height: 52px; border: 0; border-radius: 999px; background: #8B90FF; color: #0B0C14; font-size: 17px; font-weight: 600">Kapsuła: przyciski i pigułki</button>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 14px; padding: 20px; border-radius: 28px; background: #121214">
+<span style="font-size: 17px; font-weight: 600">Cień pływający</span>
+<span style="font-size: 13px; line-height: 18px; color: #A3A8B8">Tylko dla elementów nad treścią: dolny przycisk, minutnik, komunikat.</span>
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="padding: 28px 16px; border-radius: 20px; background: #000000">
+<button style="width: 100%; min-height: 52px; border: 0; border-radius: 999px; background: #8B90FF; color: #0B0C14; font-size: 17px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,0.40)">Ciemny</button>
+</div>
+<div style="padding: 28px 16px; border-radius: 20px; background: #F2F2F7">
+<button style="width: 100%; min-height: 52px; border: 0; border-radius: 999px; background: #4F55E8; color: #FFFFFF; font-size: 17px; font-weight: 600; box-shadow: 0 8px 24px rgba(17,18,24,0.14)">Jasny</button>
+</div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 14px; padding: 20px; border-radius: 28px; background: #121214">
+<span style="font-size: 17px; font-weight: 600">Szkło: 2 poziomy</span>
+<div style="position: relative; height: 300px; border-radius: 20px; overflow: hidden; background: #000000">
+<div style="position: absolute; inset: 0; padding: 16px; display: flex; align-items: flex-end; gap: 8px">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="9">
+<div style="{{b.s}}"></div>
+</sc-for>
+</div>
+<div style="position: absolute; left: 12px; top: 14px; display: flex; gap: 8px">
+<span style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; background: rgba(40,42,54,0.72); backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); border: 1px solid rgba(255,255,255,0.16); font-size: 13px; font-weight: 600">Kontrolka</span>
+<span style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; background: #1C1C1F; border: 1px solid rgba(255,255,255,0.10); font-size: 13px; font-weight: 600">Pełne tło</span>
+</div>
+<div style="position: absolute; left: 12px; right: 12px; bottom: 14px; height: 56px; border-radius: 28px; background: rgba(34,36,46,0.58); backdrop-filter: blur(22px) saturate(180%); -webkit-backdrop-filter: blur(22px) saturate(180%); border: 1px solid rgba(255,255,255,0.16); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">Pasek kart</div>
+</div>
+<span style="font-size: 13px; line-height: 18px; color: #A3A8B8">Przy ograniczonej przezroczystości (ustawienie iOS) szkło zmienia się w pełne tło „Wyżej”.</span>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":640}}'>
+var SPACE = [['xxs', 4], ['xs', 8], ['sm', 12], ['md', 16], ['lg', 20], ['xl', 24], ['xxl', 32], ['xxxl', 40]];
+class Component extends DCLogic {
+  renderVals() {
+    var h = [120, 180, 150, 220, 200, 250, 190, 260, 240];
+    return {
+      space: SPACE.map(function (s) { return { name: s[0], v: s[1], sBar: 'height:12px;border-radius:3px;background:#8B90FF;width:' + (s[1] * 3) + 'px' }; }),
+      bars: h.map(function (v, i) { return { s: 'flex:1;height:' + v + 'px;border-radius:6px;background:' + (i % 3 === 2 ? '#8B90FF' : '#3A3A40') + ';opacity:1' }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

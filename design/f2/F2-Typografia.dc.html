@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Typografia — design system</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+button{font:inherit}
+</style>
+</helmet>
+<div style="width: 1280px; height: 1000px; box-sizing: border-box; padding: 40px; display: flex; flex-direction: column; gap: 24px; background: #1E1F22; color: #F5F6FA; font-family: -apple-system, 'SF Pro Text', Inter, system-ui, sans-serif">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h1 style="margin: 0; font-size: 34px; line-height: 41px; font-weight: 700">Typografia</h1>
+<span style="font-size: 15px; color: #A3A8B8">Skala iOS, czcionka systemowa. Każdy styl rośnie razem z ustawieniem „Większy tekst” (Dynamic Type). Liczby zawsze o stałej szerokości.</span>
+</div>
+<div style="display: flex; gap: 32px; align-items: flex-start">
+<div style="flex: 1; display: flex; flex-direction: column; padding: 8px 24px; border-radius: 28px; background: #121214">
+<sc-for list="{{scale}}" as="s" hint-placeholder-count="13">
+<div style="{{s.sRow}}">
+<span style="{{s.sSample}}">{{s.sample}}</span>
+<div style="display: flex; flex-direction: column; align-items: flex-end; flex: none">
+<span style="font-size: 13px; font-weight: 600">{{s.name}}</span>
+<span style="font-size: 12px; color: #A3A8B8; font-variant-numeric: tabular-nums">{{s.meta}}</span>
+</div>
+</div>
+</sc-for>
+</div>
+<div style="width: 440px; display: flex; flex-direction: column; gap: 16px">
+<span style="font-size: 15px; font-weight: 700">Ten sam kafelek w dwóch rozmiarach tekstu</span>
+<sc-for list="{{samples}}" as="k" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; color: #A3A8B8">{{k.label}}</span>
+<div style="{{k.sCard}}">
+<span style="{{k.sFoot}}">Najcięższa seria</span>
+<span style="{{k.sHead}}">Wyciskanie na ławce</span>
+<span style="{{k.sMetric}}">102,5 kg × 3</span>
+<span style="{{k.sSub}}">2 dni temu · nowy rekord</span>
+</div>
+</div>
+</sc-for>
+<span style="font-size: 13px; line-height: 18px; color: #A3A8B8">Przy dużym tekście wiersze zawijają się zamiast ucinać, a układy w dwóch kolumnach przechodzą w jedną.</span>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1000}}'>
+var TYPE = [
+  ['largeTitle', 'Large Title', 34, 41, 700, 'Twój tydzień'],
+  ['title1', 'Title 1', 28, 34, 700, 'Push A'],
+  ['title2', 'Title 2', 22, 28, 700, 'Wyciskanie na ławce'],
+  ['title3', 'Title 3', 20, 25, 600, 'Jak wykonać'],
+  ['headline', 'Headline', 17, 22, 600, 'Rozpiętki na linkach'],
+  ['body', 'Body', 17, 22, 400, 'Opuść sztangę pod kontrolą.'],
+  ['callout', 'Callout', 16, 21, 400, 'Dziś spróbuj 82,5 kg.'],
+  ['subheadline', 'Subheadline', 15, 20, 400, 'Plan PPL · tydzień 4 z 8'],
+  ['footnote', 'Footnote', 13, 18, 400, 'Wtorek, 3 listopada'],
+  ['caption1', 'Caption 1', 12, 16, 400, '2 dni temu'],
+  ['caption2', 'Caption 2', 11, 13, 500, 'POPRZEDNIO'],
+  ['metric', 'Metric (liczby)', 34, 38, 700, '104,5 kg'],
+  ['timer', 'Timer (liczby)', 44, 48, 700, '1:30']
+];
+var WEIGHTS = { 400: 'Regular', 500: 'Medium', 600: 'Semibold', 700: 'Bold' };
+
+function card(f) {
+  var px = function (n) { return Math.round(n * f) + 'px'; };
+  return {
+    sCard: 'display:flex;flex-direction:column;gap:' + px(4) + ';padding:16px;border-radius:28px;background:#121214',
+    sFoot: 'font-size:' + px(13) + ';line-height:' + px(18) + ';color:#A3A8B8',
+    sHead: 'font-size:' + px(17) + ';line-height:' + px(22) + ';font-weight:600',
+    sMetric: 'font-size:' + px(34) + ';line-height:' + px(38) + ';font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;color:#A9ACFF',
+    sSub: 'font-size:' + px(15) + ';line-height:' + px(20) + ';color:#A3A8B8'
+  };
+}
+
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      scale: TYPE.map(function (t, i) {
+        var num = t[0] === 'metric' || t[0] === 'timer';
+        return {
+          name: t[1], sample: t[5], meta: t[2] + ' / ' + t[3] + ' · ' + WEIGHTS[t[4]],
+          sRow: 'display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:48px;padding:6px 0;' + (i ? 'border-top:1px solid rgba(255,255,255,0.10)' : ''),
+          sSample: 'font-size:' + t[2] + 'px;line-height:' + t[3] + 'px;font-weight:' + t[4] + ';' + (num ? 'font-variant-numeric:tabular-nums;letter-spacing:-0.02em;' : '') + (t[0] === 'caption2' ? 'letter-spacing:0.06em;' : '') + 'white-space:nowrap;overflow:hidden;text-overflow:ellipsis'
+        };
+      }),
+      samples: [Object.assign({ label: 'Domyślny rozmiar' }, card(1)), Object.assign({ label: 'Największy zwykły rozmiar (×1,35)' }, card(1.35))]
+    };
+  }
+}
+</script>
+</body>
+</html>

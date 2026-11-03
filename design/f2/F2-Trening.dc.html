@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Trening w toku — dopracowany styl B</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+button{font:inherit}
+.press{transition:transform 150ms cubic-bezier(0.2,0.8,0.2,1)}
+.press:active{transform:scale(0.97)}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes popin{0%{opacity:0;transform:scale(.3)}60%{opacity:1;transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes slideup{from{transform:translateY(160%)}to{transform:none}}
+@keyframes toast{0%{opacity:0;transform:translateY(-20px) scale(.95)}100%{opacity:1;transform:none}}
+.rise{animation:rise 400ms cubic-bezier(0.2,0.8,0.2,1) both}
+.d1{animation-delay:50ms}.d2{animation-delay:100ms}
+.popin{animation:popin 420ms cubic-bezier(0.3,1.5,0.5,1) both}
+.slideup{animation:slideup 420ms cubic-bezier(0.3,1.2,0.5,1) both}
+.toast{animation:toast 420ms cubic-bezier(0.3,1.5,0.5,1) both}
+.row{transition:background-color 250ms ease}
+.ring{transition:stroke-dashoffset 1s linear}
+.rm .rise,.rm .popin,.rm .slideup,.rm .toast{animation:fade 150ms ease both}
+.rm .row,.rm .ring{transition:none}
+.rm .press:active{transform:none}
+@media (prefers-reduced-motion: reduce){.rise,.popin,.slideup,.toast{animation:fade 150ms ease both}.row,.ring{transition:none}.press:active{transform:none}}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="width: 900px; height: 964px; box-sizing: border-box; padding: 40px; display: flex; gap: 40px; align-items: flex-start; background: #1E1F22; font-family: -apple-system, 'SF Pro Text', Inter, system-ui, sans-serif">
+<sc-for list="{{modes}}" as="c" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 12px; width: 390px">
+<div style="font-size: 15px; font-weight: 700; color: #E8E8EA">{{c.title}}</div>
+<div style="{{c.sPhone}}">
+<div style="{{c.sScroll}}">
+
+<div class="rise" style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span style="{{c.sFootNum}}">Trening · 32:14</span>
+<h1 style="{{c.sLarge}}">Push A</h1>
+</div>
+<button class="press" style="{{c.sBtnGlass}}">Zakończ</button>
+</div>
+
+<div class="rise d1" style="{{c.sCard}}">
+<div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px">
+<div style="{{c.sThumb}}">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6.5 6.5v11M3.5 9v6M17.5 6.5v11M20.5 9v6M6.5 12h11"></path></svg>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+<span style="{{c.sHeadline}}">Wyciskanie sztangi na ławce poziomej</span>
+<span style="{{c.sFoot}}">{{c.progress}}</span>
+</div>
+</div>
+<div style="{{c.sHint}}">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 1px"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>
+<span>Ostatnio 80 kg × 8 we wszystkich seriach. Dziś spróbuj 82,5 kg.</span>
+</div>
+<div style="{{c.sHead}}">
+<span>Seria</span><span>Poprzednio</span><span style="text-align: center">kg</span><span style="text-align: center">Powt.</span><span></span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<sc-for list="{{c.rows}}" as="r" hint-placeholder-count="4">
+<div class="row" style="{{r.sRow}}">
+<span style="{{r.sLbl}}">{{r.lbl}}</span>
+<span style="{{c.sPrev}}">{{r.prev}}</span>
+<span style="{{c.sCell}}">{{r.kg}}</span>
+<span style="{{c.sCell}}">{{r.reps}}</span>
+<button aria-label="{{r.aria}}" aria-pressed="{{r.done}}" onClick="{{r.toggle}}" style="{{r.sCheck}}">
+<sc-if value="{{r.done}}" hint-placeholder-val="{{false}}">
+<svg class="popin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+</sc-if>
+</button>
+</div>
+</sc-for>
+</div>
+<button class="press" style="{{c.sGhost}}">Dodaj serię</button>
+</div>
+
+<div class="rise d2" style="display: flex; flex-direction: column; gap: 8px">
+<span style="{{c.sSectionHead}}">Następne</span>
+<div style="{{c.sGroup}}">
+<sc-for list="{{nextEx}}" as="e" hint-placeholder-count="3">
+<div style="{{e.sRow}}">
+<div style="{{c.sThumbSm}}">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6.5 6.5v11M3.5 9v6M17.5 6.5v11M20.5 9v6M6.5 12h11"></path></svg>
+</div>
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+<span style="{{c.sHeadlineEllipsis}}">{{e.name}}</span>
+<span style="{{c.sFoot}}">{{e.meta}}</span>
+</div>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="color: {{c.label2}}"><path d="M9 6l6 6-6 6"></path></svg>
+</div>
+</sc-for>
+</div>
+</div>
+
+</div>
+
+<div aria-hidden="true" style="{{c.sEdgeTop}}"></div>
+<div aria-hidden="true" style="{{c.sEdgeBottom}}"></div>
+<sc-if value="{{c.showToast}}" hint-placeholder-val="{{false}}">
+<div class="toast" role="status" style="{{c.sToast}}">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"></path></svg>
+<div style="display: flex; flex-direction: column"><span style="{{c.sHeadline}}">Nowy rekord</span><span style="{{c.sFootPlain}}">82,5 kg × 8 · najwięcej powtórzeń</span></div>
+</div>
+</sc-if>
+
+<sc-if value="{{c.showTimer}}" hint-placeholder-val="{{false}}">
+<div class="slideup" role="timer" aria-label="Przerwa, zostało {{c.timeText}}" style="{{c.sTimer}}">
+<div style="display: flex; align-items: center; gap: 12px">
+<svg width="60" height="60" viewBox="0 0 64 64" aria-hidden="true" style="flex: none; transform: rotate(-90deg)">
+<circle cx="32" cy="32" r="28" fill="none" stroke="{{c.fill}}" stroke-width="6"></circle>
+<circle class="ring" cx="32" cy="32" r="28" fill="none" stroke="{{c.accent}}" stroke-width="6" stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="{{c.ringOffset}}"></circle>
+</svg>
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+<span style="{{c.sFoot}}">Przerwa</span>
+<span style="{{c.sTimerNum}}">{{c.timeText}}</span>
+<span style="{{c.sFoot}}">Dalej: {{c.nextText}}</span>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 12px">
+<button class="press" onClick="{{c.minus}}" style="{{c.sBtnTimer}}">−15 s</button>
+<button class="press" onClick="{{c.plus}}" style="{{c.sBtnTimer}}">+15 s</button>
+<button class="press" onClick="{{c.skip}}" style="{{c.sBtnTimerMain}}">Pomiń</button>
+</div>
+</div>
+</sc-if>
+
+<button class="press" onClick="{{c.next}}" style="{{c.sFloat}}">{{c.nextLabel}}</button>
+</div>
+</div>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"akcent":{"editor":"enum","options":["niebieski","indygo","pomarancz","malina","zielen"],"default":"niebieski","section":"Podgląd"},"ograniczRuch":{"editor":"boolean","default":false,"section":"Podgląd"},"ograniczPrzezroczystosc":{"editor":"boolean","default":false,"section":"Podgląd"},"$preview":{"width":900,"height":964}}'>
+var TK = {
+  dark: { label: '#F5F6FA', label2: '#A3A8B8', label3: '#80859A', separator: 'rgba(255,255,255,0.10)', accent: '#8B90FF', accentText: '#A9ACFF', onAccent: '#0B0C14', accentSoft: 'rgba(139,144,255,0.16)', success: '#5BD38A', warning: '#F5B84A', danger: '#FF6B6B', glassBar: 'rgba(34,36,46,0.58)', glassControl: 'rgba(40,42,54,0.72)', glassEdge: 'rgba(255,255,255,0.16)', shadow: '0 8px 24px rgba(0,0,0,0.40)', selected: '#3A3A40' },
+  variants: {
+    granat: { bg: '#07080C', surface: '#15171E', raised: '#1D2029', fill: '#262A34' },
+    czern: { bg: '#000000', surface: '#121214', raised: '#1C1C1F', fill: '#2A2A2E' },
+    grafit: { bg: '#0E0F12', surface: '#1A1C21', raised: '#22252B', fill: '#2C3037' }
+  },
+  light: { bg: '#F2F2F7', surface: '#FFFFFF', raised: '#FFFFFF', fill: '#E8E8EF', label: '#111218', label2: '#5C5F6B', label3: '#8A8D99', separator: 'rgba(17,18,24,0.10)', accent: '#4F55E8', accentText: '#3F46D4', onAccent: '#FFFFFF', accentSoft: 'rgba(79,85,232,0.12)', success: '#1E8E4E', warning: '#A35F00', danger: '#D92D20', glassBar: 'rgba(255,255,255,0.62)', glassControl: 'rgba(255,255,255,0.78)', glassEdge: 'rgba(255,255,255,0.95)', shadow: '0 8px 24px rgba(17,18,24,0.14)', selected: '#FFFFFF' },
+  type: { largeTitle: [34, 41, 700], title1: [28, 34, 700], title2: [22, 28, 700], title3: [20, 25, 600], headline: [17, 22, 600], body: [17, 22, 400], callout: [16, 21, 400], subheadline: [15, 20, 400], footnote: [13, 18, 400], caption1: [12, 16, 400], caption2: [11, 13, 500], metric: [34, 38, 700], timer: [44, 48, 700] },
+  radius: { card: 28, inner: 12, small: 8, capsule: 999 }
+};
+var ACC_NAME = { indygo: 'Indygo', niebieski: 'Niebieski', pomarancz: 'Pomarańcz', malina: 'Malina', zielen: 'Zieleń' };
+var ACC = {
+  indygo: { d: { accent: '#8B90FF', accentText: '#A9ACFF', accentSoft: 'rgba(139,144,255,0.16)' }, l: { accent: '#4F55E8', accentText: '#3F46D4', accentSoft: 'rgba(79,85,232,0.12)' } },
+  niebieski: { d: { accent: '#4DA3FF', accentText: '#7AB8FF', accentSoft: 'rgba(77,163,255,0.16)' }, l: { accent: '#0A6BDB', accentText: '#0A5FC4', accentSoft: 'rgba(10,107,219,0.12)' } },
+  pomarancz: { d: { accent: '#FF9A3D', accentText: '#FFB070', accentSoft: 'rgba(255,154,61,0.16)' }, l: { accent: '#C2500A', accentText: '#A84500', accentSoft: 'rgba(194,80,10,0.12)' } },
+  malina: { d: { accent: '#FF6F9F', accentText: '#FF8FB4', accentSoft: 'rgba(255,111,159,0.16)' }, l: { accent: '#C8205C', accentText: '#B01B52', accentSoft: 'rgba(200,32,92,0.12)' } },
+  zielen: { d: { accent: '#3DD68C', accentText: '#5FE0A0', accentSoft: 'rgba(61,214,140,0.16)' }, l: { accent: '#157F45', accentText: '#126E3C', accentSoft: 'rgba(21,127,69,0.12)' } }
+};
+function pal(mode, a) { var acc = ACC[a] || ACC.niebieski; return mode === 'light' ? Object.assign({ mode: 'light' }, TK.light, acc.l) : Object.assign({ mode: 'dark' }, TK.dark, TK.variants.czern, acc.d); }
+function ty(k) { var t = TK.type[k]; return 'font-size:' + t[0] + 'px;line-height:' + t[1] + 'px;font-weight:' + t[2] + ';' + (k === 'metric' || k === 'timer' ? 'font-variant-numeric:tabular-nums;letter-spacing:-0.02em;' : '') + (t[0] >= 20 ? 'letter-spacing:-0.01em;' : ''); }
+function glass(c, level, noGlass) {
+  if (noGlass) return 'background:' + c.raised + ';border:1px solid ' + c.separator + ';';
+  var g = level === 'bar' ? [c.glassBar, 22] : [c.glassControl, 16];
+  return 'background:' + g[0] + ';backdrop-filter:blur(' + g[1] + 'px) saturate(180%);-webkit-backdrop-filter:blur(' + g[1] + 'px) saturate(180%);border:1px solid ' + c.glassEdge + ';';
+}
+
+var ROWS = [
+  { lbl: 'R', prev: '40 × 10', kg: '40', reps: '10', warm: true },
+  { lbl: '1', prev: '80 × 8', kg: '82,5', reps: '8' },
+  { lbl: '2', prev: '80 × 8', kg: '82,5', reps: '8' },
+  { lbl: '3', prev: '80 × 8', kg: '82,5', reps: '8' }
+];
+var REST = 90;
+function fmt(s) { var m = Math.floor(s / 60); var r = s % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
+function copy(o) { return JSON.parse(JSON.stringify(o)); }
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { done: { dark: [true, false, false, false], light: [true, false, false, false] }, left: { dark: 0, light: 0 }, total: { dark: REST, light: REST }, toast: { dark: false, light: false }, pr: { dark: false, light: false } };
+  }
+  componentDidMount() {
+    var self = this;
+    this.iv = setInterval(function () {
+      var l = copy(self.state.left); var ch = false;
+      ['dark', 'light'].forEach(function (k) { if (l[k] > 0) { l[k] -= 1; ch = true; } });
+      if (ch) self.setState({ left: l });
+    }, 1000);
+  }
+  componentWillUnmount() { clearInterval(this.iv); (this.tos || []).forEach(clearTimeout); }
+  toggle(k, i) {
+    var s = this.state; var done = copy(s.done); done[k][i] = !done[k][i]; var next = { done: done };
+    if (done[k][i]) {
+      var l = copy(s.left); l[k] = REST; next.left = l;
+      var t = copy(s.total); t[k] = REST; next.total = t;
+      if (i === 1 && !s.pr[k]) {
+        var pr = copy(s.pr); pr[k] = true; next.pr = pr;
+        var to = copy(s.toast); to[k] = true; next.toast = to;
+        var self = this;
+        this.tos = (this.tos || []).concat(setTimeout(function () { var t2 = copy(self.state.toast); t2[k] = false; self.setState({ toast: t2 }); }, 3200));
+      }
+    }
+    this.setState(next);
+  }
+  adjust(k, d) {
+    var l = copy(this.state.left); l[k] = Math.max(0, l[k] + d);
+    var t = copy(this.state.total); if (l[k] > t[k]) t[k] = l[k];
+    this.setState({ left: l, total: t });
+  }
+  renderVals() {
+    var self = this; var st = this.state; var R = TK.radius;
+    var v = this.props.akcent ?? 'niebieski'; var rm = this.props.ograniczRuch ?? false; var nog = this.props.ograniczPrzezroczystosc ?? false;
+    var modes = ['dark', 'light'].map(function (k) {
+      var c = pal(k, v);
+      c.title = k === 'dark' ? 'Ciemny · ' + ACC_NAME[v] : 'Jasny · ' + ACC_NAME[v];
+      var rgba0 = function (h) { var n = [1, 3, 5].map(function (i) { return parseInt(h.slice(i, i + 2), 16); }); return 'rgba(' + n.join(',') + ',0)'; };
+      c.sEdgeTop = 'position:absolute;left:0;right:0;top:0;height:56px;pointer-events:none;background:linear-gradient(' + c.bg + ' 35%, ' + rgba0(c.bg) + ')';
+      c.sEdgeBottom = 'position:absolute;left:0;right:0;bottom:0;height:130px;pointer-events:none;background:linear-gradient(' + rgba0(c.bg) + ', ' + c.bg + ' 75%)';
+      c.sPhone = 'position:relative;width:390px;height:844px;border-radius:48px;overflow:hidden;background:' + c.bg + ';color:' + c.label + ';box-shadow:0 0 0 1px ' + c.separator + ',0 24px 60px rgba(0,0,0,0.25)';
+      c.sScroll = 'height:844px;overflow-y:auto;box-sizing:border-box;padding:62px 16px 120px;display:flex;flex-direction:column;gap:24px';
+      c.sCard = 'display:flex;flex-direction:column;padding:16px;border-radius:' + R.card + 'px;background:' + c.surface;
+      c.sGroup = 'display:flex;flex-direction:column;padding:0 16px;border-radius:' + R.card + 'px;background:' + c.surface;
+      c.sLarge = 'margin:0;' + ty('largeTitle');
+      c.sHeadline = ty('headline');
+      c.sHeadlineEllipsis = ty('headline') + 'white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
+      c.sSectionHead = ty('headline') + 'padding:0 4px';
+      c.sFoot = ty('footnote') + 'color:' + c.label2;
+      c.sFootPlain = ty('footnote');
+      c.sFootNum = ty('footnote') + 'font-variant-numeric:tabular-nums;color:' + c.label2;
+      c.sPrev = ty('footnote') + 'font-variant-numeric:tabular-nums;color:' + c.label2;
+      c.sThumb = 'flex:none;width:48px;height:48px;border-radius:' + R.inner + 'px;display:flex;align-items:center;justify-content:center;background:' + c.fill;
+      c.sThumbSm = 'flex:none;width:40px;height:40px;border-radius:' + R.inner + 'px;display:flex;align-items:center;justify-content:center;background:' + c.fill + ';color:' + c.label2;
+      c.sHint = 'display:flex;gap:8px;align-items:flex-start;padding:8px 12px;margin-bottom:12px;border-radius:' + R.inner + 'px;background:' + c.accentSoft + ';color:' + c.accentText + ';' + ty('footnote') + 'font-weight:600';
+      c.sHead = 'display:grid;grid-template-columns:40px 1fr 60px 48px 44px;gap:8px;padding:0 8px 6px;' + ty('caption2') + 'text-transform:uppercase;letter-spacing:0.06em;color:' + c.label2;
+      c.sCell = 'display:flex;align-items:center;justify-content:center;height:36px;border-radius:' + R.small + 'px;background:' + c.fill + ';' + ty('callout') + 'font-weight:600;font-variant-numeric:tabular-nums';
+      c.sGhost = 'margin-top:8px;width:100%;min-height:44px;border:0;cursor:pointer;border-radius:' + R.capsule + 'px;background:' + c.fill + ';color:' + c.label + ';' + ty('subheadline') + 'font-weight:600';
+      c.sBtnGlass = 'flex:none;min-height:44px;padding:0 18px;border-radius:' + R.capsule + 'px;cursor:pointer;color:' + c.label + ';' + ty('subheadline') + 'font-weight:600;' + glass(c, 'control', nog);
+      c.sFloat = 'position:absolute;left:20px;right:20px;bottom:34px;min-height:52px;border:0;cursor:pointer;border-radius:' + R.capsule + 'px;background:' + c.accent + ';color:' + c.onAccent + ';box-shadow:' + c.shadow + ';' + ty('headline');
+      c.sTimer = 'position:absolute;left:12px;right:12px;bottom:102px;padding:16px;box-sizing:border-box;border-radius:' + R.card + 'px;box-shadow:' + c.shadow + ';' + glass(c, 'control', nog);
+      c.sTimerNum = ty('timer');
+      c.sBtnTimer = 'min-height:44px;border:0;cursor:pointer;border-radius:' + R.capsule + 'px;background:' + c.fill + ';color:' + c.label + ';' + ty('subheadline') + 'font-weight:600;font-variant-numeric:tabular-nums';
+      c.sBtnTimerMain = 'min-height:44px;border:0;cursor:pointer;border-radius:' + R.capsule + 'px;background:' + c.accent + ';color:' + c.onAccent + ';' + ty('subheadline') + 'font-weight:600';
+      c.sToast = 'position:absolute;left:12px;right:12px;top:52px;min-height:76px;display:flex;gap:12px;align-items:center;padding:12px 16px;box-sizing:border-box;border-radius:' + R.card + 'px;background:' + c.accent + ';color:' + c.onAccent + ';box-shadow:' + c.shadow;
+
+      var arr = st.done[k];
+      c.rows = ROWS.map(function (r, i) {
+        var d = arr[i];
+        return {
+          lbl: r.lbl, prev: r.prev, kg: r.kg, reps: r.reps, done: d,
+          aria: (r.warm ? 'Seria rozgrzewkowa' : 'Seria ' + r.lbl) + ', ' + r.kg + ' kg, ' + r.reps + ' powtórzeń, ' + (d ? 'zrobiona' : 'do zrobienia'),
+          toggle: function () { self.toggle(k, i); },
+          sRow: 'display:grid;grid-template-columns:40px 1fr 60px 48px 44px;gap:8px;align-items:center;padding:4px 8px;min-height:52px;box-sizing:border-box;border-radius:' + R.inner + 'px;background:' + (d ? c.accentSoft : 'transparent'),
+          sLbl: ty('headline') + 'font-variant-numeric:tabular-nums;color:' + (r.warm ? c.accentText : c.label),
+          sCheck: 'width:44px;height:44px;border-radius:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-sizing:border-box;' + (d ? 'background:' + c.accent + ';color:' + c.onAccent + ';border:0' : 'background:transparent;color:' + c.label + ';border:2px solid ' + c.label2)
+        };
+      });
+      var cnt = arr.filter(Boolean).length;
+      c.progress = 'Zrobione: ' + cnt + ' z ' + arr.length + ' serii';
+      var ni = arr.indexOf(false);
+      c.nextLabel = ni === -1 ? 'Następne ćwiczenie' : 'Odhacz serię ' + ROWS[ni].lbl;
+      c.nextText = ni === -1 ? 'wyciskanie hantli na skosie' : 'seria ' + ROWS[ni].lbl + ' · ' + ROWS[ni].kg + ' kg × ' + ROWS[ni].reps;
+      c.next = function () { if (ni !== -1) self.toggle(k, ni); };
+      c.showTimer = st.left[k] > 0;
+      c.timeText = fmt(st.left[k]);
+      c.ringOffset = (175.9 * (1 - st.left[k] / st.total[k])).toFixed(1);
+      c.minus = function () { self.adjust(k, -15); };
+      c.plus = function () { self.adjust(k, 15); };
+      c.skip = function () { var l = copy(self.state.left); l[k] = 0; self.setState({ left: l }); };
+      c.showToast = st.toast[k];
+      return c;
+    });
+    var sep = 'rgba(128,128,140,0.18)';
+    return {
+      modes: modes,
+      nextEx: [
+        { name: 'Wyciskanie hantli na skosie', meta: '3 serie · 30 kg × 10', sRow: 'display:flex;align-items:center;gap:12px;min-height:64px' },
+        { name: 'Rozpiętki na linkach', meta: '3 serie · 15 kg × 12', sRow: 'display:flex;align-items:center;gap:12px;min-height:64px;border-top:1px solid ' + sep },
+        { name: 'Wyciskanie francuskie', meta: '3 serie · 30 kg × 10', sRow: 'display:flex;align-items:center;gap:12px;min-height:64px;border-top:1px solid ' + sep }
+      ],
+      rootClass: rm ? 'rm' : ''
+    };
+  }
+}
+</script>
+</body>
+</html>

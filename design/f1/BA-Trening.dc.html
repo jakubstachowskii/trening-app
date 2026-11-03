@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Trening w toku — trzy kierunki</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&amp;family=Barlow:wght@400;500;600;700&amp;family=Geist+Mono:wght@500;600;700&amp;family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+button{font:inherit}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes popin{0%{opacity:0;transform:scale(.3)}60%{opacity:1;transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes slideup{from{transform:translateY(140%)}to{transform:none}}
+@keyframes toast{0%{opacity:0;transform:translateY(-20px) scale(.94)}100%{opacity:1;transform:none}}
+.rise{animation:rise .55s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+.popin{animation:popin .42s cubic-bezier(.3,1.6,.5,1) both}
+.slideup{animation:slideup .5s cubic-bezier(.2,1.25,.35,1) both}
+.toast{animation:toast .45s cubic-bezier(.2,1.4,.4,1) both}
+.row{transition:background-color .25s ease,color .25s ease}
+.ring{transition:stroke-dashoffset 1s linear}
+.rm .rise,.rm .popin,.rm .slideup,.rm .toast{animation:fade .2s ease both}
+.rm .row,.rm .ring{transition:none}
+@media (prefers-reduced-motion: reduce){.rise,.popin,.slideup,.toast{animation:fade .2s ease both}.row,.ring{transition:none}}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="width: 900px; height: 964px; box-sizing: border-box; padding: 40px; display: flex; gap: 40px; align-items: flex-start; background: {{rootBg}}; font-family: Inter, system-ui, sans-serif">
+<sc-for list="{{dirs}}" as="t" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 12px; width: 390px">
+<div style="font-size: 15px; font-weight: 700; color: {{rootText}}">{{t.name}} — kliknij ptaszek albo przycisk na dole</div>
+<div style="{{t.sPhone}}">
+<div style="{{t.sScrollWork}}">
+
+<div class="rise" style="display: flex; justify-content: space-between; align-items: center; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="{{t.sLabel}}">Trening · 32:14</span>
+<h1 style="{{t.sH1}}">Push A</h1>
+</div>
+<button style="{{t.sBtn2}}">Zakończ</button>
+</div>
+
+<div class="rise d1" style="{{t.sCard}}">
+<div style="display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px">
+<div style="{{t.sThumb}}">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{icons.dumbbell}}"></path></svg>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+<span style="{{t.sH3}}">Wyciskanie sztangi na ławce poziomej</span>
+<span style="{{t.sLabel}}">{{t.progress}}</span>
+</div>
+</div>
+<div style="{{t.sHint}}">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{icons.up}}"></path></svg>
+<span>Ostatnio 80 kg × 8 we wszystkich seriach. Dziś spróbuj 82,5 kg.</span>
+</div>
+<div style="{{t.sHead}}">
+<span>Seria</span><span>Poprzednio</span><span style="text-align: center">kg</span><span style="text-align: center">Powt.</span><span></span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{t.rows}}" as="r" hint-placeholder-count="4">
+<div class="row" style="{{r.sRow}}">
+<span style="{{r.sLbl}}">{{r.lbl}}</span>
+<span style="{{r.sPrev}}">{{r.prev}}</span>
+<span style="{{r.sCell}}">{{r.kg}}</span>
+<span style="{{r.sCell}}">{{r.reps}}</span>
+<button aria-label="{{r.aria}}" aria-pressed="{{r.done}}" onClick="{{r.toggle}}" style="{{r.sCheck}}">
+<sc-if value="{{r.done}}" hint-placeholder-val="{{false}}">
+<svg class="popin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{icons.check}}"></path></svg>
+</sc-if>
+</button>
+</div>
+</sc-for>
+</div>
+<button style="{{t.sGhost}}">+ Dodaj serię</button>
+</div>
+
+<sc-for list="{{nextEx}}" as="e" hint-placeholder-count="3">
+<div class="rise d2" style="{{t.sCardRow}}">
+<div style="{{t.sThumbSm}}">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{icons.dumbbell}}"></path></svg>
+</div>
+<div style="display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0">
+<span style="{{t.sH4}}">{{e.name}}</span>
+<span style="{{t.sMutedSmall}}">{{e.meta}}</span>
+</div>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: {{t.muted}}"><path d="{{icons.chev}}"></path></svg>
+</div>
+</sc-for>
+
+</div>
+
+<sc-if value="{{t.showToast}}" hint-placeholder-val="{{false}}">
+<div class="toast" role="status" style="{{t.sToast}}">
+<div style="{{t.sToastIcon}}">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{icons.trophy}}"></path></svg>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span style="{{t.sToastTitle}}">Nowy rekord</span>
+<span style="font-size: 13px">82,5 kg × 8 — najwięcej powtórzeń z tym ciężarem</span>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{t.showTimer}}" hint-placeholder-val="{{false}}">
+<div class="slideup" role="timer" aria-label="Przerwa, zostało {{t.timeText}}" style="{{t.sTimer}}">
+<div style="display: flex; align-items: center; gap: 14px">
+<svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true" style="flex: none; transform: rotate(-90deg)">
+<circle cx="32" cy="32" r="28" fill="none" stroke="{{t.s2}}" stroke-width="6"></circle>
+<circle class="ring" cx="32" cy="32" r="28" fill="none" stroke="{{t.accent}}" stroke-width="6" stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="{{t.ringOffset}}"></circle>
+</svg>
+<div style="display: flex; flex-direction: column; gap: 2px; flex: 1">
+<span style="{{t.sLabel}}">Przerwa</span>
+<span style="{{t.sTimeBig}}">{{t.timeText}}</span>
+<span style="{{t.sMutedSmall}}">Dalej: {{t.nextText}}</span>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 14px">
+<button onClick="{{t.minus}}" style="{{t.sBtnTimer}}">−15 s</button>
+<button onClick="{{t.plus}}" style="{{t.sBtnTimer}}">+15 s</button>
+<button onClick="{{t.skip}}" style="{{t.sBtnTimerMain}}">Pomiń</button>
+</div>
+</div>
+</sc-if>
+
+<div style="{{t.sBottom}}">
+<button onClick="{{t.next}}" style="{{t.sBtn}}">{{t.nextLabel}}</button>
+</div>
+</div>
+</div>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"ciemny":{"editor":"boolean","default":true,"section":"Podgląd"},"ograniczRuch":{"editor":"boolean","default":false,"section":"Podgląd"},"$preview":{"width":900,"height":964}}'>
+var ICONS = {
+  dumbbell: 'M6.5 6.5v11M3.5 9v6M17.5 6.5v11M20.5 9v6M6.5 12h11',
+  check: 'M5 12.5l4.5 4.5L19 7.5',
+  trophy: 'M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3',
+  chev: 'M9 6l6 6-6 6',
+  up: 'M12 19V5M5 12l7-7 7 7'
+};
+
+function palette(dark) {
+  var A = dark
+    ? { bg: '#101113', s1: '#1A1C20', s2: '#272A30', line: '#30343B', text: '#F3F4F6', muted: '#A3A9B2', accent: '#FF7A1A', accentText: '#FF9448', onAccent: '#141414', soft: 'rgba(255,122,26,0.16)' }
+    : { bg: '#F3F3F1', s1: '#FFFFFF', s2: '#ECECE8', line: '#DCDCD7', text: '#141519', muted: '#5A5F67', accent: '#F26A0F', accentText: '#A84500', onAccent: '#141519', soft: 'rgba(242,106,15,0.14)' };
+  A.id = 'A'; A.name = 'A · Grafit'; A.fD = "'Geist', system-ui, sans-serif"; A.fB = A.fD; A.fN = "'Geist Mono', ui-monospace, monospace";
+  A.r = 20; A.rb = 14; A.h1 = 30; A.h3 = 17; A.big = 30; A.w = 700; A.tt = 'none'; A.ls = '-0.02em';
+  A.btnBg = A.accent; A.btnFg = A.onAccent; A.edge = ''; A.doneFull = false;
+
+  var B = dark
+    ? { bg: '#07080C', s1: '#15171E', s2: '#20232C', line: 'rgba(255,255,255,0.10)', text: '#F5F6FA', muted: '#A3A8B8', accent: '#8B90FF', accentText: '#A9ACFF', onAccent: '#0B0C14', soft: 'rgba(139,144,255,0.16)', glassBg: 'rgba(32,34,46,0.58)', glassEdge: 'rgba(255,255,255,0.16)' }
+    : { bg: '#F2F2F7', s1: '#FFFFFF', s2: '#E8E8EF', line: 'rgba(0,0,0,0.08)', text: '#111218', muted: '#5C5F6B', accent: '#4F55E8', accentText: '#3F46D4', onAccent: '#FFFFFF', soft: 'rgba(79,85,232,0.12)', glassBg: 'rgba(255,255,255,0.62)', glassEdge: 'rgba(255,255,255,0.95)' };
+  B.id = 'B'; B.name = 'B · Szkło'; B.fD = "-apple-system, 'SF Pro Display', Inter, system-ui, sans-serif"; B.fB = "-apple-system, 'SF Pro Text', Inter, system-ui, sans-serif"; B.fN = B.fD;
+  B.r = 26; B.rb = 26; B.h1 = 34; B.h3 = 17; B.big = 32; B.w = 700; B.tt = 'none'; B.ls = '-0.01em';
+  B.btnBg = B.accent; B.btnFg = B.onAccent; B.glass = true; B.doneFull = false;
+  B.edge = dark ? 'border:1px solid rgba(255,255,255,0.06);' : '';
+
+  var C = dark
+    ? { bg: '#0B0B0B', s1: '#161616', s2: '#242424', line: '#2C2C2C', text: '#FAFAF5', muted: '#A9A9A2', accent: '#C8F031', accentText: '#C8F031', onAccent: '#0B0B0B', soft: 'rgba(200,240,49,0.14)' }
+    : { bg: '#F7F7F2', s1: '#FFFFFF', s2: '#ECECE4', line: '#DCDCD3', text: '#0B0B0B', muted: '#575750', accent: '#C8F031', accentText: '#4C6100', onAccent: '#0B0B0B', soft: 'rgba(150,190,0,0.16)' };
+  C.id = 'C'; C.name = 'C · Sport'; C.fD = "'Barlow Condensed', 'Arial Narrow', sans-serif"; C.fB = "'Barlow', system-ui, sans-serif"; C.fN = C.fD;
+  C.r = 6; C.rb = 6; C.h1 = 46; C.h3 = 22; C.big = 44; C.w = 800; C.tt = 'uppercase'; C.ls = '0.01em';
+  C.btnBg = dark ? C.accent : '#0B0B0B'; C.btnFg = dark ? C.onAccent : C.accent;
+  C.edge = 'border:1px solid ' + C.line + ';'; C.doneFull = true;
+  return [B, mixOf(B, dark)];
+}
+
+var ROWS = [
+  { lbl: 'R', prev: '40 × 10', kg: '40', reps: '10', warm: true },
+  { lbl: '1', prev: '80 × 8', kg: '82,5', reps: '8' },
+  { lbl: '2', prev: '80 × 8', kg: '82,5', reps: '8' },
+  { lbl: '3', prev: '80 × 8', kg: '82,5', reps: '8' }
+];
+var REST = 90;
+
+function fmt(s) { var m = Math.floor(s / 60); var r = s % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
+
+function glassOr(t, solid) {
+  return t.glass ? 'background:' + t.glassBg + ';backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);border:1px solid ' + t.glassEdge + ';' : solid;
+}
+
+function styles(t) {
+  var isC = t.id === 'C';
+  t.sPhone = 'position:relative;width:390px;height:844px;border-radius:48px;overflow:hidden;background:' + t.bg + ';color:' + t.text + ';font-family:' + t.fB + ';box-shadow:0 0 0 1px ' + t.line + ',0 24px 60px rgba(0,0,0,0.22)';
+  t.sScrollWork = 'height:844px;overflow-y:auto;box-sizing:border-box;padding:62px 16px 260px;display:flex;flex-direction:column;gap:12px';
+  t.sCard = 'background:' + t.s1 + ';border-radius:' + t.r + 'px;padding:14px;box-sizing:border-box;' + t.edge;
+  t.sCardRow = t.sCard + 'display:flex;align-items:center;gap:12px;min-height:64px';
+  t.sH1 = 'margin:0;font-family:' + t.fD + ';font-size:' + t.h1 + 'px;font-weight:' + t.w + ';text-transform:' + t.tt + ';letter-spacing:' + t.ls + ';line-height:1.02';
+  t.sH3 = 'font-family:' + t.fD + ';font-size:' + t.h3 + 'px;font-weight:' + (isC ? 800 : 650) + ';text-transform:' + t.tt + ';letter-spacing:' + t.ls + ';line-height:1.15';
+  t.sH4 = 'font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
+  t.sLabel = 'font-size:13px;color:' + t.muted + ';' + (isC ? 'text-transform:uppercase;letter-spacing:0.08em;font-weight:700;' : 'font-weight:500;');
+  t.sMutedSmall = 'font-size:13px;color:' + t.muted;
+  t.sThumb = 'flex:none;width:48px;height:48px;border-radius:' + (isC ? '4px' : '14px') + ';display:flex;align-items:center;justify-content:center;background:' + t.s2 + ';color:' + t.text;
+  t.sThumbSm = 'flex:none;width:40px;height:40px;border-radius:' + (isC ? '4px' : '12px') + ';display:flex;align-items:center;justify-content:center;background:' + t.s2 + ';color:' + t.muted;
+  t.sHint = 'display:flex;gap:8px;align-items:flex-start;padding:10px 12px;margin-bottom:12px;border-radius:' + (isC ? '4px' : '12px') + ';background:' + t.soft + ';color:' + t.accentText + ';font-size:13px;font-weight:600;line-height:1.35';
+  t.sHead = 'display:grid;grid-template-columns:36px 1fr 64px 52px 44px;gap:8px;padding:0 8px 6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:' + t.muted;
+  t.sGhost = 'margin-top:8px;width:100%;min-height:44px;border:0;cursor:pointer;border-radius:' + (isC ? '4px' : '12px') + ';background:transparent;color:' + t.accentText + ';font-size:15px;font-weight:700;' + (isC ? 'text-transform:uppercase;letter-spacing:0.05em;' : '');
+  t.sBtn = 'display:flex;align-items:center;justify-content:center;min-height:54px;width:100%;border:0;cursor:pointer;border-radius:' + t.rb + 'px;background:' + t.btnBg + ';color:' + t.btnFg + ';font-family:' + (isC ? t.fD : t.fB) + ';font-size:' + (isC ? '22px' : '17px') + ';font-weight:700;text-transform:' + t.tt + ';letter-spacing:' + (isC ? '0.04em' : '0');
+  t.sBtn2 = 'min-height:44px;padding:0 16px;border-radius:' + (isC ? '4px' : '22px') + ';cursor:pointer;color:' + t.text + ';font-size:15px;font-weight:700;' + (isC ? 'text-transform:uppercase;letter-spacing:0.05em;' : '') + glassOr(t, 'background:' + t.s1 + ';border:1px solid ' + t.line + ';');
+  t.sBottom = 'position:absolute;left:0;right:0;bottom:0;padding:12px 16px 30px;box-sizing:border-box;' + (t.glass ? glassOr(t, '') + 'border-left:0;border-right:0;border-bottom:0;' : 'background:' + t.bg + ';border-top:1px solid ' + t.line + ';');
+  t.sTimer = 'position:absolute;left:12px;right:12px;bottom:110px;padding:16px;box-sizing:border-box;border-radius:' + (isC ? '8px' : '24px') + ';box-shadow:0 18px 40px rgba(0,0,0,0.35);' + glassOr(t, 'background:' + t.s1 + ';border:1px solid ' + t.line + ';');
+  t.sTimeBig = 'font-family:' + t.fN + ';font-size:' + (isC ? 48 : 36) + 'px;font-weight:' + (isC ? 800 : 700) + ';font-variant-numeric:tabular-nums;line-height:1';
+  t.sBtnTimer = 'min-height:44px;border:0;cursor:pointer;border-radius:' + (isC ? '4px' : '14px') + ';background:' + t.s2 + ';color:' + t.text + ';font-size:15px;font-weight:700;font-variant-numeric:tabular-nums';
+  t.sBtnTimerMain = 'min-height:44px;border:0;cursor:pointer;border-radius:' + (isC ? '4px' : '14px') + ';background:' + t.btnBg + ';color:' + t.btnFg + ';font-size:15px;font-weight:700;' + (isC ? 'text-transform:uppercase;letter-spacing:0.04em;' : '');
+  t.sToast = 'position:absolute;left:12px;right:12px;top:54px;display:flex;gap:12px;align-items:center;padding:12px 14px;box-sizing:border-box;border-radius:' + (isC ? '6px' : '20px') + ';background:' + t.accent + ';color:' + t.onAccent + ';box-shadow:0 14px 34px rgba(0,0,0,0.3)';
+  t.sToastIcon = 'flex:none;width:40px;height:40px;border-radius:' + (isC ? '4px' : '20px') + ';display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.14)';
+  t.sToastTitle = 'font-family:' + t.fD + ';font-size:' + (isC ? 22 : 16) + 'px;font-weight:800;' + (isC ? 'text-transform:uppercase;letter-spacing:0.03em;' : '');
+  return t;
+}
+
+function rowStyles(t, r, done) {
+  var isC = t.id === 'C';
+  var full = done && t.doneFull;
+  var rad = isC ? '4px' : '12px';
+  var fg = full ? t.onAccent : t.text;
+  return {
+    sRow: 'display:grid;grid-template-columns:36px 1fr 64px 52px 44px;gap:8px;align-items:center;padding:4px 8px;min-height:52px;box-sizing:border-box;border-radius:' + rad + ';color:' + fg + ';background:' + (full ? t.accent : done ? t.soft : 'transparent'),
+    sLbl: 'font-family:' + t.fN + ';font-size:' + (isC ? 20 : 15) + 'px;font-weight:800;color:' + (full ? t.onAccent : r.warm ? t.accentText : fg),
+    sPrev: 'font-size:13px;font-variant-numeric:tabular-nums;color:' + (full ? t.onAccent : t.muted) + ';opacity:' + (full ? '0.75' : '1'),
+    sCell: 'display:flex;align-items:center;justify-content:center;height:36px;border-radius:' + (isC ? '4px' : '10px') + ';font-family:' + t.fN + ';font-size:' + (isC ? 20 : 16) + 'px;font-weight:700;font-variant-numeric:tabular-nums;background:' + (full ? 'rgba(0,0,0,0.12)' : t.s2),
+    sCheck: 'width:44px;height:44px;border-radius:' + (isC ? '4px' : '22px') + ';cursor:pointer;display:flex;align-items:center;justify-content:center;box-sizing:border-box;' + (done
+      ? (full ? 'background:' + t.onAccent + ';color:' + t.accent + ';border:0' : 'background:' + t.accent + ';color:' + t.onAccent + ';border:0')
+      : 'background:transparent;color:' + t.text + ';border:2px solid ' + t.muted)
+  };
+}
+
+function mixOf(B, dark) {
+  var M = Object.assign({}, B);
+  M.id = "A"; M.name = "B+A · Szkło z grafitem";
+  M.fN = "'Geist Mono', ui-monospace, monospace";
+  M.hero = "accent";
+  if (dark) { M.bg = "#0E0F12"; M.s1 = "#1A1C21"; M.s2 = "#272A31"; M.line = "rgba(255,255,255,0.09)"; M.muted = "#A3A9B2"; M.glassBg = "rgba(38,40,48,0.60)"; }
+  return M;
+}
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      done: { A: [true, false, false, false], B: [true, false, false, false], C: [true, false, false, false] },
+      left: { A: 0, B: 0, C: 0 },
+      total: { A: REST, B: REST, C: REST },
+      toast: { A: false, B: false, C: false },
+      pr: { A: false, B: false, C: false }
+    };
+  }
+  componentDidMount() {
+    var self = this;
+    this.iv = setInterval(function () {
+      var l = Object.assign({}, self.state.left); var changed = false;
+      ['A', 'B', 'C'].forEach(function (k) { if (l[k] > 0) { l[k] = l[k] - 1; changed = true; } });
+      if (changed) self.setState({ left: l });
+    }, 1000);
+  }
+  componentWillUnmount() { clearInterval(this.iv); (this.tos || []).forEach(clearTimeout); }
+  toggle(k, i) {
+    var done = Object.assign({}, this.state.done); var arr = done[k].slice(); arr[i] = !arr[i]; done[k] = arr;
+    var next = { done: done };
+    if (arr[i]) {
+      var l = Object.assign({}, this.state.left); l[k] = REST; next.left = l;
+      var tot = Object.assign({}, this.state.total); tot[k] = REST; next.total = tot;
+      if (i === 1 && !this.state.pr[k]) {
+        var pr = Object.assign({}, this.state.pr); pr[k] = true; next.pr = pr;
+        var to = Object.assign({}, this.state.toast); to[k] = true; next.toast = to;
+        var self = this;
+        this.tos = (this.tos || []).concat(setTimeout(function () { var t2 = Object.assign({}, self.state.toast); t2[k] = false; self.setState({ toast: t2 }); }, 3200));
+      }
+    }
+    this.setState(next);
+  }
+  adjust(k, d) {
+    var l = Object.assign({}, this.state.left); l[k] = Math.max(0, l[k] + d);
+    var tot = Object.assign({}, this.state.total); if (l[k] > tot[k]) tot[k] = l[k];
+    this.setState({ left: l, total: tot });
+  }
+  renderVals() {
+    var dark = this.props.ciemny ?? true;
+    var rm = this.props.ograniczRuch ?? false;
+    var self = this; var st = this.state;
+    var dirs = palette(dark).map(function (t) {
+      styles(t);
+      var k = t.id; var arr = st.done[k];
+      t.rows = ROWS.map(function (r, i) {
+        var o = Object.assign({}, r, rowStyles(t, r, arr[i]));
+        o.done = arr[i];
+        o.aria = (r.warm ? 'Seria rozgrzewkowa' : 'Seria ' + r.lbl) + ', ' + r.kg + ' kg, ' + r.reps + ' powtórzeń, ' + (arr[i] ? 'zrobiona' : 'do zrobienia');
+        o.toggle = function () { self.toggle(k, i); };
+        return o;
+      });
+      var cnt = arr.filter(Boolean).length;
+      t.progress = cnt + ' z ' + arr.length + ' serii gotowe';
+      var nextIdx = arr.indexOf(false);
+      t.nextLabel = nextIdx === -1 ? 'Następne ćwiczenie' : 'Odhacz serię ' + ROWS[nextIdx].lbl;
+      t.nextText = nextIdx === -1 ? 'wyciskanie hantli na skosie' : 'seria ' + ROWS[nextIdx].lbl + ' · ' + ROWS[nextIdx].kg + ' kg × ' + ROWS[nextIdx].reps;
+      t.next = function () { if (nextIdx !== -1) self.toggle(k, nextIdx); };
+      t.showTimer = st.left[k] > 0;
+      t.timeText = fmt(st.left[k]);
+      t.ringOffset = (175.9 * (1 - st.left[k] / st.total[k])).toFixed(1);
+      t.minus = function () { self.adjust(k, -15); };
+      t.plus = function () { self.adjust(k, 15); };
+      t.skip = function () { var l = Object.assign({}, self.state.left); l[k] = 0; self.setState({ left: l }); };
+      t.showToast = st.toast[k];
+      return t;
+    });
+    return {
+      dirs: dirs,
+      icons: ICONS,
+      nextEx: [
+        { name: 'Wyciskanie hantli na skosie', meta: '0 z 3 serii · 30 kg × 10' },
+        { name: 'Rozpiętki na linkach', meta: '0 z 3 serii · 15 kg × 12' },
+        { name: 'Wyciskanie francuskie', meta: '0 z 3 serii · 30 kg × 10' }
+      ],
+      rootBg: dark ? '#1E1F22' : '#E4E4E0',
+      rootText: dark ? '#E8E8EA' : '#1A1A1C',
+      rootClass: rm ? 'rm' : ''
+    };
+  }
+}
+</script>
+</body>
+</html>

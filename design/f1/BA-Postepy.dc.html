@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Postępy — trzy kierunki</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&amp;family=Barlow:wght@400;500;600;700&amp;family=Geist+Mono:wght@500;600;700&amp;family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+button{font:inherit}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes draw{from{stroke-dashoffset:900}to{stroke-dashoffset:0}}
+@keyframes bar{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.rise{animation:rise .55s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}.d4{animation-delay:.24s}
+.draw{stroke-dasharray:900;animation:draw 1.3s cubic-bezier(.3,.7,.2,1) .15s both}
+.area{animation:fade .8s ease .7s both}
+.bar{transform-origin:bottom;animation:bar .7s cubic-bezier(.2,1.2,.4,1) both}
+.rm .rise,.rm .area{animation:fade .2s ease both}
+.rm .draw,.rm .bar{animation:none}
+@media (prefers-reduced-motion: reduce){.rise,.area{animation:fade .2s ease both}.draw,.bar{animation:none}}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="width: 900px; height: 964px; box-sizing: border-box; padding: 40px; display: flex; gap: 40px; align-items: flex-start; background: {{rootBg}}; font-family: Inter, system-ui, sans-serif">
+<sc-for list="{{dirs}}" as="t" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 12px; width: 390px">
+<div style="font-size: 15px; font-weight: 700; color: {{rootText}}">{{t.name}} — przełącz wykres</div>
+<div style="{{t.sPhone}}">
+<div style="{{t.sScroll}}">
+
+<div class="rise" style="display: flex; flex-direction: column; gap: 10px">
+<h1 style="{{t.sH1}}">Postępy</h1>
+<button style="{{t.sPicker}}">
+<span>Wyciskanie na ławce</span>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+</button>
+</div>
+
+<div class="rise d1" style="{{t.sCard}}">
+<div role="group" aria-label="Rodzaj wykresu" style="{{t.sSeg}}">
+<sc-for list="{{t.metrics}}" as="q" hint-placeholder-count="3">
+<button aria-pressed="{{q.on}}" onClick="{{q.pick}}" style="{{q.s}}">{{q.label}}</button>
+</sc-for>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: flex-end; margin: 16px 0 8px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="{{t.sLabel}}">{{chart.caption}}</span>
+<div style="display: flex; align-items: baseline; gap: 6px">
+<span style="{{t.sBig}}">{{chart.last}}</span><span style="{{t.sUnit}}">{{chart.unit}}</span>
+</div>
+</div>
+<span style="{{t.sChipA}}">{{chart.delta}}</span>
+</div>
+<sc-if value="{{show}}" hint-placeholder-val="{{true}}">
+<svg role="img" aria-label="{{chart.aria}}" width="318" height="150" viewBox="0 0 318 150" style="display: block; width: 100%; height: auto">
+<line x1="0" y1="140" x2="318" y2="140" stroke="{{t.line}}" stroke-width="1"></line>
+<line x1="0" y1="75" x2="318" y2="75" stroke="{{t.line}}" stroke-width="1" stroke-dasharray="3 5"></line>
+<path class="area" d="{{chart.area}}" fill="{{t.soft}}"></path>
+<path class="draw" d="{{chart.line}}" fill="none" stroke="{{t.accent}}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+<circle class="area" cx="{{chart.ex}}" cy="{{chart.ey}}" r="6" fill="{{t.accent}}" stroke="{{t.s1}}" stroke-width="3"></circle>
+</svg>
+</sc-if>
+<div style="display: flex; justify-content: space-between; margin-top: 6px">
+<span style="{{t.sTiny}}">sie</span><span style="{{t.sTiny}}">wrz</span><span style="{{t.sTiny}}">paź</span><span style="{{t.sTiny}}">lis</span>
+</div>
+</div>
+
+<div class="rise d2" style="{{t.sCard}}">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px">
+<span style="{{t.sLabel}}">Objętość tygodniowa</span>
+<span style="{{t.sChipA}}">+17% w 12 tyg.</span>
+</div>
+<div role="img" aria-label="Objętość tygodniowa z 12 tygodni, rośnie z 14,2 do 18,4 tony" style="display: flex; align-items: flex-end; gap: 6px; height: 96px">
+<sc-for list="{{t.bars}}" as="b" hint-placeholder-count="12">
+<div class="bar" style="{{b.s}}"></div>
+</sc-for>
+</div>
+</div>
+
+<div class="rise d3" style="{{t.sCard}}">
+<span style="{{t.sLabel}}">Rekordy</span>
+<div style="display: flex; flex-direction: column; margin-top: 6px">
+<sc-for list="{{t.records}}" as="r" hint-placeholder-count="4">
+<div style="{{r.s}}">
+<span style="font-size: 15px; font-weight: 500">{{r.name}}</span>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px">
+<span style="{{t.sRecVal}}">{{r.val}}</span>
+<span style="{{t.sTiny}}">{{r.date}}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div class="rise d4" style="{{t.sCard}}">
+<span style="{{t.sLabel}}">Serie w tym tygodniu</span>
+<div style="display: flex; gap: 18px; align-items: center; margin-top: 12px">
+<svg role="img" aria-label="Schemat mięśni: najwięcej serii na klatkę i ramiona" width="120" height="230" viewBox="0 0 120 230" style="flex: none; color: {{t.accent}}">
+<circle cx="60" cy="18" r="13" fill="{{t.s2}}"></circle>
+<rect x="34" y="36" width="52" height="84" rx="16" fill="{{t.s2}}"></rect>
+<circle cx="31" cy="46" r="11" fill="{{m.shoulders}}" opacity="{{m.shouldersO}}"></circle>
+<circle cx="89" cy="46" r="11" fill="{{m.shoulders}}" opacity="{{m.shouldersO}}"></circle>
+<rect x="38" y="42" width="21" height="26" rx="8" fill="{{m.chest}}" opacity="{{m.chestO}}"></rect>
+<rect x="61" y="42" width="21" height="26" rx="8" fill="{{m.chest}}" opacity="{{m.chestO}}"></rect>
+<rect x="46" y="72" width="28" height="42" rx="8" fill="{{m.abs}}" opacity="{{m.absO}}"></rect>
+<rect x="14" y="58" width="14" height="58" rx="7" fill="{{m.arms}}" opacity="{{m.armsO}}"></rect>
+<rect x="92" y="58" width="14" height="58" rx="7" fill="{{m.arms}}" opacity="{{m.armsO}}"></rect>
+<rect x="38" y="124" width="20" height="96" rx="10" fill="{{m.legs}}" opacity="{{m.legsO}}"></rect>
+<rect x="62" y="124" width="20" height="96" rx="10" fill="{{m.legs}}" opacity="{{m.legsO}}"></rect>
+</svg>
+<div style="display: flex; flex-direction: column; gap: 10px; flex: 1">
+<sc-for list="{{t.muscles}}" as="x" hint-placeholder-count="6">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; font-size: 13px">
+<span style="font-weight: 600">{{x.name}}</span><span style="{{t.sNumSmall}}">{{x.sets}}</span>
+</div>
+<div style="{{t.sTrack}}"><div style="{{x.sFill}}"></div></div>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+
+</div>
+<nav aria-label="Główne karty" style="{{t.sTab}}">
+<sc-for list="{{t.tabs}}" as="it" hint-placeholder-count="5">
+<button aria-label="{{it.label}}" style="{{it.s}}">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{it.d}}"></path></svg>
+<span style="font-size: 10px; font-weight: 600">{{it.label}}</span>
+</button>
+</sc-for>
+</nav>
+</div>
+</div>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"ciemny":{"editor":"boolean","default":true,"section":"Podgląd"},"ograniczRuch":{"editor":"boolean","default":false,"section":"Podgląd"},"$preview":{"width":900,"height":964}}'>
+var ICONS = {
+  home: 'M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',
+  plans: 'M9 3h6a1 1 0 0 1 1 1v1H8V4a1 1 0 0 1 1-1zM8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M8 11h8M8 15h5',
+  dumbbell: 'M6.5 6.5v11M3.5 9v6M17.5 6.5v11M20.5 9v6M6.5 12h11',
+  chart: 'M4 20V11M10 20V5M16 20v-6M21 20H3',
+  clock: 'M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z'
+};
+
+function palette(dark) {
+  var A = dark
+    ? { bg: '#101113', s1: '#1A1C20', s2: '#272A30', line: '#30343B', text: '#F3F4F6', muted: '#A3A9B2', accent: '#FF7A1A', accentText: '#FF9448', onAccent: '#141414', soft: 'rgba(255,122,26,0.16)' }
+    : { bg: '#F3F3F1', s1: '#FFFFFF', s2: '#ECECE8', line: '#DCDCD7', text: '#141519', muted: '#5A5F67', accent: '#F26A0F', accentText: '#A84500', onAccent: '#141519', soft: 'rgba(242,106,15,0.14)' };
+  A.id = 'A'; A.name = 'A · Grafit'; A.fD = "'Geist', system-ui, sans-serif"; A.fB = A.fD; A.fN = "'Geist Mono', ui-monospace, monospace";
+  A.r = 20; A.h1 = 30; A.big = 30; A.w = 700; A.tt = 'none'; A.ls = '-0.02em'; A.edge = '';
+
+  var B = dark
+    ? { bg: '#07080C', s1: '#15171E', s2: '#20232C', line: 'rgba(255,255,255,0.10)', text: '#F5F6FA', muted: '#A3A8B8', accent: '#8B90FF', accentText: '#A9ACFF', onAccent: '#0B0C14', soft: 'rgba(139,144,255,0.16)', glassBg: 'rgba(32,34,46,0.58)', glassEdge: 'rgba(255,255,255,0.16)' }
+    : { bg: '#F2F2F7', s1: '#FFFFFF', s2: '#E8E8EF', line: 'rgba(0,0,0,0.08)', text: '#111218', muted: '#5C5F6B', accent: '#4F55E8', accentText: '#3F46D4', onAccent: '#FFFFFF', soft: 'rgba(79,85,232,0.12)', glassBg: 'rgba(255,255,255,0.62)', glassEdge: 'rgba(255,255,255,0.95)' };
+  B.id = 'B'; B.name = 'B · Szkło'; B.fD = "-apple-system, 'SF Pro Display', Inter, system-ui, sans-serif"; B.fB = "-apple-system, 'SF Pro Text', Inter, system-ui, sans-serif"; B.fN = B.fD;
+  B.r = 26; B.h1 = 34; B.big = 32; B.w = 700; B.tt = 'none'; B.ls = '-0.01em'; B.glass = true;
+  B.edge = dark ? 'border:1px solid rgba(255,255,255,0.06);' : '';
+
+  var C = dark
+    ? { bg: '#0B0B0B', s1: '#161616', s2: '#242424', line: '#2C2C2C', text: '#FAFAF5', muted: '#A9A9A2', accent: '#C8F031', accentText: '#C8F031', onAccent: '#0B0B0B', soft: 'rgba(200,240,49,0.14)' }
+    : { bg: '#F7F7F2', s1: '#FFFFFF', s2: '#ECECE4', line: '#DCDCD3', text: '#0B0B0B', muted: '#575750', accent: '#C8F031', accentText: '#4C6100', onAccent: '#0B0B0B', soft: 'rgba(150,190,0,0.16)' };
+  C.id = 'C'; C.name = 'C · Sport'; C.fD = "'Barlow Condensed', 'Arial Narrow', sans-serif"; C.fB = "'Barlow', system-ui, sans-serif"; C.fN = C.fD;
+  C.r = 6; C.h1 = 46; C.big = 44; C.w = 800; C.tt = 'uppercase'; C.ls = '0.01em';
+  C.edge = 'border:1px solid ' + C.line + ';';
+  C.lineAccent = dark ? C.accent : '#6E8C00';
+  return [B, mixOf(B, dark)];
+}
+
+var SERIES = {
+  e1rm: { label: '1RM', caption: 'Szacowane 1RM', unit: 'kg', delta: '+13,6%', data: [92, 93.5, 95, 94, 97, 98.5, 99, 101, 100.5, 102, 103.5, 104.5] },
+  top: { label: 'Najcięższa', caption: 'Najcięższa seria', unit: 'kg', delta: '+18,8%', data: [80, 80, 82.5, 82.5, 85, 85, 87.5, 87.5, 90, 90, 92.5, 95] },
+  vol: { label: 'Objętość', caption: 'Objętość z ćwiczenia', unit: 't', delta: '+29%', data: [2.8, 3.0, 2.9, 3.2, 3.1, 3.3, 3.4, 3.2, 3.5, 3.6, 3.5, 3.6] }
+};
+var VOL = [14.2, 15.0, 14.8, 16.1, 15.7, 16.9, 17.2, 16.5, 17.8, 18.0, 17.6, 18.4];
+var MUSCLES = [['Klatka', 12], ['Ramiona', 10], ['Plecy', 9], ['Barki', 8], ['Nogi', 6], ['Brzuch', 3]];
+
+function pl(n) { return String(n).replace('.', ','); }
+
+function chartOf(key) {
+  var s = SERIES[key]; var d = s.data;
+  var min = Math.min.apply(null, d), max = Math.max.apply(null, d);
+  var pts = d.map(function (v, i) { return [8 + i * (302 / 11), 14 + (1 - (v - min) / (max - min)) * 118]; });
+  var line = pts.map(function (p, i) { return (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' ');
+  var last = pts[pts.length - 1];
+  return {
+    line: line,
+    area: line + ' L' + last[0].toFixed(1) + ' 140 L8 140 Z',
+    ex: last[0].toFixed(1), ey: last[1].toFixed(1),
+    last: pl(d[d.length - 1]), unit: s.unit, caption: s.caption + ' · 12 tygodni', delta: s.delta,
+    aria: s.caption + ' z 12 tygodni: od ' + pl(d[0]) + ' do ' + pl(d[d.length - 1]) + ' ' + s.unit
+  };
+}
+
+function styles(t) {
+  var isC = t.id === 'C';
+  t.sPhone = 'position:relative;width:390px;height:844px;border-radius:48px;overflow:hidden;background:' + t.bg + ';color:' + t.text + ';font-family:' + t.fB + ';box-shadow:0 0 0 1px ' + t.line + ',0 24px 60px rgba(0,0,0,0.22)';
+  t.sScroll = 'height:844px;overflow-y:auto;box-sizing:border-box;padding:62px 20px 128px;display:flex;flex-direction:column;gap:14px';
+  t.sCard = 'background:' + t.s1 + ';border-radius:' + t.r + 'px;padding:16px;box-sizing:border-box;' + t.edge;
+  t.sH1 = 'margin:0;font-family:' + t.fD + ';font-size:' + t.h1 + 'px;font-weight:' + t.w + ';text-transform:' + t.tt + ';letter-spacing:' + t.ls + ';line-height:1.02';
+  t.sLabel = 'font-size:13px;color:' + t.muted + ';' + (isC ? 'text-transform:uppercase;letter-spacing:0.08em;font-weight:700;' : 'font-weight:500;');
+  t.sTiny = 'font-size:12px;color:' + t.muted;
+  t.sBig = 'font-family:' + t.fN + ';font-size:' + t.big + 'px;font-weight:' + (isC ? 800 : 700) + ';font-variant-numeric:tabular-nums;letter-spacing:' + (isC ? '0' : '-0.03em') + ';line-height:1';
+  t.sUnit = 'font-size:15px;font-weight:600;color:' + t.muted;
+  t.sNumSmall = 'font-family:' + t.fN + ';font-weight:700;font-variant-numeric:tabular-nums;color:' + t.muted;
+  t.sRecVal = 'font-family:' + t.fN + ';font-size:' + (isC ? 22 : 16) + 'px;font-weight:' + (isC ? 800 : 700) + ';font-variant-numeric:tabular-nums;color:' + t.accentText;
+  t.sChipA = 'display:inline-flex;align-items:center;padding:5px 10px;border-radius:' + (isC ? '4px' : '999px') + ';background:' + t.soft + ';color:' + t.accentText + ';font-size:13px;font-weight:700';
+  t.sPicker = 'align-self:flex-start;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border-radius:' + (isC ? '4px' : '22px') + ';cursor:pointer;color:' + t.text + ';font-size:15px;font-weight:600;' + (t.glass ? 'background:' + t.glassBg + ';backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid ' + t.glassEdge : 'background:' + t.s1 + ';border:1px solid ' + t.line);
+  t.sSeg = 'display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:4px;padding:4px;border-radius:' + (isC ? '6px' : '14px') + ';background:' + t.s2;
+  t.sTrack = 'height:6px;border-radius:3px;overflow:hidden;background:' + t.s2;
+  return t;
+}
+
+function tabs(t, active) {
+  var items = [['Start', ICONS.home], ['Plany', ICONS.plans], ['Ćwiczenia', ICONS.dumbbell], ['Postępy', ICONS.chart], ['Historia', ICONS.clock]];
+  return items.map(function (it, i) {
+    var on = i === active;
+    return { label: it[0], d: it[1], s: 'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:56px;min-height:48px;border:0;background:transparent;cursor:pointer;color:' + (on ? t.accentText : t.muted) };
+  });
+}
+
+function tabBar(t) {
+  if (t.glass) return 'position:absolute;left:14px;right:14px;bottom:24px;height:66px;border-radius:33px;display:flex;justify-content:space-around;align-items:center;background:' + t.glassBg + ';backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);border:1px solid ' + t.glassEdge + ';box-shadow:0 10px 30px rgba(0,0,0,0.20)';
+  return 'position:absolute;left:0;right:0;bottom:0;height:86px;padding-bottom:22px;box-sizing:border-box;display:flex;justify-content:space-around;align-items:center;background:' + t.s1 + ';border-top:1px solid ' + t.line;
+}
+
+function mixOf(B, dark) {
+  var M = Object.assign({}, B);
+  M.id = "A"; M.name = "B+A · Szkło z grafitem";
+  M.fN = "'Geist Mono', ui-monospace, monospace";
+  M.hero = "accent";
+  if (dark) { M.bg = "#0E0F12"; M.s1 = "#1A1C21"; M.s2 = "#272A31"; M.line = "rgba(255,255,255,0.09)"; M.muted = "#A3A9B2"; M.glassBg = "rgba(38,40,48,0.60)"; }
+  return M;
+}
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { metric: 'e1rm', show: true }; }
+  componentWillUnmount() { clearTimeout(this.to); }
+  pick(key) {
+    var self = this;
+    this.setState({ metric: key, show: false });
+    clearTimeout(this.to);
+    this.to = setTimeout(function () { self.setState({ show: true }); }, 30);
+  }
+  renderVals() {
+    var dark = this.props.ciemny ?? true;
+    var rm = this.props.ograniczRuch ?? false;
+    var self = this; var metric = this.state.metric;
+    var vmin = 12, vmax = Math.max.apply(null, VOL);
+    var dirs = palette(dark).map(function (t) {
+      styles(t);
+      var isC = t.id === 'C';
+      if (t.lineAccent) t.accent = t.lineAccent;
+      t.sTab = tabBar(t);
+      t.tabs = tabs(t, 3);
+      t.metrics = Object.keys(SERIES).map(function (k) {
+        var on = k === metric;
+        return {
+          label: SERIES[k].label, on: on, pick: function () { self.pick(k); },
+          s: 'min-height:40px;border:0;cursor:pointer;border-radius:' + (isC ? '4px' : '10px') + ';font-size:14px;font-weight:700;' + (isC ? 'text-transform:uppercase;letter-spacing:0.04em;' : '') + (on ? 'background:' + t.s1 + ';color:' + t.text + ';box-shadow:0 1px 3px rgba(0,0,0,0.18)' : 'background:transparent;color:' + t.muted)
+        };
+      });
+      t.bars = VOL.map(function (v, i) {
+        var h = Math.round(18 + (v - vmin) / (vmax - vmin) * 78);
+        var lastOne = i === VOL.length - 1;
+        return { s: 'flex:1;height:' + h + 'px;border-radius:' + (isC ? '2px' : '6px') + ';animation-delay:' + (0.2 + i * 0.04).toFixed(2) + 's;background:' + (lastOne ? t.accent : t.s2) };
+      });
+      var rec = [['Szacowane 1RM', '112,5 kg', '2 dni temu'], ['Najcięższa seria', '102,5 kg × 3', '2 dni temu'], ['Najwięcej powtórzeń', '80 kg × 12', '14 paź'], ['Objętość w treningu', '4 120 kg', '28 paź']];
+      t.records = rec.map(function (r, i) {
+        return { name: r[0], val: r[1], date: r[2], s: 'display:flex;justify-content:space-between;align-items:center;min-height:52px;' + (i ? 'border-top:1px solid ' + t.line : '') };
+      });
+      t.muscles = MUSCLES.map(function (m) {
+        return { name: m[0], sets: m[1] + ' serii', sFill: 'height:100%;border-radius:3px;width:' + Math.round(m[1] / 12 * 100) + '%;background:' + t.accent };
+      });
+      return t;
+    });
+    var op = function (n) { return (0.25 + 0.75 * n / 12).toFixed(2); };
+    return {
+      dirs: dirs,
+      chart: chartOf(metric),
+      show: this.state.show,
+      m: {
+        chest: 'currentColor', chestO: op(12), arms: 'currentColor', armsO: op(10), shoulders: 'currentColor', shouldersO: op(8),
+        legs: 'currentColor', legsO: op(6), abs: 'currentColor', absO: op(3)
+      },
+      rootBg: dark ? '#1E1F22' : '#E4E4E0',
+      rootText: dark ? '#E8E8EA' : '#1A1A1C',
+      rootClass: rm ? 'rm' : ''
+    };
+  }
+}
+</script>
+</body>
+</html>

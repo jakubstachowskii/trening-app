@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Kolory — design system</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+button{font:inherit}
+</style>
+</helmet>
+<div style="width: 1280px; height: 640px; box-sizing: border-box; padding: 40px; display: flex; flex-direction: column; gap: 24px; background: #1E1F22; color: #F5F6FA; font-family: -apple-system, 'SF Pro Text', Inter, system-ui, sans-serif">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h1 style="margin: 0; font-size: 34px; line-height: 41px; font-weight: 700">Kolory</h1>
+<span style="font-size: 15px; line-height: 20px; color: #A3A8B8">Ciemny motyw na czystej czerni, jasny motyw i 5 akcentów do wyboru w ustawieniach. Liczba to kontrast (tekst wymaga 4,5, grafika 3).</span>
+</div>
+<div style="display: flex; gap: 20px; align-items: flex-start">
+<sc-for list="{{sets}}" as="s" hint-placeholder-count="2">
+<div style="width: 300px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 15px; font-weight: 700">{{s.title}}</span>
+<div style="{{s.sPanel}}">
+<sc-for list="{{s.swatches}}" as="w" hint-placeholder-count="10">
+<div style="display: flex; align-items: center; gap: 10px; min-height: 36px">
+<div style="{{w.sChip}}"></div>
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+<span style="font-size: 13px; line-height: 16px; font-weight: 600">{{w.name}}</span>
+<span style="{{w.sHex}}">{{w.hex}}</span>
+</div>
+<span style="{{w.sRatio}}">{{w.ratio}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 15px; font-weight: 700">Akcenty (wybór użytkownika, domyślnie niebieski)</span>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{accents}}" as="a" hint-placeholder-count="5">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<div style="{{a.sDark}}">
+<button style="{{a.sBtnD}}">{{a.name}}</button>
+<span style="{{a.sTextD}}">+2,5 kg</span>
+<span style="font-size: 12px; white-space: nowrap; color: #A3A8B8; font-variant-numeric: tabular-nums">{{a.rD}}</span>
+</div>
+<div style="{{a.sLight}}">
+<button style="{{a.sBtnL}}">{{a.name}}</button>
+<span style="{{a.sTextL}}">+2,5 kg</span>
+<span style="font-size: 12px; white-space: nowrap; color: #5C5F6B; font-variant-numeric: tabular-nums">{{a.rL}}</span>
+</div>
+</div>
+</sc-for>
+</div>
+<span style="font-size: 13px; line-height: 18px; color: #A3A8B8">Pod przyciskiem: kontrast tekstu na akcencie / tekstu w kolorze akcentu na karcie. Dowolnego koloru nie dajemy, bo nie da się zagwarantować czytelności.</span>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":640}}'>
+var DARK = { bg: '#000000', surface: '#121214', raised: '#1C1C1F', fill: '#2A2A2E', label: '#F5F6FA', label2: '#A3A8B8', separator: 'rgba(255,255,255,0.10)', success: '#5BD38A', warning: '#F5B84A', danger: '#FF6B6B', onAccent: '#0B0C14' };
+var LIGHT = { bg: '#F2F2F7', surface: '#FFFFFF', raised: '#FFFFFF', fill: '#E8E8EF', label: '#111218', label2: '#5C5F6B', separator: 'rgba(17,18,24,0.10)', success: '#1E8E4E', warning: '#A35F00', danger: '#D92D20', onAccent: '#FFFFFF' };
+var ACC = [
+  ['Niebieski', '#4DA3FF', '#7AB8FF', '#0A6BDB', '#0A5FC4'],
+  ['Indygo', '#8B90FF', '#A9ACFF', '#4F55E8', '#3F46D4'],
+  ['Pomarańcz', '#FF9A3D', '#FFB070', '#C2500A', '#A84500'],
+  ['Malina', '#FF6F9F', '#FF8FB4', '#C8205C', '#B01B52'],
+  ['Zieleń', '#3DD68C', '#5FE0A0', '#157F45', '#126E3C']
+];
+function rgb(h) { return [1, 3, 5].map(function (i) { return parseInt(h.slice(i, i + 2), 16); }); }
+function lum(h) { var v = rgb(h).map(function (x) { x = x / 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; }
+function ratio(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+function f(n) { return n.toFixed(1).replace('.', ','); }
+var KEYS = [['bg', 'Tło'], ['surface', 'Powierzchnia'], ['raised', 'Wyżej'], ['fill', 'Wypełnienie'], ['label', 'Tekst'], ['label2', 'Tekst 2'], ['success', 'Sukces'], ['warning', 'Ostrzeżenie'], ['danger', 'Usuwanie']];
+var TEXTY = { label: 1, label2: 1, danger: 1 };
+function makeSet(title, c) {
+  return {
+    title: title,
+    sPanel: 'display:flex;flex-direction:column;gap:6px;padding:16px;border-radius:28px;background:' + c.bg + ';color:' + c.label + ';box-shadow:0 0 0 1px ' + c.separator,
+    swatches: KEYS.map(function (k) {
+      var hex = c[k[0]]; var show = ['bg', 'surface', 'raised', 'fill'].indexOf(k[0]) === -1;
+      var r = show ? ratio(hex, c.surface) : 0; var min = TEXTY[k[0]] ? 4.5 : 3;
+      return { name: k[1], hex: hex, ratio: show ? f(r) + (r >= min ? ' ✓' : ' ✗') : '', sChip: 'flex:none;width:32px;height:32px;border-radius:8px;background:' + hex + ';box-shadow:inset 0 0 0 1px ' + c.separator, sHex: 'font-size:12px;line-height:16px;font-variant-numeric:tabular-nums;color:' + c.label2, sRatio: 'font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;color:' + (r >= min ? c.label2 : c.danger) };
+    })
+  };
+}
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      sets: [makeSet('Ciemny (czerń)', DARK), makeSet('Jasny', LIGHT)],
+      accents: ACC.map(function (a) {
+        var box = function (c) { return 'display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:20px;background:' + c.surface + ';box-shadow:0 0 0 1px ' + c.separator; };
+        var btn = function (bg, fg) { return 'flex:none;min-width:104px;min-height:44px;padding:0 14px;border:0;border-radius:999px;background:' + bg + ';color:' + fg + ';font-size:15px;font-weight:600'; };
+        return {
+          name: a[0],
+          sDark: box(DARK) + ';color:' + DARK.label, sLight: box(LIGHT) + ';color:' + LIGHT.label,
+          sBtnD: btn(a[1], DARK.onAccent), sBtnL: btn(a[3], LIGHT.onAccent),
+          sTextD: 'flex:1;white-space:nowrap;font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;color:' + a[2],
+          sTextL: 'flex:1;white-space:nowrap;font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;color:' + a[4],
+          rD: f(ratio(DARK.onAccent, a[1])) + ' / ' + f(ratio(a[2], DARK.surface)),
+          rL: f(ratio(LIGHT.onAccent, a[3])) + ' / ' + f(ratio(a[4], LIGHT.surface))
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

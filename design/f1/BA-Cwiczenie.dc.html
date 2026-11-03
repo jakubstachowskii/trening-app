@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Szczegóły ćwiczenia — trzy kierunki</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&amp;family=Barlow:wght@400;500;600;700&amp;family=Geist+Mono:wght@500;600;700&amp;family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+button{font:inherit}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes press{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.rise{animation:rise .55s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+.press{animation:press 2.4s cubic-bezier(.45,0,.55,1) infinite}
+.rm .rise{animation:fade .2s ease both}
+.rm .press{animation:none}
+@media (prefers-reduced-motion: reduce){.rise{animation:fade .2s ease both}.press{animation:none}}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="width: 900px; height: 964px; box-sizing: border-box; padding: 40px; display: flex; gap: 40px; align-items: flex-start; background: {{rootBg}}; font-family: Inter, system-ui, sans-serif">
+<sc-for list="{{dirs}}" as="t" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 12px; width: 390px">
+<div style="font-size: 15px; font-weight: 700; color: {{rootText}}">{{t.name}}</div>
+<div style="{{t.sPhone}}">
+<div style="{{t.sScroll}}">
+
+<div class="rise" style="display: flex; justify-content: space-between; align-items: center">
+<button aria-label="Wróć do listy ćwiczeń" style="{{t.sIconBtn}}">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+</button>
+<button aria-label="Więcej opcji" style="{{t.sIconBtn}}">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg>
+</button>
+</div>
+
+<div class="rise d1" style="{{t.sIllu}}">
+<svg role="img" aria-label="Schemat ruchu: wyciskanie sztangi leżąc. Miejsce na docelową ilustrację." width="300" height="170" viewBox="0 0 300 170" style="display: block; color: {{t.illuInk}}">
+<rect x="70" y="112" width="160" height="10" rx="5" fill="currentColor" opacity="0.35"></rect>
+<rect x="92" y="122" width="8" height="34" rx="3" fill="currentColor" opacity="0.35"></rect>
+<rect x="200" y="122" width="8" height="34" rx="3" fill="currentColor" opacity="0.35"></rect>
+<circle cx="86" cy="96" r="12" fill="currentColor" opacity="0.55"></circle>
+<rect x="100" y="90" width="92" height="20" rx="10" fill="currentColor" opacity="0.55"></rect>
+<rect x="126" y="88" width="36" height="16" rx="8" fill="{{t.accent}}"></rect>
+<path d="M192 100 L222 108 L232 150" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"></path>
+<g class="press">
+<path d="M134 92 L128 66 L136 44" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"></path>
+<rect x="60" y="38" width="180" height="6" rx="3" fill="currentColor"></rect>
+<rect x="64" y="24" width="12" height="34" rx="3" fill="currentColor"></rect>
+<rect x="224" y="24" width="12" height="34" rx="3" fill="currentColor"></rect>
+</g>
+</svg>
+<span style="{{t.sIlluNote}}">Zastępnik — docelowa ilustracja w fazie F9</span>
+</div>
+
+<div class="rise d2" style="display: flex; flex-direction: column; gap: 10px">
+<h1 style="{{t.sH1}}">Wyciskanie sztangi na ławce poziomej</h1>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<span style="{{t.sChipA}}">Klatka</span>
+<span style="{{t.sChip}}">Triceps</span>
+<span style="{{t.sChip}}">Przednie barki</span>
+<span style="{{t.sChip}}">Sztanga</span>
+</div>
+</div>
+
+<div class="rise d2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<div style="{{t.sCard}}">
+<span style="{{t.sLabel}}">Szacowane 1RM</span>
+<div style="display: flex; align-items: baseline; gap: 6px; margin-top: 8px"><span style="{{t.sBig}}">112,5</span><span style="{{t.sUnit}}">kg</span></div>
+</div>
+<div style="{{t.sCard}}">
+<span style="{{t.sLabel}}">Ostatnio</span>
+<div style="display: flex; align-items: baseline; gap: 6px; margin-top: 8px"><span style="{{t.sBig}}">82,5×8</span></div>
+</div>
+</div>
+
+<div class="rise d3" role="group" aria-label="Sekcje ćwiczenia" style="{{t.sSeg}}">
+<sc-for list="{{t.segs}}" as="g" hint-placeholder-count="3">
+<button aria-pressed="{{g.on}}" onClick="{{g.pick}}" style="{{g.s}}">{{g.label}}</button>
+</sc-for>
+</div>
+
+<sc-if value="{{isOpis}}" hint-placeholder-val="{{true}}">
+<div class="rise" style="{{t.sCard}}">
+<span style="{{t.sH3}}">Jak wykonać</span>
+<ol style="{{t.sList}}">
+<li>Połóż się na ławce, stopy oprzyj pewnie o podłogę, ściągnij łopatki.</li>
+<li>Chwyć sztangę nieco szerzej niż barki.</li>
+<li>Opuść sztangę pod kontrolą do dolnej części klatki.</li>
+<li>Wypchnij sztangę w górę, nie odrywając bioder od ławki.</li>
+</ol>
+<span style="{{t.sH3}}">Typowe błędy</span>
+<ul style="{{t.sList}}">
+<li>Odbijanie sztangi od klatki.</li>
+<li>Łokcie rozstawione na boki pod kątem prostym.</li>
+<li>Odrywanie bioder od ławki.</li>
+</ul>
+</div>
+</sc-if>
+<sc-if value="{{isHist}}" hint-placeholder-val="{{false}}">
+<div class="rise" style="{{t.sCard}}">
+<sc-for list="{{t.hist}}" as="h" hint-placeholder-count="3">
+<div style="{{h.s}}">
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">{{h.date}}</span><span style="{{t.sTiny}}">{{h.plan}}</span></div>
+<span style="{{t.sNum}}">{{h.sets}}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{isRec}}" hint-placeholder-val="{{false}}">
+<div class="rise" style="{{t.sCard}}">
+<sc-for list="{{t.recs}}" as="h" hint-placeholder-count="3">
+<div style="{{h.s}}">
+<span style="font-size: 15px; font-weight: 500">{{h.name}}</span>
+<span style="{{t.sRecVal}}">{{h.val}}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+</div>
+<div style="{{t.sBottom}}">
+<button style="{{t.sBtn}}">Dodaj do treningu</button>
+</div>
+</div>
+</div>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"ciemny":{"editor":"boolean","default":true,"section":"Podgląd"},"ograniczRuch":{"editor":"boolean","default":false,"section":"Podgląd"},"$preview":{"width":900,"height":964}}'>
+function palette(dark) {
+  var A = dark
+    ? { bg: '#101113', s1: '#1A1C20', s2: '#272A30', line: '#30343B', text: '#F3F4F6', muted: '#A3A9B2', accent: '#FF7A1A', accentText: '#FF9448', onAccent: '#141414', soft: 'rgba(255,122,26,0.16)' }
+    : { bg: '#F3F3F1', s1: '#FFFFFF', s2: '#ECECE8', line: '#DCDCD7', text: '#141519', muted: '#5A5F67', accent: '#F26A0F', accentText: '#A84500', onAccent: '#141519', soft: 'rgba(242,106,15,0.14)' };
+  A.id = 'A'; A.name = 'A · Grafit'; A.fD = "'Geist', system-ui, sans-serif"; A.fB = A.fD; A.fN = "'Geist Mono', ui-monospace, monospace";
+  A.r = 20; A.rb = 14; A.h1 = 28; A.h3 = 17; A.big = 28; A.w = 700; A.tt = 'none'; A.ls = '-0.02em';
+  A.btnBg = A.accent; A.btnFg = A.onAccent; A.edge = '';
+
+  var B = dark
+    ? { bg: '#07080C', s1: '#15171E', s2: '#20232C', line: 'rgba(255,255,255,0.10)', text: '#F5F6FA', muted: '#A3A8B8', accent: '#8B90FF', accentText: '#A9ACFF', onAccent: '#0B0C14', soft: 'rgba(139,144,255,0.16)', glassBg: 'rgba(32,34,46,0.58)', glassEdge: 'rgba(255,255,255,0.16)' }
+    : { bg: '#F2F2F7', s1: '#FFFFFF', s2: '#E8E8EF', line: 'rgba(0,0,0,0.08)', text: '#111218', muted: '#5C5F6B', accent: '#4F55E8', accentText: '#3F46D4', onAccent: '#FFFFFF', soft: 'rgba(79,85,232,0.12)', glassBg: 'rgba(255,255,255,0.62)', glassEdge: 'rgba(255,255,255,0.95)' };
+  B.id = 'B'; B.name = 'B · Szkło'; B.fD = "-apple-system, 'SF Pro Display', Inter, system-ui, sans-serif"; B.fB = "-apple-system, 'SF Pro Text', Inter, system-ui, sans-serif"; B.fN = B.fD;
+  B.r = 26; B.rb = 26; B.h1 = 30; B.h3 = 17; B.big = 30; B.w = 700; B.tt = 'none'; B.ls = '-0.01em';
+  B.btnBg = B.accent; B.btnFg = B.onAccent; B.glass = true;
+  B.edge = dark ? 'border:1px solid rgba(255,255,255,0.06);' : '';
+
+  var C = dark
+    ? { bg: '#0B0B0B', s1: '#161616', s2: '#242424', line: '#2C2C2C', text: '#FAFAF5', muted: '#A9A9A2', accent: '#C8F031', accentText: '#C8F031', onAccent: '#0B0B0B', soft: 'rgba(200,240,49,0.14)' }
+    : { bg: '#F7F7F2', s1: '#FFFFFF', s2: '#ECECE4', line: '#DCDCD3', text: '#0B0B0B', muted: '#575750', accent: '#C8F031', accentText: '#4C6100', onAccent: '#0B0B0B', soft: 'rgba(150,190,0,0.16)' };
+  C.id = 'C'; C.name = 'C · Sport'; C.fD = "'Barlow Condensed', 'Arial Narrow', sans-serif"; C.fB = "'Barlow', system-ui, sans-serif"; C.fN = C.fD;
+  C.r = 6; C.rb = 6; C.h1 = 40; C.h3 = 22; C.big = 40; C.w = 800; C.tt = 'uppercase'; C.ls = '0.01em';
+  C.btnBg = dark ? C.accent : '#0B0B0B'; C.btnFg = dark ? C.onAccent : C.accent;
+  C.edge = 'border:1px solid ' + C.line + ';';
+  return [B, mixOf(B, dark)];
+}
+
+function styles(t) {
+  var isC = t.id === 'C';
+  t.sPhone = 'position:relative;width:390px;height:844px;border-radius:48px;overflow:hidden;background:' + t.bg + ';color:' + t.text + ';font-family:' + t.fB + ';box-shadow:0 0 0 1px ' + t.line + ',0 24px 60px rgba(0,0,0,0.22)';
+  t.sScroll = 'height:844px;overflow-y:auto;box-sizing:border-box;padding:54px 20px 120px;display:flex;flex-direction:column;gap:14px';
+  t.sCard = 'background:' + t.s1 + ';border-radius:' + t.r + 'px;padding:16px;box-sizing:border-box;' + t.edge;
+  t.sH1 = 'margin:0;font-family:' + t.fD + ';font-size:' + t.h1 + 'px;font-weight:' + t.w + ';text-transform:' + t.tt + ';letter-spacing:' + t.ls + ';line-height:1.05';
+  t.sH3 = 'display:block;font-family:' + t.fD + ';font-size:' + t.h3 + 'px;font-weight:' + (isC ? 800 : 650) + ';text-transform:' + t.tt + ';letter-spacing:' + t.ls;
+  t.sList = 'margin:8px 0 16px;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:15px;line-height:1.45';
+  t.sLabel = 'font-size:13px;color:' + t.muted + ';' + (isC ? 'text-transform:uppercase;letter-spacing:0.08em;font-weight:700;' : 'font-weight:500;');
+  t.sTiny = 'font-size:12px;color:' + t.muted;
+  t.sBig = 'font-family:' + t.fN + ';font-size:' + t.big + 'px;font-weight:' + (isC ? 800 : 700) + ';font-variant-numeric:tabular-nums;letter-spacing:' + (isC ? '0' : '-0.03em') + ';line-height:1';
+  t.sUnit = 'font-size:15px;font-weight:600;color:' + t.muted;
+  t.sNum = 'font-family:' + t.fN + ';font-size:' + (isC ? 20 : 15) + 'px;font-weight:700;font-variant-numeric:tabular-nums';
+  t.sRecVal = 'font-family:' + t.fN + ';font-size:' + (isC ? 22 : 16) + 'px;font-weight:' + (isC ? 800 : 700) + ';font-variant-numeric:tabular-nums;color:' + t.accentText;
+  t.sChip = 'display:inline-flex;align-items:center;padding:6px 10px;border-radius:' + (isC ? '4px' : '999px') + ';background:' + t.s2 + ';font-size:13px;font-weight:600';
+  t.sChipA = 'display:inline-flex;align-items:center;padding:6px 10px;border-radius:' + (isC ? '4px' : '999px') + ';background:' + t.soft + ';color:' + t.accentText + ';font-size:13px;font-weight:700';
+  t.sIconBtn = 'width:44px;height:44px;border-radius:' + (isC ? '6px' : '22px') + ';border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;color:' + t.text + ';' + (t.glass ? 'background:' + t.glassBg + ';backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid ' + t.glassEdge : 'background:' + t.s1 + ';' + t.edge);
+  t.sIllu = 'display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 12px 12px;border-radius:' + t.r + 'px;background:' + (isC ? t.s1 : t.s2) + ';' + (isC ? t.edge : '');
+  t.illuInk = t.text;
+  t.sIlluNote = 'font-size:12px;color:' + t.muted;
+  t.sSeg = 'display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:4px;padding:4px;border-radius:' + (isC ? '6px' : '14px') + ';background:' + t.s2;
+  t.sBtn = 'display:flex;align-items:center;justify-content:center;min-height:54px;width:100%;border:0;cursor:pointer;border-radius:' + t.rb + 'px;background:' + t.btnBg + ';color:' + t.btnFg + ';font-family:' + (isC ? t.fD : t.fB) + ';font-size:' + (isC ? '22px' : '17px') + ';font-weight:700;text-transform:' + t.tt + ';letter-spacing:' + (isC ? '0.04em' : '0');
+  t.sBottom = 'position:absolute;left:0;right:0;bottom:0;padding:12px 16px 30px;box-sizing:border-box;' + (t.glass ? 'background:' + t.glassBg + ';backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);border-top:1px solid ' + t.glassEdge : 'background:' + t.bg + ';border-top:1px solid ' + t.line);
+  return t;
+}
+
+function mixOf(B, dark) {
+  var M = Object.assign({}, B);
+  M.id = "A"; M.name = "B+A · Szkło z grafitem";
+  M.fN = "'Geist Mono', ui-monospace, monospace";
+  M.hero = "accent";
+  if (dark) { M.bg = "#0E0F12"; M.s1 = "#1A1C21"; M.s2 = "#272A31"; M.line = "rgba(255,255,255,0.09)"; M.muted = "#A3A9B2"; M.glassBg = "rgba(38,40,48,0.60)"; }
+  return M;
+}
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { seg: 'opis' }; }
+  renderVals() {
+    var dark = this.props.ciemny ?? true;
+    var rm = this.props.ograniczRuch ?? false;
+    var self = this; var seg = this.state.seg;
+    var dirs = palette(dark).map(function (t) {
+      styles(t);
+      var isC = t.id === 'C';
+      t.segs = [['opis', 'Opis'], ['hist', 'Historia'], ['rec', 'Rekordy']].map(function (s) {
+        var on = s[0] === seg;
+        return {
+          label: s[1], on: on, pick: function () { self.setState({ seg: s[0] }); },
+          s: 'min-height:40px;border:0;cursor:pointer;border-radius:' + (isC ? '4px' : '10px') + ';font-size:14px;font-weight:700;' + (isC ? 'text-transform:uppercase;letter-spacing:0.04em;' : '') + (on ? 'background:' + t.s1 + ';color:' + t.text + ';box-shadow:0 1px 3px rgba(0,0,0,0.18)' : 'background:transparent;color:' + t.muted)
+        };
+      });
+      var row = function (i) { return 'display:flex;justify-content:space-between;align-items:center;min-height:56px;' + (i ? 'border-top:1px solid ' + t.line : ''); };
+      t.hist = [['1 listopada', 'Push A', '3 × 8 · 82,5 kg'], ['29 października', 'Push A', '3 × 8 · 80 kg'], ['25 października', 'Push A', '3 × 7 · 80 kg']].map(function (h, i) { return { date: h[0], plan: h[1], sets: h[2], s: row(i) }; });
+      t.recs = [['Szacowane 1RM', '112,5 kg'], ['Najcięższa seria', '102,5 kg × 3'], ['Najwięcej powtórzeń', '80 kg × 12']].map(function (h, i) { return { name: h[0], val: h[1], s: row(i) }; });
+      return t;
+    });
+    return {
+      dirs: dirs,
+      isOpis: seg === 'opis', isHist: seg === 'hist', isRec: seg === 'rec',
+      rootBg: dark ? '#1E1F22' : '#E4E4E0',
+      rootText: dark ? '#E8E8EA' : '#1A1A1C',
+      rootClass: rm ? 'rm' : ''
+    };
+  }
+}
+</script>
+</body>
+</html>
