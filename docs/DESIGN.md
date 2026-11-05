@@ -48,22 +48,22 @@ Status: **wersja robocza F2** (2026-11-03, po 10 czystych przebiegach przeglądu
 
 ## 6. Komponenty
 
-| Komponent | Zasady |
-|---|---|
-| Przycisk główny | kapsuła, 52 pt, `accent` / `onAccent`, na ekranach szczegółów pływa nad treścią z cieniem (bez panelu pod spodem) |
-| Przycisk drugorzędny | kapsuła, 44 pt, `fill` / `label` |
-| Przycisk tekstowy | `accentText`, bez tła, min. 44 pt |
-| Przycisk ikony | 44 × 44, szkło `control`, zawsze z etykietą dla VoiceOver |
-| Pigułka | 32 pt, `fill`; wyróżniona: `accentSoft` / `accentText` |
-| Przełącznik segmentowy | tło `fill`, wybrany segment `selected` z lekkim cieniem, segment min. 44 pt |
-| Wiersz serii | seria, poprzednio, kg, powt., odhaczenie 44 pt; zrobiona: tło `accentSoft`, odhaczenie `accent` |
-| Minutnik przerwy | szkło `control`, pierścień postępu, −15 s / +15 s / Pomiń |
-| Komunikat (rekord) | `accent` / `onAccent`, promień `card`, u góry ekranu, zakrywa cały nagłówek, znika po ok. 3 s, ogłaszany przez VoiceOver |
-| Pasek kart | szkło `bar`, pływający, 5 kart, aktywna w `accentText` |
-| Kafelek z liczbą | `surface`, etykieta Footnote, wartość `metric` |
-| Wiersz listy | min. 64 pt, miniatura 40 pt, strzałka |
-| Pusty stan | tytuł, jedno zdanie, jedno działanie |
-| Ładowanie | szkielet z `fill`, pulsuje; przy Reduce Motion stały |
+| Komponent              | Zasady                                                                                                                   |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Przycisk główny        | kapsuła, 52 pt, `accent` / `onAccent`, na ekranach szczegółów pływa nad treścią z cieniem (bez panelu pod spodem)        |
+| Przycisk drugorzędny   | kapsuła, 44 pt, `fill` / `label`                                                                                         |
+| Przycisk tekstowy      | `accentText`, bez tła, min. 44 pt                                                                                        |
+| Przycisk ikony         | 44 × 44, szkło `control`, zawsze z etykietą dla VoiceOver                                                                |
+| Pigułka                | 32 pt, `fill`; wyróżniona: `accentSoft` / `accentText`                                                                   |
+| Przełącznik segmentowy | tło `fill`, wybrany segment `selected` z lekkim cieniem, segment min. 44 pt                                              |
+| Wiersz serii           | seria, poprzednio, kg, powt., odhaczenie 44 pt; zrobiona: tło `accentSoft`, odhaczenie `accent`                          |
+| Minutnik przerwy       | szkło `control`, pierścień postępu, −15 s / +15 s / Pomiń                                                                |
+| Komunikat (rekord)     | `accent` / `onAccent`, promień `card`, u góry ekranu, zakrywa cały nagłówek, znika po ok. 3 s, ogłaszany przez VoiceOver |
+| Pasek kart             | szkło `bar`, pływający, 5 kart, aktywna w `accentText`                                                                   |
+| Kafelek z liczbą       | `surface`, etykieta Footnote, wartość `metric`                                                                           |
+| Wiersz listy           | min. 64 pt, miniatura 40 pt, strzałka                                                                                    |
+| Pusty stan             | tytuł, jedno zdanie, jedno działanie                                                                                     |
+| Ładowanie              | szkielet z `fill`, pulsuje; przy Reduce Motion stały                                                                     |
 
 ## 7. Ruch i haptyka
 
