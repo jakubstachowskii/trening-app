@@ -26,15 +26,16 @@ Podgląd w przeglądarce (przybliżenie, nie iOS): `pnpm web`.
 
 ## Skrypty
 
-| Skrypt            | Co robi                                                |
-| ----------------- | ------------------------------------------------------ |
-| `pnpm lint`       | ESLint i sprawdzenie formatowania                      |
-| `pnpm typecheck`  | TypeScript bez budowania                               |
-| `pnpm test`       | testy                                                  |
-| `pnpm contrast`   | kontrast wszystkich akcentów w obu motywach            |
-| `pnpm check:expo` | expo-doctor: zgodność wersji z SDK                     |
-| `pnpm export:ios` | próbne zbudowanie paczki iOS                           |
-| `pnpm ci:local`   | wszystkie kroki CI na czystej kopii ostatniego commitu |
+| Skrypt                     | Co robi                                                |
+| -------------------------- | ------------------------------------------------------ |
+| `pnpm lint`                | ESLint i sprawdzenie formatowania                      |
+| `pnpm typecheck`           | TypeScript bez budowania                               |
+| `pnpm test`                | testy                                                  |
+| `pnpm contrast`            | kontrast wszystkich akcentów w obu motywach            |
+| `pnpm check:expo`          | expo-doctor: zgodność projektu z SDK                   |
+| `pnpm check:expo-versions` | nowsze poprawki paczek Expo (tylko informacja)         |
+| `pnpm export:ios`          | próbne zbudowanie paczki iOS                           |
+| `pnpm ci:local`            | wszystkie kroki CI na czystej kopii ostatniego commitu |
 
 ## Dokumentacja
 

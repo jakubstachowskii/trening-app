@@ -16,6 +16,7 @@
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "check:expo": "expo-doctor",
+    "check:expo-versions": "expo install --check",
     "export:ios": "expo export --platform ios --output-dir dist",
     "contrast": "node design/check-contrast.js design/tokens.json",
     "ci:local": "node scripts/ci-local.mjs",

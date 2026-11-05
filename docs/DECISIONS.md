@@ -65,3 +65,10 @@ Usunięte z szablonu, bo na razie niepotrzebne: `@expo/ui`, `expo-device`, `expo
 ## 9. Brak licencji open source
 
 - Repozytorium jest publiczne, ale bez pliku `LICENSE` (szablon Expo dodawał MIT). Bez licencji kod można oglądać, ale nie wolno go kopiować ani używać.
+
+## 10. expo-doctor bez porównania wersji poprawkowych (2026-11-05)
+
+- **Problem:** expo-doctor oblewa projekt, gdy tylko Expo wyda nowe poprawki paczek (np. `expo` 57.0.31 → 57.0.32). pnpm nie instaluje paczek młodszych niż 24 godziny (ochrona przed złośliwymi wersjami), więc przez dobę nie da się tego naprawić, a CI jest czerwone mimo dobrego kodu.
+- **Co:** w CI i `pnpm ci:local` expo-doctor działa z `EXPO_DOCTOR_SKIP_DEPENDENCY_VERSION_CHECK=1`. Pozostałe jego sprawdzenia dalej blokują PR. Osobny krok `pnpm check:expo-versions` (`expo install --check`) tylko ostrzega o nowszych poprawkach.
+- **Aktualizacje:** Renovate proponuje poprawki paczek Expo w jednym PR, najwcześniej 3 dni po publikacji. Większe aktualizacje (nowe SDK) robimy ręcznie przez `npx expo install --fix`.
+- **Alternatywa odrzucona:** wyłączenie ochrony pnpm przed świeżymi wersjami.

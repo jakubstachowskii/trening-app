@@ -30,6 +30,12 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm contrast
+      # expo-doctor blokuje PR, ale bez porównania wersji poprawkowych (docs/DECISIONS.md #10)
       - run: pnpm check:expo
+        env:
+          EXPO_DOCTOR_SKIP_DEPENDENCY_VERSION_CHECK: '1'
+      # Nowsze poprawki paczek Expo: tylko ostrzeżenie, aktualizacje przynosi Renovate
+      - name: Sprawdź nowsze poprawki paczek Expo
+        run: pnpm check:expo-versions || echo "::warning::Są nowsze poprawki paczek Expo — Renovate je zaproponuje"
       # Próbne zbudowanie paczki JS na iOS: łapie błędy importów i bundlera, zanim trafią na telefon
       - run: pnpm export:ios

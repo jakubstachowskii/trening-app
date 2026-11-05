@@ -13,6 +13,7 @@ const steps = [
   ['test', 'pnpm test'],
   ['contrast', 'pnpm contrast'],
   ['expo-doctor', 'pnpm check:expo'],
+  ['expo-versions', 'pnpm check:expo-versions', { optional: true }],
   ['export-ios', 'pnpm export:ios'],
 ];
 
@@ -21,7 +22,13 @@ const run = (cmd, cwd, quiet = false) =>
     cwd,
     shell: true,
     stdio: quiet ? 'pipe' : 'inherit',
-    env: { ...process.env, CI: 'true', FORCE_COLOR: '1' },
+    env: {
+      ...process.env,
+      CI: 'true',
+      FORCE_COLOR: '1',
+      // jak w ci.yml: wersje poprawkowe sprawdza osobny krok (docs/DECISIONS.md #10)
+      EXPO_DOCTOR_SKIP_DEPENDENCY_VERSION_CHECK: '1',
+    },
   });
 
 const dirty = run('git status --porcelain', process.cwd(), true).stdout.toString().trim();
@@ -36,13 +43,16 @@ try {
   if (run(`git worktree add --detach "${dir}" HEAD`, process.cwd(), true).status !== 0) {
     throw new Error('git worktree add nie powiódł się');
   }
-  for (const [name, cmd] of steps) {
+  for (const [name, cmd, { optional = false } = {}] of steps) {
     console.log(`\n━━━ ${name}: ${cmd}`);
     const t0 = Date.now();
     const { status } = run(cmd, dir);
     const s = ((Date.now() - t0) / 1000).toFixed(0);
-    results.push(`${status === 0 ? '✔' : '✘'} ${name.padEnd(12)} ${s}s`);
-    if (status !== 0) {
+    const mark = status === 0 ? '✔' : optional ? '⚠' : '✘';
+    results.push(
+      `${mark} ${name.padEnd(13)} ${s}s${status !== 0 && optional ? ' (tylko ostrzeżenie)' : ''}`,
+    );
+    if (status !== 0 && !optional) {
       failed = name;
       break;
     }

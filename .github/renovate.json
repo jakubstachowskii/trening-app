@@ -23,6 +23,14 @@
       "enabled": false
     },
     {
+      "description": "Wyjątek: poprawki (patch) paczek Expo w jednym PR, najwcześniej 3 dni po publikacji (docs/DECISIONS.md #10)",
+      "groupName": "expo sdk 57 (poprawki)",
+      "matchPackageNames": ["expo", "expo-*", "jest-expo", "eslint-config-expo"],
+      "matchUpdateTypes": ["patch"],
+      "enabled": true,
+      "minimumReleaseAge": "3 days"
+    },
+    {
       "groupName": "eslint + prettier",
       "matchPackageNames": ["eslint", "eslint-*", "prettier"]
     },
