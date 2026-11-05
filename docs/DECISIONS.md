@@ -71,3 +71,48 @@ Usunięte z szablonu, bo na razie niepotrzebne: `@expo/ui`, `expo-device`, `expo
 - **Co:** w CI i `pnpm ci:local` expo-doctor działa z `EXPO_DOCTOR_SKIP_DEPENDENCY_VERSION_CHECK=1`. Pozostałe jego sprawdzenia dalej blokują PR. Osobny krok `pnpm check:expo-versions` (`expo install --check`) tylko ostrzega o nowszych poprawkach.
 - **Aktualizacje:** Renovate proponuje poprawki paczek Expo w jednym PR, najwcześniej 3 dni po publikacji. Większe aktualizacje (nowe SDK) robimy ręcznie przez `npx expo install --fix`.
 - **Alternatywa odrzucona:** wyłączenie ochrony pnpm przed świeżymi wersjami.
+
+## 11. Baza danych bez ORM (2026-11-05)
+
+- **Co:** `expo-sqlite` i zwykłe SQL w małych repozytoriach (`src/data/repositories`). Bez Drizzle ani innego ORM.
+- **Dlaczego:** 10 prostych tabel. ORM dodaje zależność, generator migracji i plugin Babel. Czytelne SQL z parametrami (`?`) wystarcza i chroni przed SQL injection: danych nigdy nie wklejamy w tekst zapytania.
+- **Warstwa `Db`** (`src/data/db.ts`): `exec`, `run`, `all`, `first`, `transaction`. W aplikacji działa na `expo-sqlite` (`expoDb.ts`), w testach na wbudowanym w Node `node:sqlite` (`testing/nodeDb.ts`). Migracje i repozytoria testujemy na prawdziwym SQLite, bez nowych zależności.
+- **Kolejka zapytań:** `withTransactionAsync` z `expo-sqlite` nie jest wyłączna (inne zapytania mogą się w nią wmieszać). Dlatego wszystkie zapytania idą przez jedną kolejkę, a transakcja to `BEGIN`/`COMMIT` w tej kolejce.
+
+## 12. Migracje (2026-11-05)
+
+- Ponumerowana lista stałego SQL w `src/data/migrations.ts`, wersja w `PRAGMA user_version`, historia w tabeli `schema_migration`. Każda migracja w transakcji: błąd cofa całość.
+- `PRAGMA foreign_keys = ON` przy każdym połączeniu, WAL przy otwarciu bazy (zalecenie z dokumentacji `expo-sqlite`).
+- Baza z nowszej wersji aplikacji (np. po cofnięciu aktualizacji) nie jest ruszana, tylko zgłaszany jest błąd.
+- Istniejących migracji nie zmieniamy. Zmiana schematu = nowa migracja na końcu listy.
+
+## 13. Model danych: różnice wobec `docs/PLAN.md` §4 (2026-11-05)
+
+- `exercise.isCustom` → `exercise.source` (`builtin` / `user`), tak samo jak w planach. Nazwy gotowych ćwiczeń są w tłumaczeniach (`exercises.<id>`), w bazie mają `name = NULL`. `descriptionKey` i `illustrationKey` wynikają z id, więc nie mają kolumn.
+- **Gotowe programy nie są w bazie.** Są w kodzie (`src/data/seed/programs.ts`). „Dodaj do moich planów” tworzy zwykły plan użytkownika (`plan.source_program_id` mówi, z czego powstał). Aktualizacja aplikacji nie może więc nadpisać zmian użytkownika w planie, a kolumna `plan.source` jest zbędna.
+- Ćwiczenia z historią nie dają się usunąć (klucz obcy `RESTRICT`), tylko ukryć. Usunięcie planu nie usuwa treningów z historii (`ON DELETE SET NULL`).
+- Masa ciała: jeden wpis na dzień (data lokalna `RRRR-MM-DD`).
+
+## 14. Gotowe ćwiczenia z wersją (2026-11-05)
+
+- 154 ćwiczenia w `src/data/seed/exercises.ts`, ze stałymi id (np. `bench-press`). Lista zaakceptowana przez właściciela 2026-11-05.
+- `seedBuiltinData` wstawia albo odświeża je, gdy `EXERCISES_VERSION` jest większe niż zapisane w ustawieniach. Nie zmienia ukrycia ćwiczenia ani ćwiczeń użytkownika.
+- Opisy wykonania i typowe błędy: F5.
+
+## 15. `expo-crypto` do UUID (2026-11-05)
+
+- **Co:** `randomUUID()` z `expo-crypto` (jest w Expo Go). Identyfikatory danych użytkownika to UUID, jak w `docs/PLAN.md` §4.
+- **Dlaczego:** React Native nie daje globalnego `crypto.randomUUID`. W testach `jest.setup.ts` podstawia `randomUUID` z Node.
+
+## 16. Obliczenia (2026-11-05)
+
+- Czyste funkcje w `src/domain` (bez Reacta i bazy), każda z testami.
+- Objętość i rekordy liczą tylko **ukończone serie robocze** (rozgrzewka się nie liczy).
+- Ćwiczenia z masą ciała: obciążenie = masa ciała (+ obciążnik albo − guma), tylko gdy masa ciała jest znana.
+- 1RM: Epley domyślnie, Brzycki do wyboru. Powyżej 12 powtórzeń wynik oznaczony jako orientacyjny.
+- Podpowiedź ciężaru: progresja podwójna z najcięższej serii roboczej ostatniego treningu, krok domyślnie 2,5 kg.
+- Pierwszy trening z ćwiczeniem nie jest pokazywany jako „nowy rekord”, a wyrównanie rekordu nie jest nowym rekordem.
+
+## 17. `expo-sqlite` w podglądzie web (2026-11-05)
+
+- `metro.config.js`: pliki `.wasm` jako zasoby i nagłówki COOP/COEP na serwerze podglądu (wymaga ich `SharedArrayBuffer`, z którego korzysta `expo-sqlite` na web).

@@ -8,6 +8,19 @@ Fazy z `docs/PLAN.md`. Jedna faza = jedna gałąź = jeden PR.
 | F1 Kierunek wyglądu | zrobione (wybrany kierunek B · Szkło, makiety w `design/f1`)             |
 | F2 Design system    | zrobione (`design/tokens.json`, `docs/DESIGN.md`, makiety w `design/f2`) |
 | F3 Fundament        | zrobione (PR #1)                                                         |
+| F4 Dane i logika    | w PR: `feat/f4-dane-logika`                                              |
+
+## F4 Dane i logika
+
+Zrobione:
+
+- Obliczenia w `src/domain`: szacowane 1RM (Epley, Brzycki), objętość (także z masą ciała), rekordy i nowe rekordy w treningu, podpowiedź ciężaru (progresja podwójna), statystyki tygodnia, zakresy dat do wykresów.
+- Baza `expo-sqlite`: warstwa `Db` z kolejką zapytań, migracje, repozytoria (ćwiczenia, plany, treningi z seriami, masa ciała, ustawienia).
+- 154 gotowe ćwiczenia z polskimi nazwami, mięśniami i sprzętem oraz 4 gotowe programy (Całe ciało 3 dni, Góra / dół 4 dni, Push / Pull / Nogi, Siła 5×5).
+- Baza zakłada się przy starcie aplikacji, zanim pokażą się ekrany.
+- Testy na prawdziwym SQLite (`node:sqlite`): migracje, repozytoria, gotowe dane, pełna ścieżka „trening → rekordy → podpowiedź”.
+
+Ekrany korzystające z bazy: F5–F8.
 
 ## F3 Fundament
 
