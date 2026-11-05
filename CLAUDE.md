@@ -20,5 +20,7 @@ Aplikacja iOS do treningu siłowego (Expo SDK 58, React Native, TypeScript stric
 - Logika poza komponentami, małe komponenty. Logika danych i obliczeń postępów zawsze z testami.
 - Dostępność: etykiety i nagłówki dla VoiceOver, Dynamic Type, kontrast z `pnpm contrast`, cele dotyku min. 44 pt, jasny i ciemny motyw, Ogranicz ruch.
 - Przed użyciem API sprawdzić aktualną dokumentację Expo dla SDK 58. Rozbieżności z planem i każdą nową zależność opisać w `docs/DECISIONS.md`.
+- Dane: SQL tylko w `src/data/repositories`, zawsze z parametrami (`?`), nigdy przez sklejanie tekstu. Zmiana schematu = nowa migracja na końcu `MIGRATIONS`, istniejących nie zmieniamy. Obliczenia w `src/domain` jako czyste funkcje.
+- Gotowe ćwiczenia: id się nie zmieniają; zmiana listy = podbicie `EXERCISES_VERSION`. Nazwy w `pl.json` (`exercises.<id>`).
 - Pliki w `src/app/` to trasy. Testy ekranów trzymamy w `src/__tests__/`.
 - Wygląd zatwierdzony w `design/f2` zmieniamy tylko za zgodą właściciela.

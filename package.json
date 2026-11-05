@@ -25,11 +25,13 @@
   "dependencies": {
     "expo": "~58.0.23",
     "expo-constants": "~58.0.15",
+    "expo-crypto": "~58.0.7",
     "expo-font": "~58.0.11",
     "expo-glass-effect": "~58.0.5",
     "expo-linking": "~58.0.16",
     "expo-router": "~58.0.30",
     "expo-splash-screen": "~58.0.13",
+    "expo-sqlite": "~58.0.15",
     "expo-status-bar": "~58.0.4",
     "expo-symbols": "~58.0.4",
     "expo-system-ui": "~58.0.7",
@@ -66,6 +68,9 @@
     "testMatch": [
       "<rootDir>/src/**/*.test.{ts,tsx}",
       "<rootDir>/scripts/**/*.test.{ts,js}"
+    ],
+    "setupFiles": [
+      "<rootDir>/jest.setup.ts"
     ]
   },
   "lint-staged": {

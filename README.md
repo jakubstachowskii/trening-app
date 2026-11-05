@@ -2,12 +2,13 @@
 
 Aplikacja na iPhone'a do treningu siłowego: plany, zapis serii, powtórzeń i ciężaru, postępy na wykresach i baza ćwiczeń.
 
-Stan: fundament (faza F3). Szczegóły w [docs/PROGRESS.md](docs/PROGRESS.md).
+Stan: dane i logika (faza F4). Szczegóły w [docs/PROGRESS.md](docs/PROGRESS.md).
 
 ## Stack
 
 - Expo SDK 58, React Native, TypeScript (strict)
 - Expo Router z systemowym paskiem kart iOS
+- SQLite w telefonie (`expo-sqlite`), dane tylko lokalnie
 - Design system w [design/tokens.json](design/tokens.json), zasady w [docs/DESIGN.md](docs/DESIGN.md)
 - Jest + React Native Testing Library, ESLint, Prettier, GitHub Actions
 
