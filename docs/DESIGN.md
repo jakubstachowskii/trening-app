@@ -83,4 +83,4 @@ Proste i naturalne, po polsku, bez marketingowego tonu. Wszystkie teksty interfe
 
 ## 10. Otwarte
 
-- Ilustracje ćwiczeń: faza F9.
+- Ilustracje ćwiczeń: faza F10.

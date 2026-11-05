@@ -7,7 +7,7 @@ Fazy z `docs/PLAN.md`. Jedna faza = jedna gałąź = jeden PR.
 | F0 Specyfikacja     | zrobione (`docs/PLAN.md`)                                                |
 | F1 Kierunek wyglądu | zrobione (wybrany kierunek B · Szkło, makiety w `design/f1`)             |
 | F2 Design system    | zrobione (`design/tokens.json`, `docs/DESIGN.md`, makiety w `design/f2`) |
-| F3 Fundament        | w PR: `feat/f3-fundament`                                                |
+| F3 Fundament        | zrobione (PR #1)                                                         |
 
 ## F3 Fundament
 
@@ -27,4 +27,4 @@ Otwarte:
 
 - `TODO(content)`: nazwa aplikacji. Roboczo „Training App”.
 - `TODO(content)`: ikona aplikacji. Na razie ikona z szablonu Expo.
-- Warunki licencji SF Symbols: potwierdzić przed publikacją (F11).
+- Warunki licencji SF Symbols: potwierdzić przed publikacją (F12).
