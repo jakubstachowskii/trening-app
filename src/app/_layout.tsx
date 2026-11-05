@@ -3,6 +3,7 @@ import * as SystemUI from 'expo-system-ui';
 import { useEffect } from 'react';
 
 import { AppTabs } from '@/components/AppTabs';
+import { DatabaseProvider } from '@/data/DatabaseProvider';
 import { ThemeProvider, useTheme } from '@/theme';
 
 function Root() {
@@ -24,7 +25,9 @@ function Root() {
 export default function RootLayout() {
   return (
     <ThemeProvider>
-      <Root />
+      <DatabaseProvider>
+        <Root />
+      </DatabaseProvider>
     </ThemeProvider>
   );
 }
