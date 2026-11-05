@@ -9,7 +9,7 @@ const wrapper = ({ children }: { children: ReactNode }) => (
   <ThemeProvider>{children}</ThemeProvider>
 );
 
-function mockScheme(scheme: RN.ColorSchemeName) {
+function mockScheme(scheme: ReturnType<typeof RN.useColorScheme>) {
   jest.spyOn(RN, 'useColorScheme').mockReturnValue(scheme);
 }
 
@@ -32,7 +32,7 @@ describe('useTheme', () => {
   });
 
   it('bez informacji z systemu zostaje przy ciemnym', async () => {
-    mockScheme('unspecified');
+    mockScheme(null);
     const { result } = await renderHook(() => useTheme(), { wrapper });
     expect(result.current.scheme).toBe('dark');
   });

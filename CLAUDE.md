@@ -4,7 +4,7 @@ Zasady pracy w tym repozytorium.
 
 ## Projekt
 
-Aplikacja iOS do treningu siłowego (Expo SDK 57, React Native, TypeScript strict, Expo Router). Specyfikacja: `docs/PLAN.md`. Design system: `docs/DESIGN.md` i `design/tokens.json`.
+Aplikacja iOS do treningu siłowego (Expo SDK 58, React Native, TypeScript strict, Expo Router). Specyfikacja: `docs/PLAN.md`. Design system: `docs/DESIGN.md` i `design/tokens.json`.
 
 ## Proces
 
@@ -19,6 +19,6 @@ Aplikacja iOS do treningu siłowego (Expo SDK 57, React Native, TypeScript stric
 - Teksty interfejsu tylko w `src/i18n/locales/pl.json`, przez `t()`.
 - Logika poza komponentami, małe komponenty. Logika danych i obliczeń postępów zawsze z testami.
 - Dostępność: etykiety i nagłówki dla VoiceOver, Dynamic Type, kontrast z `pnpm contrast`, cele dotyku min. 44 pt, jasny i ciemny motyw, Ogranicz ruch.
-- Przed użyciem API sprawdzić aktualną dokumentację Expo dla SDK 57. Rozbieżności z planem i każdą nową zależność opisać w `docs/DECISIONS.md`.
+- Przed użyciem API sprawdzić aktualną dokumentację Expo dla SDK 58. Rozbieżności z planem i każdą nową zależność opisać w `docs/DECISIONS.md`.
 - Pliki w `src/app/` to trasy. Testy ekranów trzymamy w `src/__tests__/`.
 - Wygląd zatwierdzony w `design/f2` zmieniamy tylko za zgodą właściciela.

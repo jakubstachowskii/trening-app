@@ -13,7 +13,7 @@ Fazy z `docs/PLAN.md`. Jedna faza = jedna gałąź = jeden PR.
 
 Zrobione:
 
-- Expo SDK 57, TypeScript strict, Expo Router z 5 kartami (Start, Plany, Ćwiczenia, Postępy, Historia) na systemowym pasku kart iOS.
+- Expo SDK 58, TypeScript strict, Expo Router z 5 kartami (Start, Plany, Ćwiczenia, Postępy, Historia) na systemowym pasku kart iOS.
 - Motyw z `design/tokens.json`: jasny/ciemny według systemu, niebieski akcent domyślnie, odczyt Ogranicz ruch i Zmniejsz przezroczystość.
 - Teksty w `src/i18n/locales/pl.json`.
 - Komponenty `Screen`, `Text`, `Card` i puste ekrany kart.

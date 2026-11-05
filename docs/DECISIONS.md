@@ -2,16 +2,15 @@
 
 Każda zależność i każda rozbieżność z planem (`docs/PLAN.md`): co, dlaczego, alternatywy i koszt.
 
-## 1. Expo SDK 57 zamiast 58 (2026-11-03)
+## 1. Expo SDK 58 (2026-11-05)
 
-- **Co:** projekt na Expo SDK 57 (React Native 0.86, React 19.2), szablon `default@sdk-57`.
-- **Dlaczego:** Expo Go w App Store obsługuje na razie SDK 57. Na SDK 58 Expo Go jest tylko przez TestFlight, a to wymaga płatnego konta Apple Developer. SDK 57 pozwala testować aplikację na iPhonie za darmo, od razu.
-- **Plan:** przejście na SDK 58 (`npx expo install expo@^58 --fix`), gdy Expo Go w App Store je obsłuży.
-- **Różnica w kodzie:** natywne karty importujemy z `expo-router/unstable-native-tabs` (w SDK 58: `expo-router/native-tabs`). Jedna linijka w `src/components/AppTabs.tsx`.
+- **Co:** projekt na Expo SDK 58 (React Native 0.88, React 19.3), zgodnie z planem.
+- **Historia:** 2026-11-03 wybraliśmy SDK 57, bo dokumentacja Expo podawała, że Expo Go w App Store obsługuje tylko SDK 57, a SDK 58 jest dostępne przez TestFlight (płatne konto Apple Developer). 2026-11-05 okazało się, że Expo Go 58.0.5 z obsługą SDK 58 jest już w App Store od tygodnia. Expo Go obsługuje jedno SDK naraz, więc projekt przeszedł na SDK 58 (`npx expo install expo@~58.0.23` i `npx expo install --fix`), zanim cokolwiek trafiło na main.
+- **Kod:** natywne karty z `expo-router/native-tabs` (w SDK 57 było `expo-router/unstable-native-tabs`).
 
 ## 2. Zależności aplikacji
 
-Wszystkie instalowane przez `npx expo install`, w wersjach dobranych do SDK 57.
+Wszystkie instalowane przez `npx expo install`, w wersjach dobranych do SDK 58.
 
 | Paczka                                                    | Po co                                                                           |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------- |
@@ -28,13 +27,13 @@ Usunięte z szablonu, bo na razie niepotrzebne: `@expo/ui`, `expo-device`, `expo
 
 ## 3. Narzędzia (devDependencies)
 
-| Paczka                                                                                           | Po co                                                                                                               |
-| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| `typescript`, `@types/react`, `@types/jest`, `@types/node`                                       | TypeScript strict. TS 6 nie dołącza już typów sam (`types` w tsconfig)                                              |
-| `jest` 29, `jest-expo`, `@testing-library/react-native`                                          | testy jednostkowe i ekranów (jest-expo dla SDK 57 wymaga Jest 29)                                                   |
-| `eslint` 9, `eslint-config-expo`, `prettier`, `eslint-config-prettier`, `eslint-plugin-prettier` | lint i formatowanie wg dokumentacji Expo. ESLint 9, bo konfiguracja Expo dla SDK 57 nie jest sprawdzona z ESLint 10 |
-| `expo-doctor`                                                                                    | sprawdzenie zgodności wersji z SDK (w CI); jako zależność, żeby wersja była stała                                   |
-| `lefthook`, `lint-staged`, `@commitlint/cli`, `@commitlint/config-conventional`                  | hooki gita: lint zmienionych plików i Conventional Commits                                                          |
+| Paczka                                                                                           | Po co                                                                                                            |
+| ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| `typescript`, `@types/react`, `@types/jest`, `@types/node`                                       | TypeScript strict. TS 6 nie dołącza już typów sam (`types` w tsconfig)                                           |
+| `jest` 30, `jest-expo`, `@testing-library/react-native`                                          | testy jednostkowe i ekranów (jest-expo dla SDK 58 używa Jest 30)                                                 |
+| `eslint` 9, `eslint-config-expo`, `prettier`, `eslint-config-prettier`, `eslint-plugin-prettier` | lint i formatowanie wg dokumentacji Expo. ESLint 9, bo konfiguracja Expo nie jest jeszcze sprawdzona z ESLint 10 |
+| `expo-doctor`                                                                                    | sprawdzenie zgodności wersji z SDK (w CI); jako zależność, żeby wersja była stała                                |
+| `lefthook`, `lint-staged`, `@commitlint/cli`, `@commitlint/config-conventional`                  | hooki gita: lint zmienionych plików i Conventional Commits                                                       |
 
 ## 4. Tokeny czytane wprost z `design/tokens.json`
 
@@ -60,7 +59,7 @@ Usunięte z szablonu, bo na razie niepotrzebne: `@expo/ui`, `expo-device`, `expo
 
 ## 8. pnpm w trybie izolowanym
 
-- Expo wspiera izolowane `node_modules` od SDK 54, więc nie ustawiamy `nodeLinker: hoisted`. `pnpm-workspace.yaml` pozwala tylko na skrypt instalacyjny `lefthook`.
+- Expo wspiera izolowane `node_modules` od SDK 54, więc nie ustawiamy `nodeLinker: hoisted`. `pnpm-workspace.yaml` pozwala tylko na skrypt instalacyjny `lefthook`; `@parcel/watcher` (z Jest 30) ma gotowe binarki, więc jego budowanie ze źródeł jest wyłączone.
 
 ## 9. Brak licencji open source
 

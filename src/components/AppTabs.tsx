@@ -1,5 +1,5 @@
-// W SDK 57 natywne karty są pod ścieżką „unstable”; w SDK 58: 'expo-router/native-tabs' (docs/DECISIONS.md).
-import { NativeTabs } from 'expo-router/unstable-native-tabs';
+// Systemowy pasek kart iOS z Expo Router (SDK 58+).
+import { NativeTabs } from 'expo-router/native-tabs';
 
 import { t } from '@/i18n';
 import { useTheme } from '@/theme';

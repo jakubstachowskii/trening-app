@@ -24,7 +24,7 @@
     },
     {
       "description": "Wyjątek: poprawki (patch) paczek Expo w jednym PR, najwcześniej 3 dni po publikacji (docs/DECISIONS.md #10)",
-      "groupName": "expo sdk 57 (poprawki)",
+      "groupName": "expo sdk 58 (poprawki)",
       "matchPackageNames": ["expo", "expo-*", "jest-expo", "eslint-config-expo"],
       "matchUpdateTypes": ["patch"],
       "enabled": true,
@@ -46,9 +46,9 @@
       "minimumReleaseAge": "3 days"
     },
     {
-      "description": "Jest i jego typy zgodne z jest-expo dla SDK 57 (Jest 29)",
+      "description": "Jest i jego typy zgodne z jest-expo dla SDK 58 (Jest 30)",
       "matchPackageNames": ["jest", "@types/jest"],
-      "allowedVersions": "<30"
+      "allowedVersions": "<31"
     },
     {
       "description": "Node 24 jak w .nvmrc",
