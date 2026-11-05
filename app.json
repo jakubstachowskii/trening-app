@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "Training App",
+    "slug": "trening-app",
+    "version": "0.1.0",
+    "platforms": ["ios", "web"],
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "treningapp",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "icon": "./assets/expo.icon",
+      "supportsTablet": false
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#F2F2F7",
+          "dark": {
+            "backgroundColor": "#000000"
+          },
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 76
+        }
+      ],
+      "expo-font",
+      "expo-status-bar"
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}

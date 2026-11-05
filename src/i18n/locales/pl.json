@@ -1,0 +1,34 @@
+{
+  "tabs": {
+    "start": "Start",
+    "plans": "Plany",
+    "exercises": "Ćwiczenia",
+    "progress": "Postępy",
+    "history": "Historia"
+  },
+  "screens": {
+    "start": {
+      "title": "Start",
+      "body": "Tu zobaczysz dzisiejszy trening, ostatnie wyniki i swój tydzień w skrócie."
+    },
+    "plans": {
+      "title": "Plany",
+      "body": "Tu ułożysz plany treningowe: dni, ćwiczenia i liczbę serii."
+    },
+    "exercises": {
+      "title": "Ćwiczenia",
+      "body": "Tu znajdziesz bazę ćwiczeń z opisami i dodasz własne."
+    },
+    "progress": {
+      "title": "Postępy",
+      "body": "Tu zobaczysz wykresy postępów i swoje rekordy."
+    },
+    "history": {
+      "title": "Historia",
+      "body": "Tu znajdziesz wszystkie zakończone treningi."
+    }
+  },
+  "common": {
+    "soon": "Wkrótce"
+  }
+}

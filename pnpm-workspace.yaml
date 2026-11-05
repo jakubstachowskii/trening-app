@@ -1,0 +1,4 @@
+allowBuilds:
+  lefthook: true
+  # gotowe binarki są w paczkach opcjonalnych; budowanie ze źródeł niepotrzebne
+  '@parcel/watcher': false

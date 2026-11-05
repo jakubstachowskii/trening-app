@@ -4,7 +4,10 @@ const fs = require('fs');
 
 const tokens = JSON.parse(fs.readFileSync(process.argv[2] || 'design/tokens.json', 'utf8')).color;
 
-const rgb = (h) => (h.startsWith('#') ? [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)) : h.match(/[\d.]+/g).map(Number));
+const rgb = (h) =>
+  h.startsWith('#')
+    ? [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16))
+    : h.match(/[\d.]+/g).map(Number);
 const blend = (fg, bg) => {
   const f = rgb(fg);
   const b = rgb(bg);
@@ -12,7 +15,9 @@ const blend = (fg, bg) => {
   return [0, 1, 2].map((i) => Math.round(f[i] * f[3] + b[i] * (1 - f[3])));
 };
 const luminance = (c) => {
-  const v = c.map((x) => x / 255).map((x) => (x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4));
+  const v = c
+    .map((x) => x / 255)
+    .map((x) => (x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4));
   return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2];
 };
 const ratio = (fg, bg) => {
@@ -23,9 +28,19 @@ const ratio = (fg, bg) => {
 
 // [pierwszy plan, tło, minimum]
 const CHECKS = [
-  ['label', 'surface', 4.5], ['label', 'selected', 4.5], ['label2', 'surface', 4.5], ['label2', 'fill', 4.5], ['label2', 'bg', 4.5],
-  ['accentText', 'surface', 4.5], ['accentText', 'bg', 4.5], ['onAccent', 'accent', 4.5],
-  ['accent', 'surface', 3], ['accent', 'bg', 3], ['success', 'surface', 3], ['warning', 'surface', 3], ['danger', 'surface', 4.5],
+  ['label', 'surface', 4.5],
+  ['label', 'selected', 4.5],
+  ['label2', 'surface', 4.5],
+  ['label2', 'fill', 4.5],
+  ['label2', 'bg', 4.5],
+  ['accentText', 'surface', 4.5],
+  ['accentText', 'bg', 4.5],
+  ['onAccent', 'accent', 4.5],
+  ['accent', 'surface', 3],
+  ['accent', 'bg', 3],
+  ['success', 'surface', 3],
+  ['warning', 'surface', 3],
+  ['danger', 'surface', 4.5],
 ];
 
 let failed = 0;

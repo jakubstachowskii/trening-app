@@ -1,0 +1,59 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":semanticCommits", "helpers:pinGitHubActionDigests"],
+  "schedule": ["before 6am on monday"],
+  "timezone": "Europe/Warsaw",
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "description": "Paczki Expo, React i React Native aktualizujemy razem z SDK (npx expo install --fix), nie pojedynczo",
+      "matchPackageNames": [
+        "expo",
+        "expo-*",
+        "jest-expo",
+        "eslint-config-expo",
+        "react",
+        "react-dom",
+        "react-native",
+        "react-native-*",
+        "@types/react"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "Wyjątek: poprawki (patch) paczek Expo w jednym PR, najwcześniej 3 dni po publikacji (docs/DECISIONS.md #10)",
+      "groupName": "expo sdk 58 (poprawki)",
+      "matchPackageNames": ["expo", "expo-*", "jest-expo", "eslint-config-expo"],
+      "matchUpdateTypes": ["patch"],
+      "enabled": true,
+      "minimumReleaseAge": "3 days"
+    },
+    {
+      "groupName": "eslint + prettier",
+      "matchPackageNames": ["eslint", "eslint-*", "prettier"]
+    },
+    {
+      "groupName": "commitlint + lefthook",
+      "matchPackageNames": ["@commitlint/**", "lefthook", "lint-staged"]
+    },
+    {
+      "description": "Automerge patchy devDependencies, dopiero 3 dni po publikacji (czas na wycofanie złośliwej wersji)",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+      "minimumReleaseAge": "3 days"
+    },
+    {
+      "description": "Jest i jego typy zgodne z jest-expo dla SDK 58 (Jest 30)",
+      "matchPackageNames": ["jest", "@types/jest"],
+      "allowedVersions": "<31"
+    },
+    {
+      "description": "Node 24 jak w .nvmrc",
+      "matchPackageNames": ["@types/node"],
+      "allowedVersions": "<25"
+    }
+  ]
+}
