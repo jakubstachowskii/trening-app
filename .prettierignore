@@ -1,0 +1,8 @@
+pnpm-lock.yaml
+dist/
+.expo/
+design/f1/
+design/f2/
+assets/expo.icon/
+design/canvas.json
+expo-env.d.ts
