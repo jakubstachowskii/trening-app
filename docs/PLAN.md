@@ -1,6 +1,6 @@
 # Training App — specyfikacja
 
-Status: **zaakceptowana 2026-11-03** (zmiany możliwe w trakcie, za zgodą).
+Status: **zaakceptowana 2026-11-03** (zmiany możliwe w trakcie, za zgodą). Zmiana 2026-11-05: dodany opcjonalny asystent AI (§3.9, faza F9), fazy od ilustracji przesunięte o jeden numer.
 
 ## 1. Cel i zasada główna
 
@@ -86,6 +86,16 @@ Nawigacja: dolny pasek z 5 kartami: **Start, Plany, Ćwiczenia, Postępy, Histor
 - Masa ciała: włącz / wyłącz.
 - **Dane**: eksport do pliku, import z pliku, **usuń wszystkie dane** (z podwójnym potwierdzeniem).
 - O aplikacji, polityka prywatności, licencje użytych zasobów.
+- Asystent AI: włącz / wyłącz (domyślnie wyłączony, §3.9).
+
+### 3.9 Asystent AI (opcjonalny, faza F9)
+
+- **Pomoc w ułożeniu planu:** użytkownik opisuje cel, liczbę dni, czas, sprzęt i ograniczenia (np. „3 dni, 45 minut, tylko hantle, boli mnie kolano”). AI proponuje plan w tym samym formacie co zwykłe plany (dni, ćwiczenia z naszej bazy, serie). Użytkownik ogląda go i zmienia przed zapisaniem. Nic nie zapisuje się samo.
+- **Pomoc w korzystaniu z aplikacji:** pytania typu „jak dodać własne ćwiczenie?” albo „co oznacza objętość?”.
+- **Czego AI nie robi:** nie liczy podpowiedzi ciężaru ani postępów (to robi testowana logika z §5), nie daje porad medycznych; przy bólu lub urazie odsyła do specjalisty.
+- **Zgoda i dane:** działa dopiero po wyraźnej zgodzie. Do AI trafia tylko to, co potrzebne do odpowiedzi (cel, dni, sprzęt, poziom), nie cała historia treningów.
+- **Bezpieczeństwo:** klucz do usługi AI nigdy nie trafia do aplikacji. Zapytania idą przez własny serwer pośredniczący z limitem na urządzenie.
+- **Do ustalenia w planie F9:** model w telefonie (wbudowany w iOS: darmowy i prywatny, ale słabszy i tylko na nowszych iPhone'ach) czy w chmurze (lepszy, płatny za zapytania), dostawca, koszty, limity.
 
 ## 4. Model danych (SQLite)
 
@@ -151,14 +161,14 @@ Każda zależność trafia do `docs/DECISIONS.md` z uzasadnieniem, alternatywami
   - free-exercise-db: pochodzenie zdjęć nieopisane,
   - wger: licencje różne dla poszczególnych zdjęć.
 
-  Ilustracje mają być własne, ładne i w jednym stylu. Sposób ich przygotowania (np. wektory lub animacje robione przez nas, kupiony pakiet z licencją na aplikacje, ilustrator) ustalimy w osobnej fazie F9. Do tego czasu w aplikacji są estetyczne zastępniki (np. schemat partii mięśni).
+  Ilustracje mają być własne, ładne i w jednym stylu. Sposób ich przygotowania (np. wektory lub animacje robione przez nas, kupiony pakiet z licencją na aplikacje, ilustrator) ustalimy w osobnej fazie F10. Do tego czasu w aplikacji są estetyczne zastępniki (np. schemat partii mięśni).
 
 - Każdy zewnętrzny zasób: licencja sprawdzona i zapisana w `docs/DECISIONS.md` oraz na ekranie „Licencje”.
 
 ## 9. Prywatność
 
 - Minimum danych: brak konta, imienia, e-maila i lokalizacji. Masa ciała opcjonalna.
-- Dane tylko w telefonie, aplikacja nie łączy się z siecią w celu przesyłania danych.
+- Dane tylko w telefonie, aplikacja nie łączy się z siecią w celu przesyłania danych. Jedyny wyjątek: opcjonalny asystent AI (§3.9), tylko po wyraźnej zgodzie, z minimum danych i z informacją w polityce prywatności oraz etykietach App Store.
 - „Usuń wszystkie dane” w ustawieniach.
 - Przed publikacją: polityka prywatności (strona WWW) i etykiety prywatności App Store.
 
@@ -166,25 +176,27 @@ Każda zależność trafia do `docs/DECISIONS.md` z uzasadnieniem, alternatywami
 
 Jedna faza = jedna gałąź = jeden PR (od F3, gdy powstanie repo). Przed każdą fazą: plan w trybie planowania i Twoja zgoda. Po fazie: pokaz i Twoje OK.
 
-| Faza                           | Zakres                                                                                                                                                                                            | Kryteria akceptacji                                                                                  |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| **F0 Specyfikacja**            | Ten dokument                                                                                                                                                                                      | Akceptacja Jakuba                                                                                    |
-| **F1 Projekty ekranów**        | Interaktywne podglądy kluczowych ekranów (Start, Trening w toku, Postępy, Ćwiczenie) w 2–3 kierunkach wizualnych; Jakub przysyła wzory aplikacji                                                  | Jakub wybiera kierunek i zgłasza poprawki; zatwierdzone ekrany                                       |
-| **F2 Design system**           | Tokeny: kolory (jasny / ciemny), typografia z Dynamic Type, odstępy, promienie, cienie, czasy i krzywe animacji; podgląd komponentów                                                              | Kontrast WCAG AA w obu motywach; Jakub zatwierdza; od tej chwili wygląd zmieniany tylko za zgodą     |
-| **F3 Fundament repo**          | Repo GitHub (publiczne), Expo + TS strict, struktura, tokeny w kodzie, i18n, ESLint, Prettier, Jest, commitlint, hooki, CI, `ci:local`, Renovate, README, CLAUDE.md, docs; decyzja o koncie Apple | Pusta aplikacja z tokenami działa na iPhonie; CI zielone; `ci:local` zielone; ochrona main ustawiona |
-| **F4 Dane i logika**           | Schemat SQLite, migracje, repozytoria, logika (1RM, objętość, rekordy, podpowiedź), lista ćwiczeń i programów                                                                                     | Testy logiki przechodzą; migracje testowane; lista ćwiczeń zaakceptowana                             |
-| **F5 Ćwiczenia i plany**       | Ekrany bazy ćwiczeń (z zastępnikami ilustracji), własne ćwiczenia, plany i edycja dni, gotowe programy                                                                                            | Ścieżki przechodzą na urządzeniu; VoiceOver i Dynamic Type sprawdzone                                |
-| **F6 Trening w toku**          | Ekran treningu, serie, minutnik, podpowiedź, podsumowanie, odporność na zamknięcie aplikacji                                                                                                      | Pełny trening zapisany od początku do końca; dane przetrwają zamknięcie aplikacji                    |
-| **F7 Historia i postępy**      | Historia, edycja treningu, wykresy, rekordy, masa ciała, konfiguracja widoku                                                                                                                      | Wykresy zgodne z danymi testowymi; płynne przewijanie na długiej historii                            |
-| **F8 Onboarding i ustawienia** | Pierwsze uruchomienie, ustawienia, eksport, import, usuń wszystko                                                                                                                                 | Eksport → usuń → import przywraca dane 1:1                                                           |
-| **F9 Ilustracje i animacje**   | Ilustracje ćwiczeń w jednym stylu, animacje z obsługą Reduce Motion                                                                                                                               | Wszystkie ćwiczenia z ilustracją; licencje udokumentowane                                            |
-| **F10 Dopracowanie**           | Przegląd całości: błędy, dostępność, wydajność, przypadki brzegowe, ikona, ekran startowy, nazwa                                                                                                  | Lista z przeglądu zamknięta; brak błędów krytycznych                                                 |
-| **F11 Publikacja**             | Konto Apple, polityka prywatności, etykiety, TestFlight, App Store, wpis w portfolio                                                                                                              | Aplikacja w TestFlight / App Store; wpis w portfolio                                                 |
+| Faza                           | Zakres                                                                                                                                                                                            | Kryteria akceptacji                                                                                                        |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **F0 Specyfikacja**            | Ten dokument                                                                                                                                                                                      | Akceptacja Jakuba                                                                                                          |
+| **F1 Projekty ekranów**        | Interaktywne podglądy kluczowych ekranów (Start, Trening w toku, Postępy, Ćwiczenie) w 2–3 kierunkach wizualnych; Jakub przysyła wzory aplikacji                                                  | Jakub wybiera kierunek i zgłasza poprawki; zatwierdzone ekrany                                                             |
+| **F2 Design system**           | Tokeny: kolory (jasny / ciemny), typografia z Dynamic Type, odstępy, promienie, cienie, czasy i krzywe animacji; podgląd komponentów                                                              | Kontrast WCAG AA w obu motywach; Jakub zatwierdza; od tej chwili wygląd zmieniany tylko za zgodą                           |
+| **F3 Fundament repo**          | Repo GitHub (publiczne), Expo + TS strict, struktura, tokeny w kodzie, i18n, ESLint, Prettier, Jest, commitlint, hooki, CI, `ci:local`, Renovate, README, CLAUDE.md, docs; decyzja o koncie Apple | Pusta aplikacja z tokenami działa na iPhonie; CI zielone; `ci:local` zielone; ochrona main ustawiona                       |
+| **F4 Dane i logika**           | Schemat SQLite, migracje, repozytoria, logika (1RM, objętość, rekordy, podpowiedź), lista ćwiczeń i programów                                                                                     | Testy logiki przechodzą; migracje testowane; lista ćwiczeń zaakceptowana                                                   |
+| **F5 Ćwiczenia i plany**       | Ekrany bazy ćwiczeń (z zastępnikami ilustracji), własne ćwiczenia, plany i edycja dni, gotowe programy                                                                                            | Ścieżki przechodzą na urządzeniu; VoiceOver i Dynamic Type sprawdzone                                                      |
+| **F6 Trening w toku**          | Ekran treningu, serie, minutnik, podpowiedź, podsumowanie, odporność na zamknięcie aplikacji                                                                                                      | Pełny trening zapisany od początku do końca; dane przetrwają zamknięcie aplikacji                                          |
+| **F7 Historia i postępy**      | Historia, edycja treningu, wykresy, rekordy, masa ciała, konfiguracja widoku                                                                                                                      | Wykresy zgodne z danymi testowymi; płynne przewijanie na długiej historii                                                  |
+| **F8 Onboarding i ustawienia** | Pierwsze uruchomienie, ustawienia, eksport, import, usuń wszystko                                                                                                                                 | Eksport → usuń → import przywraca dane 1:1                                                                                 |
+| **F9 Asystent AI**             | Opcjonalny asystent: pomoc w ułożeniu planu i w korzystaniu z aplikacji (§3.9), zgoda, serwer pośredniczący z limitami                                                                            | Plan od AI zapisuje się w naszym formacie i daje się edytować; bez zgody nic nie wychodzi z telefonu; klucz poza aplikacją |
+| **F10 Ilustracje i animacje**  | Ilustracje ćwiczeń w jednym stylu, animacje z obsługą Reduce Motion                                                                                                                               | Wszystkie ćwiczenia z ilustracją; licencje udokumentowane                                                                  |
+| **F11 Dopracowanie**           | Przegląd całości: błędy, dostępność, wydajność, przypadki brzegowe, ikona, ekran startowy, nazwa                                                                                                  | Lista z przeglądu zamknięta; brak błędów krytycznych                                                                       |
+| **F12 Publikacja**             | Konto Apple, polityka prywatności, etykiety, TestFlight, App Store, wpis w portfolio                                                                                                              | Aplikacja w TestFlight / App Store; wpis w portfolio                                                                       |
 
 ## 11. Otwarte sprawy (TODO)
 
 - TODO(content): nazwa aplikacji.
 - TODO(content): aplikacje-wzory od Jakuba (do F1 i do gotowych programów).
 - Dane serii poza ciężarem i powtórzeniami (RPE / RIR, typy serii): w modelu jest miejsce, decyzja po MVP.
-- Styl i sposób wykonania ilustracji: F9.
+- Styl i sposób wykonania ilustracji: F10.
+- Asystent AI: model w telefonie czy w chmurze, dostawca, koszty i limity: plan F9.
 - Konto Apple Developer: przed F3.
