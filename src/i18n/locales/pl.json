@@ -49,6 +49,11 @@
     "seconds": "{value} s",
     "minutes": "{value} min"
   },
+  "plan": {
+    "repsAtLeast": "{min}+",
+    "repsUpTo": "do {max}",
+    "restShort": "przerwa {value}"
+  },
   "exercises": {
     "bench-press": "Wyciskanie sztangi na ławce poziomej",
     "incline-bench-press": "Wyciskanie sztangi na ławce skośnej",
