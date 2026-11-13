@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import * as SystemUI from 'expo-system-ui';
 import { useEffect } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { AppTabs } from '@/components/AppTabs';
 import { DatabaseProvider } from '@/data/DatabaseProvider';
@@ -24,10 +25,12 @@ function Root() {
 
 export default function RootLayout() {
   return (
-    <ThemeProvider>
-      <DatabaseProvider>
-        <Root />
-      </DatabaseProvider>
-    </ThemeProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ThemeProvider>
+        <DatabaseProvider>
+          <Root />
+        </DatabaseProvider>
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }

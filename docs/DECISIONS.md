@@ -116,3 +116,16 @@ Usunięte z szablonu, bo na razie niepotrzebne: `@expo/ui`, `expo-device`, `expo
 ## 17. `expo-sqlite` w podglądzie web (2026-11-05)
 
 - `metro.config.js`: pliki `.wasm` jako zasoby i nagłówki COOP/COEP na serwerze podglądu (wymaga ich `SharedArrayBuffer`, z którego korzysta `expo-sqlite` na web).
+
+## 18. Przeciąganie na liście: `react-native-reorderable-list` + `react-native-gesture-handler` (2026-11-13)
+
+- **Co:** zmiana kolejności dni planu i ćwiczeń w dniu przez przytrzymanie i przeciągnięcie (`docs/PLAN.md` §3.3). `react-native-gesture-handler` ~3.3.0 (wersja z Expo SDK 58, jest w Expo Go) i `react-native-reorderable-list` 0.18.3 (MIT).
+- **Dlaczego:** React Native nie ma wbudowanej listy z przeciąganiem. Biblioteka to sam kod JS na Reanimated i Gesture Handler, które już są w projekcie albo przychodzą z Expo. Nie ma własnych zależności, skryptów instalacyjnych ani dostępu do sieci (przejrzane źródła 0.18.3). Działa z RN 0.88 (od 0.18.3 bez usuniętego `InteractionManager`). Gesture Handler 3 obsługuje jej starsze API gestów (`Gesture.Pan()`) przez warstwę zgodności.
+- **Alternatywy:** własne przeciąganie na Gesture Handler + Reanimated (więcej kodu do utrzymania; zostaje jako plan B), przyciski „wyżej / niżej” (bez nowej zależności, ale mniej wygodne).
+- **Dostępność:** każdy wiersz ma akcje VoiceOver „Przesuń wyżej” i „Przesuń niżej”, więc przeciąganie nie jest jedyną drogą.
+- **Koszt:** ok. 40 KB kodu JS. Wersja przypięta dokładnie (0.x może zmieniać API).
+
+## 19. `expo-haptics` (2026-11-13)
+
+- **Co:** wibracje przy wyborze w przełączniku i po upuszczeniu przeciąganego wiersza (`docs/DESIGN.md` §7).
+- **Dlaczego:** biblioteka Expo, bez uprawnień. Wibracja zawsze tylko uzupełnia to, co widać. Dokumentacja nie mówi wprost, czy działa w Expo Go, więc wywołania są zabezpieczone (brak wibracji nie psuje działania).
