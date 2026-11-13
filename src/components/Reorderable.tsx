@@ -1,45 +1,16 @@
 // Lista z przeciąganiem (docs/DECISIONS.md #18). Każdy wiersz ma też akcje VoiceOver „wyżej / niżej”.
-import { type ReactNode, useCallback, useMemo } from 'react';
-import { type ScrollViewProps, View } from 'react-native';
+import { type ReactElement, type ReactNode, useCallback, useMemo } from 'react';
+import { View } from 'react-native';
 import { Gesture } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
-import {
-  NestedReorderableList,
+import ReorderableList, {
   type ReorderableListReorderEvent,
-  ScrollViewContainer,
   useReorderableDrag,
 } from 'react-native-reorderable-list';
 
 import { t } from '@/i18n';
 import { useTheme } from '@/theme';
 import { hapticLight } from '@/utils/haptics';
-
-/** Przewijany ekran, w którym może być lista z przeciąganiem (wymóg biblioteki). */
-export function ReorderableScreen({
-  children,
-  contentContainerStyle,
-  ...rest
-}: ScrollViewProps & { children: ReactNode }) {
-  const { colors, space } = useTheme();
-  return (
-    <ScrollViewContainer
-      style={{ flex: 1, backgroundColor: colors.bg }}
-      contentInsetAdjustmentBehavior="automatic"
-      contentContainerStyle={[
-        {
-          paddingHorizontal: space.screen,
-          paddingTop: space.xs,
-          paddingBottom: space.section,
-          gap: space.section,
-        },
-        contentContainerStyle,
-      ]}
-      {...rest}
-    >
-      {children}
-    </ScrollViewContainer>
-  );
-}
 
 export type RowControls = {
   /** Wywołaj przy przytrzymaniu (onLongPress), żeby zacząć przeciąganie. */
@@ -57,6 +28,13 @@ type Props<T> = {
   renderRow: (item: T, controls: RowControls) => ReactNode;
   /** Nowa kolejność po upuszczeniu albo po akcji VoiceOver. */
   onReorder: (ordered: T[]) => void;
+  /** Treść ekranu nad listą (tytuł, opis, przyciski) i pod nią. */
+  header?: ReactElement;
+  footer?: ReactElement;
+  /** Widok, gdy lista jest pusta. */
+  empty?: ReactElement;
+  /** Dodatkowy zapas pod listą (np. na pływający przycisk). */
+  bottomSpace?: number;
 };
 
 export function moveItem<T>(items: T[], from: number, to: number): T[] {
@@ -106,9 +84,22 @@ function Row<T>({
   );
 }
 
-/** Lista wierszy (każdy jako osobna karta) z przeciąganiem po przytrzymaniu. */
-export function ReorderableRows<T>({ data, keyOf, renderRow, onReorder }: Props<T>) {
-  const { space, motion, reduceMotion } = useTheme();
+/**
+ * Cały przewijany ekran z listą wierszy (każdy jako osobna karta) i przeciąganiem po przytrzymaniu.
+ * Lista jest głównym przewijanym widokiem, a nie zagnieżdżoną listą: zagnieżdżona liczy pozycję
+ * z przesunięcia przewinięcia, które na iOS zawiera wcięcie pod nagłówkiem, i wiersz odjeżdżał od palca.
+ */
+export function ReorderableRows<T>({
+  data,
+  keyOf,
+  renderRow,
+  onReorder,
+  header,
+  footer,
+  empty,
+  bottomSpace,
+}: Props<T>) {
+  const { colors, space, motion, reduceMotion } = useTheme();
 
   const move = useCallback(
     (from: number, to: number) => onReorder(moveItem(data, from, to)),
@@ -125,10 +116,19 @@ export function ReorderableRows<T>({ data, keyOf, renderRow, onReorder }: Props<
   }, []);
 
   return (
-    <NestedReorderableList
+    <ReorderableList
+      style={{ flex: 1, backgroundColor: colors.bg }}
+      contentInsetAdjustmentBehavior="automatic"
+      contentContainerStyle={{
+        paddingHorizontal: space.screen,
+        paddingTop: space.xs,
+        paddingBottom: bottomSpace ?? space.section,
+      }}
+      ListHeaderComponent={header}
+      ListFooterComponent={footer}
+      ListEmptyComponent={empty}
       data={data}
       keyExtractor={keyOf}
-      scrollEnabled={false}
       // Typ gestu z biblioteki jest starszy niż Gesture Handler 3 (ta sama klasa w działaniu, DECISIONS #18).
       panGesture={panGesture as never}
       onReorder={handleReorder}

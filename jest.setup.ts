@@ -28,29 +28,39 @@ jest.mock('react-native-reanimated', () => {
 jest.mock('react-native-reorderable-list', () => {
   const React = jest.requireActual<typeof import('react')>('react');
   const RN = jest.requireActual<typeof import('react-native')>('react-native');
+  const List = ({
+    data,
+    keyExtractor,
+    renderItem,
+    ListHeaderComponent,
+    ListFooterComponent,
+    ListEmptyComponent,
+  }: {
+    data: unknown[];
+    keyExtractor: (item: unknown) => string;
+    renderItem: (info: { item: unknown; index: number }) => import('react').ReactNode;
+    ListHeaderComponent?: import('react').ReactElement;
+    ListFooterComponent?: import('react').ReactElement;
+    ListEmptyComponent?: import('react').ReactElement;
+  }) =>
+    React.createElement(
+      RN.ScrollView,
+      null,
+      ListHeaderComponent ?? null,
+      data.length
+        ? data.map((item, index) =>
+            React.createElement(
+              React.Fragment,
+              { key: keyExtractor(item) },
+              renderItem({ item, index }),
+            ),
+          )
+        : (ListEmptyComponent ?? null),
+      ListFooterComponent ?? null,
+    );
   return {
     __esModule: true,
-    ScrollViewContainer: RN.ScrollView,
-    NestedReorderableList: ({
-      data,
-      keyExtractor,
-      renderItem,
-    }: {
-      data: unknown[];
-      keyExtractor: (item: unknown) => string;
-      renderItem: (info: { item: unknown; index: number }) => import('react').ReactNode;
-    }) =>
-      React.createElement(
-        RN.View,
-        null,
-        data.map((item, index) =>
-          React.createElement(
-            React.Fragment,
-            { key: keyExtractor(item) },
-            renderItem({ item, index }),
-          ),
-        ),
-      ),
+    default: List,
     useReorderableDrag: () => () => undefined,
   };
 });

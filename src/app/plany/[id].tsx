@@ -6,7 +6,7 @@ import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
 import { Icon } from '@/components/Icon';
 import { ListRow } from '@/components/ListRow';
-import { ReorderableRows, ReorderableScreen } from '@/components/Reorderable';
+import { ReorderableRows } from '@/components/Reorderable';
 import { Section } from '@/components/Section';
 import { Skeleton } from '@/components/Skeleton';
 import { confirmDestructive, HeaderIconButton, showMenu } from '@/components/stack';
@@ -129,88 +129,96 @@ export default function PlanScreen() {
           ),
         }}
       />
-      <ReorderableScreen>
-        <View style={{ gap: space.xs }}>
-          <Text variant="title1" accessibilityRole="header">
-            {plan.name}
-          </Text>
-          <Text variant="subheadline" color="label2">
-            {meta}
-          </Text>
-          {plan.description ? <Text variant="body">{plan.description}</Text> : null}
-          {plan.sourceProgramId ? (
-            <Text variant="footnote" color="label2">
-              {t('planDetail.fromProgram')}
-            </Text>
-          ) : null}
-        </View>
-
-        {plan.isActive ? (
-          <View
-            accessible
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: space.xs,
-              minHeight: size.touchMin,
-            }}
-          >
-            <Icon
-              name={{ ios: 'star.fill', web: 'star' }}
-              color={colors.accentText}
-              size={size.iconSmall}
-            />
-            <Text variant="subheadline" color="accentText">
-              {t('planDetail.isActive')}
-            </Text>
-          </View>
-        ) : (
-          <Button
-            variant="secondary"
-            icon={{ ios: 'star', web: 'star_border' }}
-            label={t('planDetail.setActive')}
-            onPress={() => void toggleActive()}
-          />
-        )}
-
-        <Section
-          title={t('planDetail.days')}
-          action={
-            <Button variant="text" label={t('planDetail.addDay')} onPress={() => void addDay()} />
-          }
-        >
-          {days.length ? (
-            <>
-              <ReorderableRows
-                data={days}
-                keyOf={(day) => day.id}
-                onReorder={(next) => void reorder(next)}
-                renderRow={(day, controls) => (
-                  <ListRow
-                    title={day.name}
-                    subtitle={tPlural('units.exercises', day.exercises.length)}
-                    actions={controls.actions}
-                    onLongPress={controls.drag}
-                    delayLongPress={500}
-                    onPress={() => openDay(day.id)}
-                  />
-                )}
-              />
-              {days.length > 1 ? (
-                <Text variant="footnote" color="label2" style={{ paddingHorizontal: space.xxs }}>
-                  {t('reorder.hint')}
+      <ReorderableRows
+        data={days}
+        keyOf={(day) => day.id}
+        onReorder={(next) => void reorder(next)}
+        header={
+          <View style={{ gap: space.section, paddingBottom: space.xs }}>
+            <View style={{ gap: space.xs }}>
+              <Text variant="title1" accessibilityRole="header">
+                {plan.name}
+              </Text>
+              <Text variant="subheadline" color="label2">
+                {meta}
+              </Text>
+              {plan.description ? <Text variant="body">{plan.description}</Text> : null}
+              {plan.sourceProgramId ? (
+                <Text variant="footnote" color="label2">
+                  {t('planDetail.fromProgram')}
                 </Text>
               ) : null}
-            </>
-          ) : (
-            <EmptyState
-              title={t('planDetail.noDaysTitle')}
-              body={t('planDetail.noDaysBody')}
-              action={{ label: t('planDetail.addDay'), onPress: () => void addDay() }}
-            />
-          )}
-        </Section>
-      </ReorderableScreen>
+            </View>
+            {plan.isActive ? (
+              <View
+                accessible
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: space.xs,
+                  minHeight: size.touchMin,
+                }}
+              >
+                <Icon
+                  name={{ ios: 'star.fill', web: 'star' }}
+                  color={colors.accentText}
+                  size={size.iconSmall}
+                />
+                <Text variant="subheadline" color="accentText">
+                  {t('planDetail.isActive')}
+                </Text>
+              </View>
+            ) : (
+              <Button
+                variant="secondary"
+                icon={{ ios: 'star', web: 'star_border' }}
+                label={t('planDetail.setActive')}
+                onPress={() => void toggleActive()}
+              />
+            )}
+            <Section
+              title={t('planDetail.days')}
+              action={
+                <Button
+                  variant="text"
+                  label={t('planDetail.addDay')}
+                  onPress={() => void addDay()}
+                />
+              }
+            >
+              {null}
+            </Section>
+          </View>
+        }
+        footer={
+          days.length > 1 ? (
+            <Text
+              variant="footnote"
+              color="label2"
+              style={{ paddingHorizontal: space.xxs, paddingTop: space.xs }}
+            >
+              {t('reorder.hint')}
+            </Text>
+          ) : undefined
+        }
+        empty={
+          <EmptyState
+            title={t('planDetail.noDaysTitle')}
+            body={t('planDetail.noDaysBody')}
+            action={{ label: t('planDetail.addDay'), onPress: () => void addDay() }}
+          />
+        }
+        renderRow={(day, controls) => (
+          <ListRow
+            title={day.name}
+            subtitle={tPlural('units.exercises', day.exercises.length)}
+            actions={controls.actions}
+            onLongPress={controls.drag}
+            delayLongPress={500}
+            onPress={() => openDay(day.id)}
+          />
+        )}
+      />
     </View>
   );
 }

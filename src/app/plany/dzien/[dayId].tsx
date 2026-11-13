@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import { Button, FloatingButton, useFloatingButtonSpace } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
 import { ListRow } from '@/components/ListRow';
-import { ReorderableRows, ReorderableScreen } from '@/components/Reorderable';
+import { ReorderableRows } from '@/components/Reorderable';
 import { Section } from '@/components/Section';
 import { Skeleton } from '@/components/Skeleton';
 import { confirmDestructive, HeaderIconButton, showMenu } from '@/components/stack';
@@ -146,62 +146,65 @@ export default function PlanDayScreen() {
           ),
         }}
       />
-      <ReorderableScreen contentContainerStyle={{ paddingBottom: bottom }}>
-        <NameField
-          key={day.name}
-          initial={day.name}
-          onSave={async (name) => {
-            await renamePlanDay(db, day.id, name);
-            await reload();
-          }}
-        />
-        <Section title={t('planDay.exercises')}>
-          {items.length ? (
-            <>
-              <ReorderableRows
-                data={items}
-                keyOf={(item) => item.id}
-                onReorder={(next) => void reorder(next)}
-                renderRow={(item, controls) => {
-                  const exercise = byId.get(item.exerciseId);
-                  return (
-                    <ListRow
-                      title={nameOf(item)}
-                      subtitle={formatPlanExercise(item)}
-                      icon={exercise ? exerciseIcon(exercise.type, exercise.equipment) : undefined}
-                      actions={[
-                        ...controls.actions,
-                        {
-                          name: 'remove',
-                          label: t('planDay.removeExercise'),
-                          onAction: () => removeItem(item),
-                        },
-                      ]}
-                      onLongPress={controls.drag}
-                      delayLongPress={500}
-                      onPress={() =>
-                        router.push({ pathname: '/plany/cwiczenie/[id]', params: { id: item.id } })
-                      }
-                    />
-                  );
-                }}
-              />
-              {items.length > 1 ? (
-                <Text variant="footnote" color="label2" style={{ paddingHorizontal: space.xxs }}>
-                  {t('reorder.hint')}
-                </Text>
-              ) : null}
-            </>
-          ) : (
-            <EmptyState
-              title={t('planDay.emptyTitle')}
-              body={t('planDay.emptyBody')}
-              action={{ label: t('planDay.addExercise'), onPress: addExercise }}
+      <ReorderableRows
+        data={items}
+        keyOf={(item) => item.id}
+        onReorder={(next) => void reorder(next)}
+        bottomSpace={bottom}
+        header={
+          <View style={{ gap: space.section, paddingBottom: space.xs }}>
+            <NameField
+              key={day.name}
+              initial={day.name}
+              onSave={async (name) => {
+                await renamePlanDay(db, day.id, name);
+                await reload();
+              }}
             />
-          )}
-        </Section>
-        <Button variant="destructive" label={t('planDay.delete')} onPress={removeDay} />
-      </ReorderableScreen>
+            <Section title={t('planDay.exercises')}>{null}</Section>
+          </View>
+        }
+        footer={
+          <View style={{ gap: space.section, paddingTop: space.xs }}>
+            {items.length > 1 ? (
+              <Text variant="footnote" color="label2" style={{ paddingHorizontal: space.xxs }}>
+                {t('reorder.hint')}
+              </Text>
+            ) : null}
+            <Button variant="destructive" label={t('planDay.delete')} onPress={removeDay} />
+          </View>
+        }
+        empty={
+          <EmptyState
+            title={t('planDay.emptyTitle')}
+            body={t('planDay.emptyBody')}
+            action={{ label: t('planDay.addExercise'), onPress: addExercise }}
+          />
+        }
+        renderRow={(item, controls) => {
+          const exercise = byId.get(item.exerciseId);
+          return (
+            <ListRow
+              title={nameOf(item)}
+              subtitle={formatPlanExercise(item)}
+              icon={exercise ? exerciseIcon(exercise.type, exercise.equipment) : undefined}
+              actions={[
+                ...controls.actions,
+                {
+                  name: 'remove',
+                  label: t('planDay.removeExercise'),
+                  onAction: () => removeItem(item),
+                },
+              ]}
+              onLongPress={controls.drag}
+              delayLongPress={500}
+              onPress={() =>
+                router.push({ pathname: '/plany/cwiczenie/[id]', params: { id: item.id } })
+              }
+            />
+          );
+        }}
+      />
       {items.length ? (
         <FloatingButton
           label={t('planDay.addExercise')}

@@ -58,10 +58,27 @@ export function withNames(exercises: Exercise[]): NamedExercise[] {
   });
 }
 
-/** Każde słowo zapytania musi wystąpić w nazwie (kolejność dowolna, początek słowa nie wymagany). */
+/**
+ * Rdzeń słowa do porównania odmian: polskie końcówki zmieniają ostatnie 1–2 litery
+ * („ławka”, „ławce”, „ławki” → „law”; „hantle”, „hantli” → „hant”). Krótkie słowa bez zmian.
+ */
+export function searchStem(word: string): string {
+  if (word.length <= 4) return word;
+  return word.slice(0, Math.max(3, word.length - 2));
+}
+
+/**
+ * Każde słowo zapytania musi pasować do nazwy (kolejność słów dowolna):
+ * albo jako fragment nazwy, albo jego rdzeń jako początek któregoś słowa nazwy (inna odmiana).
+ */
 export function matchesQuery(exercise: NamedExercise, query: string): boolean {
   const words = normalizeForSearch(query).split(' ').filter(Boolean);
-  return words.every((word) => exercise.searchText.includes(word));
+  const nameWords = exercise.searchText.split(' ');
+  return words.every(
+    (word) =>
+      exercise.searchText.includes(word) ||
+      nameWords.some((nameWord) => nameWord.startsWith(searchStem(word))),
+  );
 }
 
 export function matchesFilters(exercise: Exercise, filters: ExerciseFilters): boolean {

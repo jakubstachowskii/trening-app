@@ -6,6 +6,7 @@ import { ActionSheetIOS, Alert, Platform, Pressable } from 'react-native';
 import { t } from '@/i18n';
 import { useTheme } from '@/theme';
 
+import { Button } from './Button';
 import { Icon, type IconName } from './Icon';
 
 type StackOptions = NonNullable<ComponentProps<typeof Stack>['screenOptions']>;
@@ -25,13 +26,19 @@ export function useStackScreenOptions(): StackOptions {
   };
 }
 
-/** Opcje arkusza (formularze, filtry): wysuwany od dołu, z uchwytem. */
-export const SHEET_OPTIONS = {
-  presentation: 'formSheet',
-  sheetGrabberVisible: true,
-  sheetAllowedDetents: [0.6, 1] as number[],
-  sheetInitialDetentIndex: 1,
-} as const;
+/**
+ * Opcje arkusza (formularze, filtry): systemowy arkusz iOS na całą wysokość, zamykany przesunięciem w dół.
+ * Nie `formSheet` z wysokościami: na iPhonie treść ekranu z nagłówkiem stosu była w nim pusta.
+ */
+export function sheetOptions(title: string) {
+  return ({ navigation }: { navigation: { goBack: () => void } }) => ({
+    presentation: 'modal' as const,
+    title,
+    headerLeft: () => (
+      <Button variant="text" label={t('common.cancel')} onPress={() => navigation.goBack()} />
+    ),
+  });
+}
 
 /** Przycisk ikony w nagłówku (44 × 44, z etykietą dla VoiceOver). Szkło dodaje system. */
 export function HeaderIconButton({

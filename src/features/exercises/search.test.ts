@@ -8,6 +8,7 @@ import {
   groupByLetter,
   normalizeForSearch,
   searchExercises,
+  searchStem,
   toggle,
   withNames,
 } from './search';
@@ -55,6 +56,22 @@ describe('wyszukiwanie ćwiczeń', () => {
     const names = searchExercises(all, 'lawce wyciskanie', EMPTY_FILTERS).map((e) => e.id);
     expect(names).toContain('bench-press');
     expect(searchExercises(all, 'lodka', EMPTY_FILTERS).map((e) => e.id)).toContain('u1');
+  });
+
+  it('znajduje inne odmiany słów („lawka” → „ławce”, „hantle” → „hantli”)', () => {
+    expect(searchExercises(all, 'lawka', EMPTY_FILTERS).map((e) => e.id)).toContain('bench-press');
+    expect(searchExercises(all, 'wyciskanie hantle', EMPTY_FILTERS).map((e) => e.id)).toContain(
+      'dumbbell-bench-press',
+    );
+    expect(searchExercises(all, 'przysiad sztanga', EMPTY_FILTERS).map((e) => e.id)).toContain(
+      'back-squat',
+    );
+  });
+
+  it('rdzeń: krótkie słowa bez zmian, dłuższe bez dwóch ostatnich liter', () => {
+    expect(searchStem('law')).toBe('law');
+    expect(searchStem('lawka')).toBe('law');
+    expect(searchStem('wyciskanie')).toBe('wyciskani'.slice(0, 8));
   });
 
   it('nazwy zaczynające się od zapytania są pierwsze', () => {

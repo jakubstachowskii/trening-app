@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 
-import { SHEET_OPTIONS, useStackScreenOptions } from '@/components/stack';
+import { sheetOptions, useStackScreenOptions } from '@/components/stack';
 import { t } from '@/i18n';
 
 export default function PlansLayout() {
@@ -14,12 +14,9 @@ export default function PlansLayout() {
       <Stack.Screen name="[id]" options={{ title: '' }} />
       <Stack.Screen name="dzien/[dayId]" options={{ title: '' }} />
       <Stack.Screen name="program/[programId]" options={{ title: '' }} />
-      <Stack.Screen name="nowy" options={{ ...SHEET_OPTIONS, title: t('planForm.titleNew') }} />
-      <Stack.Screen
-        name="cwiczenie/[id]"
-        options={{ ...SHEET_OPTIONS, title: t('planExercise.title') }}
-      />
-      <Stack.Screen name="wybierz" options={{ presentation: 'modal', title: t('picker.title') }} />
+      <Stack.Screen name="nowy" options={sheetOptions(t('planForm.titleNew'))} />
+      <Stack.Screen name="cwiczenie/[id]" options={sheetOptions(t('planExercise.title'))} />
+      <Stack.Screen name="wybierz" options={sheetOptions(t('picker.title'))} />
     </Stack>
   );
 }
