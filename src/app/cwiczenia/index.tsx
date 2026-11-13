@@ -1,13 +1,12 @@
 import { Stack, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Platform, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
 import { Pill } from '@/components/Pill';
 import { Skeleton } from '@/components/Skeleton';
 import { HeaderIconButton } from '@/components/stack';
-import { TextField } from '@/components/TextField';
 import { listExercises } from '@/data/repositories/exercises';
 import { useDbQuery } from '@/data/useDbQuery';
 import { ExerciseList } from '@/features/exercises/ExerciseList';
@@ -79,14 +78,6 @@ export default function ExercisesScreen() {
 
   const header = (
     <View style={{ gap: space.sm }}>
-      {Platform.OS === 'web' ? (
-        <TextField
-          label={t('exerciseList.searchPlaceholder')}
-          value={query}
-          onChangeText={setQuery}
-          autoCapitalize="none"
-        />
-      ) : null}
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }}>
         <Button
           variant="secondary"

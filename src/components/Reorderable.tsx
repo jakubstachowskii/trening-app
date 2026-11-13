@@ -17,6 +17,7 @@ import { hapticLight } from '@/utils/haptics';
 /** Przewijany ekran, w którym może być lista z przeciąganiem (wymóg biblioteki). */
 export function ReorderableScreen({
   children,
+  contentContainerStyle,
   ...rest
 }: ScrollViewProps & { children: ReactNode }) {
   const { colors, space } = useTheme();
@@ -24,12 +25,15 @@ export function ReorderableScreen({
     <ScrollViewContainer
       style={{ flex: 1, backgroundColor: colors.bg }}
       contentInsetAdjustmentBehavior="automatic"
-      contentContainerStyle={{
-        paddingHorizontal: space.screen,
-        paddingTop: space.xs,
-        paddingBottom: space.section,
-        gap: space.section,
-      }}
+      contentContainerStyle={[
+        {
+          paddingHorizontal: space.screen,
+          paddingTop: space.xs,
+          paddingBottom: space.section,
+          gap: space.section,
+        },
+        contentContainerStyle,
+      ]}
       {...rest}
     >
       {children}

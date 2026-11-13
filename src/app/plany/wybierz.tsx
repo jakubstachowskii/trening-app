@@ -1,11 +1,9 @@
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Platform } from 'react-native';
 
 import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
 import { Skeleton } from '@/components/Skeleton';
-import { TextField } from '@/components/TextField';
 import { useDb } from '@/data/DatabaseProvider';
 import { listExercises } from '@/data/repositories/exercises';
 import { addPlanExercise } from '@/data/repositories/plans';
@@ -45,16 +43,6 @@ export default function ExercisePicker() {
       <ExerciseList
         exercises={loading ? [] : results}
         grouped={!query.trim()}
-        header={
-          Platform.OS === 'web' ? (
-            <TextField
-              label={t('exerciseList.searchPlaceholder')}
-              value={query}
-              onChangeText={setQuery}
-              autoCapitalize="none"
-            />
-          ) : undefined
-        }
         empty={
           loading ? (
             <Skeleton rows={6} />
