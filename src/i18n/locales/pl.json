@@ -31,6 +31,24 @@
   "common": {
     "soon": "Wkrótce"
   },
+  "units": {
+    "sets": { "one": "{count} seria", "few": "{count} serie", "many": "{count} serii" },
+    "exercises": {
+      "one": "{count} ćwiczenie",
+      "few": "{count} ćwiczenia",
+      "many": "{count} ćwiczeń"
+    },
+    "days": { "one": "{count} dzień", "few": "{count} dni", "many": "{count} dni" },
+    "daysPerWeek": {
+      "one": "{count} dzień w tygodniu",
+      "few": "{count} dni w tygodniu",
+      "many": "{count} dni w tygodniu"
+    },
+    "plans": { "one": "{count} plan", "few": "{count} plany", "many": "{count} planów" },
+    "kg": "{value} kg",
+    "seconds": "{value} s",
+    "minutes": "{value} min"
+  },
   "exercises": {
     "bench-press": "Wyciskanie sztangi na ławce poziomej",
     "incline-bench-press": "Wyciskanie sztangi na ławce skośnej",
