@@ -124,6 +124,7 @@ Usunięte z szablonu, bo na razie niepotrzebne: `@expo/ui`, `expo-device`, `expo
 - **Alternatywy:** własne przeciąganie na Gesture Handler + Reanimated (więcej kodu do utrzymania; zostaje jako plan B), przyciski „wyżej / niżej” (bez nowej zależności, ale mniej wygodne).
 - **Dostępność:** każdy wiersz ma akcje VoiceOver „Przesuń wyżej” i „Przesuń niżej”, więc przeciąganie nie jest jedyną drogą.
 - **Koszt:** ok. 40 KB kodu JS. Wersja przypięta dokładnie (0.x może zmieniać API).
+- **Ważne:** lista z przeciąganiem jest głównym przewijanym widokiem ekranu (treść nad nią w `ListHeaderComponent`). Lista zagnieżdżona w `ScrollView` liczy pozycję z przesunięcia przewinięcia, które na iOS zawiera wcięcie pod nagłówkiem, więc wiersz odjeżdżał od palca (wykryte w teście na iPhonie).
 
 ## 19. `expo-haptics` (2026-11-13)
 
@@ -132,7 +133,7 @@ Usunięte z szablonu, bo na razie niepotrzebne: `@expo/ui`, `expo-device`, `expo
 
 ## 20. Systemowe nagłówki i stos w każdej karcie (2026-11-13)
 
-- **Co:** karty Ćwiczenia i Plany to foldery z `_layout.tsx` i `<Stack />` (wzór z dokumentacji native tabs w SDK 58). Duży tytuł, wyszukiwarka i przycisk Wstecz robi systemowy nagłówek (`headerLargeTitleEnabled`, `headerSearchBarOptions`). Formularze i filtry jako arkusze `formSheet`.
+- **Co:** karty Ćwiczenia i Plany to foldery z `_layout.tsx` i `<Stack />` (wzór z dokumentacji native tabs w SDK 58). Duży tytuł, wyszukiwarka i przycisk Wstecz robi systemowy nagłówek (`headerLargeTitleEnabled`, `headerSearchBarOptions`). Formularze i filtry jako systemowy modal z przyciskiem „Anuluj” (`formSheet` z wysokościami pokazywał na iPhonie pusty arkusz).
 - **Dlaczego:** na iOS 26+ systemowe nagłówki mają Liquid Glass i gest wstecz bez dodatkowego kodu. Używam tylko stabilnego API opcji; API kompozycji (`Stack.Toolbar` itd.) jest w wersji alfa.
 - **Menu „⋯”:** systemowy arkusz akcji (`ActionSheetIOS`), na podglądzie web zastępczo okno przeglądarki.
 
