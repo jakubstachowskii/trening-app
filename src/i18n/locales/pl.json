@@ -30,7 +30,20 @@
   },
   "common": {
     "soon": "Wkrótce",
-    "loading": "Ładowanie"
+    "loading": "Ładowanie",
+    "cancel": "Anuluj",
+    "save": "Zapisz",
+    "delete": "Usuń",
+    "edit": "Edytuj",
+    "done": "Gotowe",
+    "close": "Zamknij",
+    "more": "Więcej opcji",
+    "back": "Wróć",
+    "errorTitle": "Coś poszło nie tak",
+    "errorBody": "Nie udało się wczytać danych. Spróbuj jeszcze raz.",
+    "retry": "Spróbuj ponownie",
+    "notFound": "Nie ma już tego elementu.",
+    "optional": "opcjonalnie"
   },
   "units": {
     "sets": {
@@ -319,6 +332,160 @@
   },
   "exercise": {
     "illustrationLabel": "Miejsce na ilustrację: {name}",
-    "illustrationSoon": "Ilustracja pojawi się wkrótce"
+    "illustrationSoon": "Ilustracja pojawi się wkrótce",
+    "oneRepMax": "Szacowane 1RM",
+    "mostReps": "Najwięcej powtórzeń",
+    "longestDuration": "Najdłużej",
+    "last": "Ostatnio",
+    "noData": "brak danych",
+    "sections": "Sekcje ćwiczenia",
+    "tabGuide": "Opis",
+    "tabHistory": "Historia",
+    "tabRecords": "Rekordy",
+    "howTo": "Jak wykonać",
+    "mistakes": "Typowe błędy",
+    "note": "Notatka",
+    "primary": "Główne mięśnie",
+    "secondary": "Pomocnicze",
+    "guideMissingTitle": "Bez opisu",
+    "guideMissingBody": "Do własnego ćwiczenia możesz dopisać notatkę w edycji.",
+    "historyEmptyTitle": "Brak historii",
+    "historyEmptyBody": "Tu zobaczysz serie z zakończonych treningów z tym ćwiczeniem.",
+    "recordsEmptyTitle": "Brak rekordów",
+    "recordsEmptyBody": "Rekordy policzymy po pierwszym treningu z tym ćwiczeniem.",
+    "addToPlan": "Dodaj do planu",
+    "hide": "Ukryj ćwiczenie",
+    "unhide": "Pokaż ćwiczenie",
+    "hiddenInfo": "To ćwiczenie jest ukryte i nie pojawia się na liście.",
+    "hideInPlans": "Ćwiczenie jest w planach: {count}. Tam zostanie, zniknie tylko z listy ćwiczeń.",
+    "hideConfirm": "Ukryj",
+    "setLine": "{weight} kg × {reps}",
+    "repsLine": "{reps} powt.",
+    "setsLabel": "Serie"
+  },
+  "exerciseList": {
+    "searchPlaceholder": "Szukaj ćwiczenia",
+    "filters": "Filtry",
+    "filtersCount": "Filtry ({count})",
+    "add": "Dodaj własne ćwiczenie",
+    "hiddenTag": "ukryte",
+    "customTag": "własne",
+    "noResultsTitle": "Nic nie znaleziono",
+    "noResultsBody": "Zmień wyszukiwanie albo filtry.",
+    "clearFilters": "Wyczyść filtry",
+    "removeFilter": "Usuń filtr: {name}",
+    "count": "Wyniki: {count}"
+  },
+  "filters": {
+    "title": "Filtry",
+    "muscles": "Partia mięśni",
+    "equipment": "Sprzęt",
+    "types": "Typ ćwiczenia",
+    "other": "Inne",
+    "onlyCustom": "Tylko moje ćwiczenia",
+    "showHidden": "Pokaż ukryte",
+    "reset": "Wyczyść",
+    "show": "Pokaż wyniki ({count})"
+  },
+  "records": {
+    "heaviestWeight": "Największy ciężar",
+    "bestOneRepMax": "Szacowane 1RM",
+    "mostReps": "Najwięcej powtórzeń",
+    "bestWorkoutVolume": "Największa objętość w treningu",
+    "longestDuration": "Najdłuższa seria"
+  },
+  "customExercise": {
+    "titleNew": "Nowe ćwiczenie",
+    "titleEdit": "Edytuj ćwiczenie",
+    "name": "Nazwa",
+    "namePlaceholder": "np. Wyciskanie na maszynie Hammer",
+    "type": "Typ",
+    "primary": "Główne mięśnie",
+    "secondary": "Pomocnicze mięśnie",
+    "equipment": "Sprzęt",
+    "note": "Notatka",
+    "notePlaceholder": "Ustawienie maszyny, wskazówki",
+    "nameRequired": "Wpisz nazwę ćwiczenia.",
+    "primaryRequired": "Wybierz co najmniej jedną partię mięśni."
+  },
+  "addToPlan": {
+    "title": "Dodaj do planu",
+    "chooseDay": "Wybierz dzień",
+    "noPlansTitle": "Nie masz jeszcze planu",
+    "noPlansBody": "Ułóż plan albo skopiuj gotowy program w karcie Plany.",
+    "noDays": "Ten plan nie ma jeszcze dni.",
+    "added": "Dodano do: {plan} · {day}"
+  },
+  "plans": {
+    "active": "Aktywny plan",
+    "mine": "Moje plany",
+    "programs": "Gotowe programy",
+    "add": "Nowy plan",
+    "emptyTitle": "Nie masz jeszcze planu",
+    "emptyBody": "Ułóż własny plan albo zacznij od gotowego programu.",
+    "emptyAction": "Ułóż plan",
+    "activeBadge": "Aktywny",
+    "programMeta": "{level} · {days}"
+  },
+  "planDetail": {
+    "setActive": "Ustaw jako aktywny",
+    "isActive": "To jest Twój aktywny plan",
+    "unsetActive": "Przestań używać",
+    "days": "Dni treningowe",
+    "addDay": "Dodaj dzień",
+    "newDayName": "Dzień {count}",
+    "noDaysTitle": "Brak dni",
+    "noDaysBody": "Dodaj pierwszy dzień treningowy, np. „Push” albo „Dzień A”.",
+    "edit": "Edytuj plan",
+    "delete": "Usuń plan",
+    "deleteTitle": "Usunąć plan „{name}”?",
+    "deleteBody": "Dni i ćwiczenia z planu znikną. Zakończone treningi zostaną w historii.",
+    "fromProgram": "Na podstawie gotowego programu"
+  },
+  "planDay": {
+    "rename": "Nazwa dnia",
+    "exercises": "Ćwiczenia",
+    "addExercise": "Dodaj ćwiczenie",
+    "emptyTitle": "Brak ćwiczeń",
+    "emptyBody": "Dodaj pierwsze ćwiczenie do tego dnia.",
+    "delete": "Usuń dzień",
+    "deleteTitle": "Usunąć dzień „{name}”?",
+    "deleteBody": "Ćwiczenia z tego dnia znikną z planu.",
+    "removeExercise": "Usuń z dnia",
+    "removeTitle": "Usunąć „{name}” z dnia?",
+    "nameRequired": "Wpisz nazwę dnia."
+  },
+  "planForm": {
+    "titleNew": "Nowy plan",
+    "titleEdit": "Edytuj plan",
+    "name": "Nazwa",
+    "namePlaceholder": "np. Siłownia 4 dni",
+    "description": "Opis",
+    "descriptionPlaceholder": "Krótko, dla kogo i jak często",
+    "level": "Poziom",
+    "noLevel": "Bez poziomu",
+    "nameRequired": "Wpisz nazwę planu."
+  },
+  "planExercise": {
+    "title": "Serie i powtórzenia",
+    "sets": "Serie",
+    "repsMin": "Powtórzenia od",
+    "repsMax": "Powtórzenia do",
+    "duration": "Czas serii",
+    "weight": "Ciężar docelowy",
+    "rest": "Przerwa",
+    "note": "Notatka",
+    "repsOrder": "„Od” nie może być większe niż „do”.",
+    "unitReps": "powt.",
+    "unitSec": "s",
+    "unitKg": "kg"
+  },
+  "program": {
+    "copy": "Kopiuj do moich planów",
+    "copyHint": "Kopię możesz dowolnie zmieniać. Program zostaje bez zmian.",
+    "days": "Dni"
+  },
+  "picker": {
+    "title": "Wybierz ćwiczenie"
   }
 }
