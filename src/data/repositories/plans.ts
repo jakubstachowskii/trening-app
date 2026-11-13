@@ -199,3 +199,163 @@ export async function copyProgram(
     return planId;
   });
 }
+
+export async function updatePlan(db: Db, planId: string, input: PlanInput): Promise<void> {
+  const name = input.name.trim();
+  if (!name) throw new Error('Nazwa planu nie może być pusta.');
+  await db.run('UPDATE plan SET name = ?, description = ?, level = ? WHERE id = ?', [
+    name,
+    input.description?.trim() || null,
+    input.level ?? null,
+    planId,
+  ]);
+}
+
+export type PlanSummary = Plan & { dayCount: number; exerciseCount: number };
+
+/** Lista planów z liczbą dni i ćwiczeń, w tej samej kolejności co `listPlans`. */
+export async function listPlanSummaries(db: Db): Promise<PlanSummary[]> {
+  const rows = await db.all<PlanRow & { day_count: number; exercise_count: number }>(
+    `SELECT p.id, p.name, p.description, p.level, p.source_program_id, p.is_active, p.created_at,
+       (SELECT COUNT(*) FROM plan_day d WHERE d.plan_id = p.id) AS day_count,
+       (SELECT COUNT(*) FROM plan_exercise e JOIN plan_day d ON d.id = e.plan_day_id
+          WHERE d.plan_id = p.id) AS exercise_count
+     FROM plan p ORDER BY p.is_active DESC, p.created_at DESC`,
+  );
+  return rows.map((row) => ({
+    ...toPlan(row),
+    dayCount: Number(row.day_count),
+    exerciseCount: Number(row.exercise_count),
+  }));
+}
+
+export async function getPlanDay(
+  db: Db,
+  dayId: string,
+): Promise<(PlanDay & { planId: string }) | null> {
+  const day = await db.first<DayRow & { plan_id: string }>(
+    'SELECT id, plan_id, name, position FROM plan_day WHERE id = ?',
+    [dayId],
+  );
+  if (!day) return null;
+  const exercises = await db.all<ExerciseRow>(
+    'SELECT * FROM plan_exercise WHERE plan_day_id = ? ORDER BY position',
+    [dayId],
+  );
+  return {
+    id: day.id,
+    planId: day.plan_id,
+    name: day.name,
+    position: day.position,
+    exercises: exercises.map(toPlanExercise),
+  };
+}
+
+export async function renamePlanDay(db: Db, dayId: string, name: string): Promise<void> {
+  const trimmed = name.trim();
+  if (!trimmed) throw new Error('Nazwa dnia nie może być pusta.');
+  await db.run('UPDATE plan_day SET name = ? WHERE id = ?', [trimmed, dayId]);
+}
+
+/** Usuwa dzień z ćwiczeniami i domyka numerację pozostałych dni. */
+export async function deletePlanDay(db: Db, dayId: string): Promise<void> {
+  await db.transaction(async (tx) => {
+    const day = await tx.first<{ plan_id: string; position: number }>(
+      'SELECT plan_id, position FROM plan_day WHERE id = ?',
+      [dayId],
+    );
+    if (!day) return;
+    await tx.run('DELETE FROM plan_day WHERE id = ?', [dayId]);
+    await tx.run('UPDATE plan_day SET position = position - 1 WHERE plan_id = ? AND position > ?', [
+      day.plan_id,
+      day.position,
+    ]);
+  });
+}
+
+/**
+ * Ustawia kolejność według listy id. Lista musi zawierać dokładnie elementy rodzica,
+ * inaczej nic się nie zmienia (chroni przed nieaktualnym widokiem).
+ */
+const REORDER_SQL = {
+  days: {
+    list: 'SELECT id FROM plan_day WHERE plan_id = ?',
+    move: 'UPDATE plan_day SET position = ? WHERE id = ?',
+  },
+  exercises: {
+    list: 'SELECT id FROM plan_exercise WHERE plan_day_id = ?',
+    move: 'UPDATE plan_exercise SET position = ? WHERE id = ?',
+  },
+} as const;
+
+async function reorder(
+  db: Db,
+  sql: (typeof REORDER_SQL)[keyof typeof REORDER_SQL],
+  parentId: string,
+  orderedIds: string[],
+): Promise<void> {
+  await db.transaction(async (tx) => {
+    const current = await tx.all<{ id: string }>(sql.list, [parentId]);
+    const known = new Set(current.map((row) => row.id));
+    const unique = new Set(orderedIds);
+    if (unique.size !== orderedIds.length || unique.size !== known.size) {
+      throw new Error('Lista do zmiany kolejności jest nieaktualna.');
+    }
+    for (const id of orderedIds) {
+      if (!known.has(id)) throw new Error('Lista do zmiany kolejności jest nieaktualna.');
+    }
+    for (const [position, id] of orderedIds.entries()) {
+      await tx.run(sql.move, [position, id]);
+    }
+  });
+}
+
+export function reorderPlanDays(db: Db, planId: string, orderedIds: string[]): Promise<void> {
+  return reorder(db, REORDER_SQL.days, planId, orderedIds);
+}
+
+export function reorderPlanExercises(db: Db, dayId: string, orderedIds: string[]): Promise<void> {
+  return reorder(db, REORDER_SQL.exercises, dayId, orderedIds);
+}
+
+export async function getPlanExercise(db: Db, id: string): Promise<PlanExercise | null> {
+  const row = await db.first<ExerciseRow>('SELECT * FROM plan_exercise WHERE id = ?', [id]);
+  return row ? toPlanExercise(row) : null;
+}
+
+export async function updatePlanExercise(
+  db: Db,
+  id: string,
+  input: Omit<PlanExerciseInput, 'exerciseId'>,
+): Promise<void> {
+  await db.run(
+    `UPDATE plan_exercise SET target_sets = ?, reps_min = ?, reps_max = ?, target_weight_kg = ?,
+       target_duration_sec = ?, rest_sec = ?, note = ? WHERE id = ?`,
+    [
+      input.targetSets,
+      input.repsMin,
+      input.repsMax,
+      input.targetWeightKg,
+      input.targetDurationSec,
+      input.restSec,
+      input.note?.trim() || null,
+      id,
+    ],
+  );
+}
+
+/** Usuwa ćwiczenie z dnia i domyka numerację pozostałych. */
+export async function deletePlanExercise(db: Db, id: string): Promise<void> {
+  await db.transaction(async (tx) => {
+    const row = await tx.first<{ plan_day_id: string; position: number }>(
+      'SELECT plan_day_id, position FROM plan_exercise WHERE id = ?',
+      [id],
+    );
+    if (!row) return;
+    await tx.run('DELETE FROM plan_exercise WHERE id = ?', [id]);
+    await tx.run(
+      'UPDATE plan_exercise SET position = position - 1 WHERE plan_day_id = ? AND position > ?',
+      [row.plan_day_id, row.position],
+    );
+  });
+}
