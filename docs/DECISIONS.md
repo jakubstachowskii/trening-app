@@ -129,3 +129,15 @@ Usunięte z szablonu, bo na razie niepotrzebne: `@expo/ui`, `expo-device`, `expo
 
 - **Co:** wibracje przy wyborze w przełączniku i po upuszczeniu przeciąganego wiersza (`docs/DESIGN.md` §7).
 - **Dlaczego:** biblioteka Expo, bez uprawnień. Wibracja zawsze tylko uzupełnia to, co widać. Dokumentacja nie mówi wprost, czy działa w Expo Go, więc wywołania są zabezpieczone (brak wibracji nie psuje działania).
+
+## 20. Systemowe nagłówki i stos w każdej karcie (2026-11-13)
+
+- **Co:** karty Ćwiczenia i Plany to foldery z `_layout.tsx` i `<Stack />` (wzór z dokumentacji native tabs w SDK 58). Duży tytuł, wyszukiwarka i przycisk Wstecz robi systemowy nagłówek (`headerLargeTitleEnabled`, `headerSearchBarOptions`). Formularze i filtry jako arkusze `formSheet`.
+- **Dlaczego:** na iOS 26+ systemowe nagłówki mają Liquid Glass i gest wstecz bez dodatkowego kodu. Używam tylko stabilnego API opcji; API kompozycji (`Stack.Toolbar` itd.) jest w wersji alfa.
+- **Menu „⋯”:** systemowy arkusz akcji (`ActionSheetIOS`), na podglądzie web zastępczo okno przeglądarki.
+
+## 21. Testy ekranów z bazą w pamięci (2026-11-13)
+
+- Ekrany testujemy na prawdziwym SQLite w pamięci (`node:sqlite`) z gotowymi danymi, z atrapami `expo-router` i `useDb`.
+- Reanimated 4 nie ładuje się w Jest bez modułu natywnego (jego atrapa też go wymaga), więc `jest.setup.ts` ma prostą atrapę tych kilku funkcji, których używamy. Lista z przeciąganiem jest w testach zwykłą listą; zmianę kolejności testujemy akcjami VoiceOver. Ruch i przeciąganie sprawdzamy na telefonie.
+- W RNTL 14 `fireEvent` jest asynchroniczne, więc w testach zawsze z `await`.

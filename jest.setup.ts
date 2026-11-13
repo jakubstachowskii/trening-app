@@ -1,7 +1,7 @@
-// jest-expo zastępuje moduły natywne atrapami; expo-crypto potrzebuje prawdziwych UUID w testach bazy.
-// Gesty i przeciąganie list (F5): oficjalne atrapy bibliotek.
+// Gesty (F5): oficjalne atrapy biblioteki.
 import 'react-native-gesture-handler/jestSetup';
 
+// jest-expo zastępuje moduły natywne atrapami; expo-crypto potrzebuje prawdziwych UUID w testach bazy.
 jest.mock('expo-crypto', () => ({
   randomUUID: () => jest.requireActual<typeof import('node:crypto')>('node:crypto').randomUUID(),
 }));
