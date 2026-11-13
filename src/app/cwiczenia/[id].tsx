@@ -10,7 +10,7 @@ import { MetricTile } from '@/components/MetricTile';
 import { Pill } from '@/components/Pill';
 import { SegmentedControl } from '@/components/SegmentedControl';
 import { Skeleton } from '@/components/Skeleton';
-import { HeaderIconButton, type MenuItem, showMenu } from '@/components/stack';
+import { confirmDestructive, HeaderIconButton, type MenuItem, showMenu } from '@/components/stack';
 import { Text } from '@/components/Text';
 import { useDb } from '@/data/DatabaseProvider';
 import type { Exercise } from '@/data/models';
@@ -253,13 +253,12 @@ export default function ExerciseScreen() {
         if (exercise.isHidden) return void toggleHidden();
         const plans = await exercisePlanCount(db, exercise.id);
         if (!plans) return void toggleHidden();
-        showMenu(t('exercise.hideInPlans', { count: plans }), [
-          {
-            label: t('exercise.hideConfirm'),
-            onPress: () => void toggleHidden(),
-            destructive: true,
-          },
-        ]);
+        confirmDestructive(
+          t('exercise.hide'),
+          t('exercise.hideInPlans', { count: plans }),
+          t('exercise.hideConfirm'),
+          () => void toggleHidden(),
+        );
       },
     },
   ];
