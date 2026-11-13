@@ -487,5 +487,623 @@
   },
   "picker": {
     "title": "Wybierz ćwiczenie"
+  },
+  "exerciseGuides": {
+    "bench-press": {
+      "steps": "Połóż się na ławce, stopy oprzyj pewnie o podłogę i ściągnij łopatki.\nChwyć sztangę nieco szerzej niż barki i zdejmij ją ze stojaków.\nOpuść sztangę pod kontrolą do dolnej części klatki.\nWypchnij sztangę w górę, nie odrywając bioder od ławki.",
+      "mistakes": "Odbijanie sztangi od klatki.\nŁokcie rozstawione na boki pod kątem prostym do tułowia.\nOdrywanie bioder od ławki."
+    },
+    "incline-bench-press": {
+      "steps": "Ustaw oparcie ławki pod kątem około 30–45°.\nPołóż się, ściągnij łopatki i chwyć sztangę nieco szerzej niż barki.\nOpuść sztangę do górnej części klatki, pod obojczyki.\nWypchnij sztangę pionowo w górę.",
+      "mistakes": "Zbyt stromy kąt ławki, przez który pracują głównie barki.\nOpuszczanie sztangi na środek klatki zamiast wyżej.\nWyginanie pleców i odrywanie bioder."
+    },
+    "decline-bench-press": {
+      "steps": "Zablokuj nogi pod wałkami ławki ustawionej w dół.\nChwyć sztangę nieco szerzej niż barki i zdejmij ją ze stojaków.\nOpuść sztangę do dolnej części klatki.\nWypchnij sztangę w górę pod kontrolą.",
+      "mistakes": "Za duży spadek ławki.\nOpuszczanie sztangi w stronę szyi.\nPraca bez asekuracji przy ciężkich seriach."
+    },
+    "close-grip-bench-press": {
+      "steps": "Połóż się na ławce i chwyć sztangę na szerokość barków.\nTrzymaj łokcie blisko tułowia.\nOpuść sztangę do dolnej części klatki.\nWypchnij sztangę, prostując ramiona.",
+      "mistakes": "Chwyt tak wąski, że nadgarstki się wyginają.\nŁokcie uciekające na boki.\nSkracanie ruchu w dolnej fazie."
+    },
+    "dumbbell-bench-press": {
+      "steps": "Usiądź z hantlami na udach i połóż się, unosząc je nad klatkę.\nŚciągnij łopatki, stopy oprzyj o podłogę.\nOpuść hantle po bokach klatki, łokcie lekko pod tułowiem.\nWypchnij hantle w górę, lekko je do siebie zbliżając.",
+      "mistakes": "Opuszczanie hantli za nisko, z utratą napięcia w barkach.\nUderzanie hantlami o siebie na górze.\nNierówne tempo obu rąk."
+    },
+    "incline-dumbbell-press": {
+      "steps": "Ustaw ławkę pod kątem około 30–45°.\nPołóż się z hantlami nad górną częścią klatki.\nOpuść hantle po bokach klatki pod kontrolą.\nWypchnij hantle w górę.",
+      "mistakes": "Zbyt stromy kąt ławki.\nŁokcie rozstawione szeroko na boki.\nOdrywanie bioder od ławki."
+    },
+    "decline-dumbbell-press": {
+      "steps": "Zablokuj nogi na ławce ustawionej w dół i połóż się z hantlami.\nUnieś hantle nad dolną część klatki.\nOpuść je po bokach klatki.\nWypchnij hantle w górę.",
+      "mistakes": "Za duży spadek ławki.\nZbyt szybkie opuszczanie hantli.\nNiekontrolowane odkładanie hantli po serii."
+    },
+    "dumbbell-fly": {
+      "steps": "Połóż się na ławce z hantlami nad klatką, ramiona lekko ugięte.\nRozłóż ramiona szeroko na boki, aż poczujesz rozciąganie klatki.\nZachowaj stałe ugięcie w łokciach.\nZłącz ramiona nad klatką ruchem po łuku.",
+      "mistakes": "Prostowanie i zginanie łokci jak przy wyciskaniu.\nZbyt nisko opuszczone ramiona.\nZa duży ciężar kosztem kontroli."
+    },
+    "incline-dumbbell-fly": {
+      "steps": "Połóż się na ławce skośnej z hantlami nad klatką.\nRamiona lekko ugięte, dłonie zwrócone do siebie.\nRozłóż ramiona na boki po łuku.\nWróć do góry, ściskając klatkę.",
+      "mistakes": "Zmiana kąta w łokciach w trakcie ruchu.\nOpuszczanie ramion poniżej linii barków.\nSzarpanie na dole ruchu."
+    },
+    "cable-crossover": {
+      "steps": "Stań pośrodku bramy z uchwytami górnych wyciągów, krok do przodu.\nPochyl się lekko, ramiona lekko ugięte.\nPrzyciągnij uchwyty po łuku przed siebie, w dół.\nWróć powoli do rozłożonych ramion.",
+      "mistakes": "Ciągnięcie rękami jak przy wyciskaniu.\nOdchylanie tułowia do tyłu.\nPuszczanie ciężaru w fazie powrotu."
+    },
+    "low-cable-fly": {
+      "steps": "Ustaw wyciągi nisko i stań pośrodku, krok do przodu.\nRamiona lekko ugięte, dłonie zwrócone do przodu.\nUnieś uchwyty po łuku w górę i do środka, do wysokości klatki.\nOpuść je powoli.",
+      "mistakes": "Unoszenie uchwytów wyżej niż barki.\nZginanie łokci w trakcie ruchu.\nBujanie tułowiem."
+    },
+    "pec-deck": {
+      "steps": "Ustaw siedzisko tak, by uchwyty były na wysokości klatki.\nOprzyj plecy i chwyć uchwyty z lekko ugiętymi łokciami.\nZłącz ramiona przed sobą.\nWróć powoli, aż poczujesz rozciąganie klatki.",
+      "mistakes": "Siedzisko ustawione za nisko lub za wysoko.\nOdrywanie pleców od oparcia.\nCofanie ramion za linię barków."
+    },
+    "machine-chest-press": {
+      "steps": "Ustaw siedzisko tak, by uchwyty były na wysokości środka klatki.\nOprzyj plecy i ściągnij łopatki.\nWypchnij uchwyty przed siebie, nie blokując mocno łokci.\nWróć powoli.",
+      "mistakes": "Odrywanie pleców od oparcia.\nUnoszenie barków do uszu.\nZa szybki powrót."
+    },
+    "incline-machine-press": {
+      "steps": "Ustaw siedzisko tak, by uchwyty były na wysokości górnej części klatki.\nOprzyj plecy i ściągnij łopatki.\nWypchnij uchwyty w górę i przed siebie.\nWróć powoli.",
+      "mistakes": "Za niskie siedzisko.\nWyginanie pleców w łuk.\nSkracanie ruchu."
+    },
+    "smith-bench-press": {
+      "steps": "Ustaw ławkę tak, by sztanga opadała na dolną część klatki.\nŚciągnij łopatki i chwyć sztangę nieco szerzej niż barki.\nOdblokuj sztangę i opuść ją do klatki.\nWypchnij ją w górę.",
+      "mistakes": "Źle ustawiona ławka względem prowadnicy.\nZapominanie o zabezpieczeniach suwnicy.\nOdbijanie sztangi od klatki."
+    },
+    "smith-incline-press": {
+      "steps": "Ustaw ławkę skośną tak, by sztanga opadała pod obojczyki.\nŚciągnij łopatki i chwyć sztangę nieco szerzej niż barki.\nOpuść sztangę do górnej części klatki.\nWypchnij ją w górę.",
+      "mistakes": "Sztanga opada na szyję lub środek klatki.\nZbyt stromy kąt ławki.\nOdrywanie bioder."
+    },
+    "push-up": {
+      "steps": "Oprzyj dłonie nieco szerzej niż barki, ciało w jednej linii.\nNapnij brzuch i pośladki.\nOpuść klatkę prawie do podłogi, łokcie lekko przy tułowiu.\nWypchnij się do góry.",
+      "mistakes": "Opadające biodra.\nGłowa wysunięta do przodu.\nSkracanie ruchu w dolnej fazie."
+    },
+    "incline-push-up": {
+      "steps": "Oprzyj dłonie na ławce lub skrzyni, ciało w jednej linii.\nNapnij brzuch i pośladki.\nOpuść klatkę do krawędzi podwyższenia.\nWypchnij się do góry.",
+      "mistakes": "Wypinanie bioder w górę.\nŁokcie rozstawione szeroko.\nNiestabilne podwyższenie."
+    },
+    "decline-push-up": {
+      "steps": "Oprzyj stopy na ławce, dłonie na podłodze nieco szerzej niż barki.\nUtrzymaj ciało w jednej linii.\nOpuść klatkę w stronę podłogi.\nWypchnij się do góry.",
+      "mistakes": "Opadające biodra.\nZbyt wysokie podwyższenie na początek.\nSkracanie ruchu."
+    },
+    "diamond-push-up": {
+      "steps": "Złącz dłonie pod klatką tak, by kciuki i palce wskazujące tworzyły romb.\nUtrzymaj ciało w jednej linii.\nOpuść klatkę do dłoni, łokcie blisko tułowia.\nWypchnij się do góry.",
+      "mistakes": "Łokcie uciekające na boki.\nOpadające biodra.\nZa płytki ruch."
+    },
+    "dip": {
+      "steps": "Wejdź w podpór na poręczach na prostych ramionach.\nPochyl tułów lekko do przodu.\nOpuść się, aż ramiona będą mniej więcej równoległe do podłogi.\nWypchnij się do góry.",
+      "mistakes": "Schodzenie zbyt nisko przy sztywnych barkach.\nBujanie nogami.\nUnoszenie barków do uszu."
+    },
+    "weighted-dip": {
+      "steps": "Zawieś obciążenie na pasie i wejdź w podpór na poręczach.\nPochyl tułów lekko do przodu.\nOpuść się pod kontrolą.\nWypchnij się do góry.",
+      "mistakes": "Za duże obciążenie kosztem zakresu ruchu.\nBujające się obciążenie.\nSzybkie, niekontrolowane opuszczanie."
+    },
+    "assisted-dip": {
+      "steps": "Ustaw odciążenie i uklęknij lub stań na platformie maszyny.\nChwyć uchwyty i wyprostuj ramiona.\nOpuść się pod kontrolą.\nWypchnij się do góry.",
+      "mistakes": "Za duże odciążenie, przez które ćwiczenie jest za łatwe.\nSkracanie ruchu.\nGarbienie się."
+    },
+    "dumbbell-pullover": {
+      "steps": "Połóż się na ławce i trzymaj jeden hantel oburącz nad klatką.\nRamiona lekko ugięte.\nOpuść hantel po łuku za głowę.\nWróć nad klatkę tym samym torem.",
+      "mistakes": "Zginanie łokci w trakcie ruchu.\nOpuszczanie hantla za nisko.\nWyginanie pleców w łuk."
+    },
+    "overhead-press": {
+      "steps": "Stań prosto, sztanga na wysokości obojczyków, chwyt nieco szerszy niż barki.\nNapnij brzuch i pośladki.\nWypchnij sztangę pionowo nad głowę.\nOpuść ją pod kontrolą do obojczyków.",
+      "mistakes": "Wyginanie pleców w łuk.\nWypychanie sztangi do przodu zamiast w górę.\nPomaganie sobie nogami."
+    },
+    "push-press": {
+      "steps": "Stań ze sztangą na obojczykach, stopy na szerokość bioder.\nUgnij lekko kolana.\nWybij się nogami i wypchnij sztangę nad głowę.\nOpuść sztangę z powrotem na obojczyki.",
+      "mistakes": "Za głębokie ugięcie kolan.\nWyginanie pleców przy wypychaniu.\nOpóźnione wypchnięcie rękami."
+    },
+    "dumbbell-shoulder-press": {
+      "steps": "Usiądź na ławce z oparciem, hantle na wysokości barków.\nDłonie zwrócone do przodu.\nWypchnij hantle nad głowę.\nOpuść je pod kontrolą do barków.",
+      "mistakes": "Odrywanie pleców od oparcia.\nUderzanie hantlami o siebie.\nZa płytkie opuszczanie."
+    },
+    "arnold-press": {
+      "steps": "Usiądź z hantlami przed sobą, dłonie zwrócone do twarzy.\nWypychając hantle w górę, obróć dłonie do przodu.\nWyprostuj ramiona nad głową.\nWróć, obracając dłonie z powrotem.",
+      "mistakes": "Zbyt szybki ruch.\nWyginanie pleców.\nZa duży ciężar."
+    },
+    "machine-shoulder-press": {
+      "steps": "Ustaw siedzisko tak, by uchwyty były na wysokości barków.\nOprzyj plecy.\nWypchnij uchwyty w górę.\nOpuść je powoli.",
+      "mistakes": "Odrywanie pleców od oparcia.\nUnoszenie barków do uszu.\nSkracanie ruchu."
+    },
+    "smith-shoulder-press": {
+      "steps": "Ustaw ławkę z oparciem pod suwnicą.\nChwyć sztangę nieco szerzej niż barki.\nOpuść sztangę przed twarzą do wysokości brody.\nWypchnij ją w górę.",
+      "mistakes": "Opuszczanie sztangi za głowę.\nZła pozycja ławki względem prowadnicy.\nOdrywanie pleców."
+    },
+    "landmine-press": {
+      "steps": "Stań przodem do końca sztangi zamocowanej w landmine.\nTrzymaj koniec sztangi jedną ręką przy barku.\nWypchnij sztangę w górę i do przodu.\nOpuść ją pod kontrolą.",
+      "mistakes": "Skręcanie tułowia.\nWyginanie pleców.\nUnoszenie barku do ucha."
+    },
+    "lateral-raise": {
+      "steps": "Stań prosto z hantlami przy bokach.\nŁokcie lekko ugięte.\nUnieś ramiona bokiem do wysokości barków.\nOpuść je powoli.",
+      "mistakes": "Bujanie tułowiem.\nUnoszenie hantli wyżej niż barki.\nPodciąganie barków do uszu."
+    },
+    "cable-lateral-raise": {
+      "steps": "Stań bokiem do wyciągu dolnego, uchwyt w dalszej ręce.\nŁokieć lekko ugięty.\nUnieś ramię bokiem do wysokości barku.\nOpuść je powoli.",
+      "mistakes": "Odchylanie tułowia.\nZa duży ciężar.\nSzarpnięcie na początku ruchu."
+    },
+    "machine-lateral-raise": {
+      "steps": "Ustaw siedzisko tak, by barki były na osi maszyny.\nOprzyj ramiona o poduszki.\nUnieś ramiona bokiem do wysokości barków.\nOpuść je powoli.",
+      "mistakes": "Złe ustawienie siedziska.\nPodciąganie barków do uszu.\nZa szybki powrót."
+    },
+    "front-raise": {
+      "steps": "Stań prosto z hantlami przed udami.\nŁokcie lekko ugięte.\nUnieś hantle przed sobą do wysokości barków.\nOpuść je powoli.",
+      "mistakes": "Bujanie tułowiem.\nUnoszenie hantli ponad głowę.\nZa duży ciężar."
+    },
+    "plate-front-raise": {
+      "steps": "Stań prosto i trzymaj talerz oburącz przed udami.\nŁokcie lekko ugięte.\nUnieś talerz przed sobą do wysokości oczu.\nOpuść go powoli.",
+      "mistakes": "Odchylanie się do tyłu.\nUnoszenie talerza zbyt wysoko.\nSzybkie opuszczanie."
+    },
+    "rear-delt-fly": {
+      "steps": "Pochyl tułów prawie równolegle do podłogi, plecy proste.\nTrzymaj hantle pod sobą, łokcie lekko ugięte.\nUnieś ramiona bokiem do wysokości tułowia.\nOpuść je powoli.",
+      "mistakes": "Zaokrąglone plecy.\nŚciąganie łopatek zamiast pracy tylnych barków.\nZa duży ciężar i bujanie."
+    },
+    "reverse-pec-deck": {
+      "steps": "Usiądź przodem do oparcia maszyny.\nChwyć uchwyty na wysokości barków.\nRozłóż ramiona na boki, lekko ugięte.\nWróć powoli.",
+      "mistakes": "Złe ustawienie siedziska.\nŚciąganie łopatek zamiast pracy barków.\nSzarpanie."
+    },
+    "face-pull": {
+      "steps": "Ustaw linę na wyciągu górnym, mniej więcej na wysokości twarzy.\nChwyć końce liny nachwytem.\nPrzyciągnij linę do twarzy, rozchylając dłonie i łokcie na boki.\nWróć powoli.",
+      "mistakes": "Wyciąg ustawiony za nisko.\nOdchylanie się do tyłu.\nZa duży ciężar."
+    },
+    "band-pull-apart": {
+      "steps": "Trzymaj gumę przed sobą na wysokości barków, ramiona proste.\nRozciągnij gumę na boki, aż dotknie klatki.\nŚciągnij przy tym łopatki.\nWróć powoli.",
+      "mistakes": "Zginanie łokci.\nUnoszenie barków.\nZbyt mocna guma."
+    },
+    "upright-row": {
+      "steps": "Stań prosto ze sztangą przed udami, chwyt na szerokość barków.\nUnieś sztangę wzdłuż tułowia, prowadząc łokcie na boki i w górę.\nZatrzymaj ją na wysokości dolnej części klatki.\nOpuść ją powoli.",
+      "mistakes": "Zbyt wąski chwyt.\nUnoszenie sztangi aż pod brodę.\nBujanie tułowiem."
+    },
+    "barbell-shrug": {
+      "steps": "Stań prosto ze sztangą przed udami.\nUnieś barki prosto w górę, w stronę uszu.\nZatrzymaj się na chwilę.\nOpuść barki powoli.",
+      "mistakes": "Krążenie barkami.\nZginanie łokci.\nZa krótki zakres ruchu."
+    },
+    "dumbbell-shrug": {
+      "steps": "Stań prosto z hantlami przy bokach.\nUnieś barki prosto w górę.\nZatrzymaj się na chwilę.\nOpuść barki powoli.",
+      "mistakes": "Krążenie barkami.\nPochylanie głowy do przodu.\nSzarpanie ciężarem."
+    },
+    "deadlift": {
+      "steps": "Stań ze sztangą nad śródstopiem, stopy na szerokość bioder.\nChwyć sztangę tuż za kolanami, plecy proste, klatka do przodu.\nPodnieś sztangę, prowadząc ją blisko nóg, aż wyprostujesz biodra i kolana.\nOpuść ją tym samym torem pod kontrolą.",
+      "mistakes": "Zaokrąglone plecy.\nSztanga oddalona od nóg.\nOdchylanie się do tyłu na górze."
+    },
+    "sumo-deadlift": {
+      "steps": "Stań szeroko, palce stóp skierowane na zewnątrz.\nChwyć sztangę między nogami na szerokość barków.\nWypchnij podłogę nogami i wyprostuj biodra, kolana prowadź na zewnątrz.\nOpuść sztangę pod kontrolą.",
+      "mistakes": "Kolana uciekające do środka.\nBiodra unoszące się szybciej niż barki.\nZaokrąglone plecy."
+    },
+    "trap-bar-deadlift": {
+      "steps": "Stań w środku sztangi heksagonalnej, stopy na szerokość bioder.\nChwyć uchwyty, plecy proste, biodra nieco niżej niż przy zwykłym martwym ciągu.\nWstań, prostując kolana i biodra jednocześnie.\nOpuść sztangę pod kontrolą.",
+      "mistakes": "Zaokrąglone plecy.\nUnoszenie bioder bez prostowania kolan.\nOdchylanie się na górze."
+    },
+    "romanian-deadlift": {
+      "steps": "Stań prosto ze sztangą przed udami, kolana lekko ugięte.\nPrzesuwaj biodra do tyłu, sztanga sunie po udach w dół.\nZatrzymaj się, gdy poczujesz mocne rozciąganie tyłu ud.\nWróć, wypychając biodra do przodu.",
+      "mistakes": "Zaokrąglone plecy.\nZginanie kolan jak w przysiadzie.\nOddalanie sztangi od nóg."
+    },
+    "dumbbell-romanian-deadlift": {
+      "steps": "Stań z hantlami przed udami, kolana lekko ugięte.\nCofaj biodra, opuszczając hantle wzdłuż nóg.\nZatrzymaj się przy rozciągnięciu tyłu ud.\nWróć, wypychając biodra do przodu.",
+      "mistakes": "Zaokrąglone plecy.\nHantle oddalone od nóg.\nZbyt mocne ugięcie kolan."
+    },
+    "rack-pull": {
+      "steps": "Ustaw sztangę na podporach na wysokości kolan lub tuż pod nimi.\nChwyć ją, plecy proste, barki nad sztangą.\nWyprostuj biodra, przyciągając sztangę do ud.\nOpuść ją pod kontrolą na podpory.",
+      "mistakes": "Odchylanie się do tyłu na górze.\nZaokrąglone plecy.\nUpuszczanie sztangi na podpory."
+    },
+    "good-morning": {
+      "steps": "Połóż sztangę na górnej części pleców, kolana lekko ugięte.\nCofaj biodra i pochylaj tułów do przodu, plecy proste.\nZatrzymaj się, gdy tułów jest prawie równoległy do podłogi albo czujesz mocne rozciąganie.\nWróć do wyprostu.",
+      "mistakes": "Zaokrąglone plecy.\nZa duży ciężar.\nZbyt głęboki skłon."
+    },
+    "barbell-row": {
+      "steps": "Stań ze sztangą, ugnij lekko kolana i pochyl tułów do około 45°.\nChwyć sztangę nachwytem nieco szerzej niż barki.\nPrzyciągnij sztangę do dolnej części brzucha.\nOpuść ją pod kontrolą.",
+      "mistakes": "Prostowanie tułowia przy każdym powtórzeniu.\nZaokrąglone plecy.\nSzarpanie sztangą."
+    },
+    "pendlay-row": {
+      "steps": "Pochyl tułów prawie równolegle do podłogi, sztanga leży na ziemi.\nChwyć ją nachwytem nieco szerzej niż barki.\nPrzyciągnij sztangę dynamicznie do dolnej części klatki.\nOdłóż ją na ziemię przed kolejnym powtórzeniem.",
+      "mistakes": "Unoszenie tułowia przy przyciąganiu.\nZaokrąglone plecy.\nRzucanie sztangą o podłogę."
+    },
+    "dumbbell-row": {
+      "steps": "Oprzyj kolano i dłoń o ławkę, plecy proste.\nTrzymaj hantel w wolnej ręce.\nPrzyciągnij hantel do biodra, łokieć blisko tułowia.\nOpuść go powoli.",
+      "mistakes": "Skręcanie tułowia.\nPrzyciąganie hantla do barku zamiast do biodra.\nZaokrąglone plecy."
+    },
+    "chest-supported-row": {
+      "steps": "Połóż się brzuchem na ławce skośnej z hantlami w rękach.\nRamiona zwisają w dół.\nPrzyciągnij hantle do bioder, ściągając łopatki.\nOpuść je powoli.",
+      "mistakes": "Odrywanie klatki od ławki.\nZa krótki ruch.\nUnoszenie barków do uszu."
+    },
+    "t-bar-row": {
+      "steps": "Stań nad sztangą T, kolana lekko ugięte, tułów pochylony.\nChwyć uchwyty.\nPrzyciągnij ciężar do brzucha.\nOpuść go pod kontrolą.",
+      "mistakes": "Zaokrąglone plecy.\nPomaganie sobie biodrami.\nZa duży ciężar."
+    },
+    "seated-cable-row": {
+      "steps": "Usiądź przy wyciągu dolnym, stopy na podpórkach, kolana lekko ugięte.\nChwyć uchwyt i wyprostuj plecy.\nPrzyciągnij uchwyt do brzucha, ściągając łopatki.\nWróć powoli, prostując ramiona.",
+      "mistakes": "Bujanie tułowiem w przód i w tył.\nZaokrąglanie pleców przy powrocie.\nUnoszenie barków."
+    },
+    "machine-row": {
+      "steps": "Ustaw siedzisko tak, by uchwyty były na wysokości dolnej części klatki.\nOprzyj klatkę o poduszkę.\nPrzyciągnij uchwyty, ściągając łopatki.\nWróć powoli.",
+      "mistakes": "Odrywanie klatki od oparcia.\nUnoszenie barków.\nSzarpanie."
+    },
+    "lat-pulldown": {
+      "steps": "Usiądź przy wyciągu, zablokuj uda pod wałkami.\nChwyć drążek szeroko nachwytem.\nŚciągnij drążek do górnej części klatki, prowadząc łokcie w dół.\nWróć powoli do góry.",
+      "mistakes": "Ściąganie drążka za głowę.\nMocne odchylanie się do tyłu.\nZa szybki powrót."
+    },
+    "close-grip-pulldown": {
+      "steps": "Usiądź przy wyciągu z uchwytem do wąskiego chwytu.\nŚciągnij uchwyt do górnej części klatki.\nŁokcie prowadź w dół wzdłuż tułowia.\nWróć powoli.",
+      "mistakes": "Odchylanie się do tyłu.\nPraca głównie rękami.\nSkracanie ruchu."
+    },
+    "reverse-grip-pulldown": {
+      "steps": "Usiądź przy wyciągu i chwyć drążek podchwytem na szerokość barków.\nŚciągnij drążek do górnej części klatki.\nŁokcie prowadź w dół.\nWróć powoli.",
+      "mistakes": "Bujanie tułowiem.\nUnoszenie barków na górze.\nZa duży ciężar."
+    },
+    "straight-arm-pulldown": {
+      "steps": "Stań przed wyciągiem górnym, lekko pochylony, ramiona proste.\nChwyć drążek lub linę.\nŚciągnij uchwyt łukiem do ud.\nWróć powoli do góry.",
+      "mistakes": "Zginanie łokci.\nPomaganie sobie tułowiem.\nZa duży ciężar."
+    },
+    "pull-up": {
+      "steps": "Zawiśnij na drążku nachwytem nieco szerzej niż barki.\nŚciągnij łopatki w dół.\nPodciągnij się, aż broda znajdzie się nad drążkiem.\nOpuść się powoli do pełnego zwisu.",
+      "mistakes": "Bujanie się i podrzucanie nogami.\nNiepełny zakres ruchu.\nSpadanie w dół bez kontroli."
+    },
+    "chin-up": {
+      "steps": "Zawiśnij na drążku podchwytem na szerokość barków.\nŚciągnij łopatki w dół.\nPodciągnij się, aż broda znajdzie się nad drążkiem.\nOpuść się powoli.",
+      "mistakes": "Bujanie się.\nNiepełny zakres ruchu.\nWysuwanie brody zamiast podciągania się."
+    },
+    "neutral-grip-pull-up": {
+      "steps": "Chwyć równoległe uchwyty, dłonie zwrócone do siebie.\nŚciągnij łopatki w dół.\nPodciągnij się, aż broda znajdzie się nad uchwytami.\nOpuść się powoli.",
+      "mistakes": "Bujanie się.\nSkracanie ruchu na dole.\nUnoszenie barków do uszu."
+    },
+    "weighted-pull-up": {
+      "steps": "Zawieś obciążenie na pasie i chwyć drążek nachwytem.\nŚciągnij łopatki w dół.\nPodciągnij się, aż broda będzie nad drążkiem.\nOpuść się powoli.",
+      "mistakes": "Za duże obciążenie kosztem zakresu.\nBujające się obciążenie.\nSzarpanie."
+    },
+    "weighted-chin-up": {
+      "steps": "Zawieś obciążenie na pasie i chwyć drążek podchwytem.\nŚciągnij łopatki w dół.\nPodciągnij się, aż broda będzie nad drążkiem.\nOpuść się powoli.",
+      "mistakes": "Za duże obciążenie.\nNiepełny zakres ruchu.\nBujanie się."
+    },
+    "assisted-pull-up": {
+      "steps": "Ustaw odciążenie i uklęknij na platformie maszyny.\nChwyć uchwyty nachwytem.\nPodciągnij się, aż broda będzie nad uchwytami.\nOpuść się powoli.",
+      "mistakes": "Za duże odciążenie.\nSkracanie ruchu.\nZa szybki powrót."
+    },
+    "band-assisted-pull-up": {
+      "steps": "Zaczep gumę o drążek i oprzyj w niej stopę lub kolano.\nChwyć drążek nachwytem.\nPodciągnij się, aż broda będzie nad drążkiem.\nOpuść się powoli.",
+      "mistakes": "Odbijanie się od gumy na dole.\nZa mocna guma.\nNiepełny zakres ruchu."
+    },
+    "inverted-row": {
+      "steps": "Połóż się pod drążkiem ustawionym na wysokości bioder i chwyć go.\nUtrzymaj ciało w jednej linii, pięty na podłodze.\nPrzyciągnij klatkę do drążka.\nOpuść się powoli.",
+      "mistakes": "Opadające biodra.\nWysuwanie brody do drążka.\nSkracanie ruchu."
+    },
+    "back-extension": {
+      "steps": "Ustaw ławkę rzymską tak, by biodra były tuż nad poduszką.\nSkrzyżuj ręce na klatce.\nOpuść tułów w dół, plecy proste.\nUnieś tułów do linii prostej z nogami.",
+      "mistakes": "Przeprost w odcinku lędźwiowym na górze.\nSzarpanie.\nZaokrąglanie pleców na dole."
+    },
+    "weighted-back-extension": {
+      "steps": "Ustaw ławkę rzymską i trzymaj talerz przy klatce.\nOpuść tułów w dół, plecy proste.\nUnieś tułów do linii prostej z nogami.\nWracaj powoli.",
+      "mistakes": "Przeprost na górze.\nZa duże obciążenie.\nSzybkie, niekontrolowane powtórzenia."
+    },
+    "back-squat": {
+      "steps": "Połóż sztangę na górnej części pleców, stopy nieco szerzej niż biodra.\nNapnij brzuch i weź oddech.\nZejdź w dół, cofając biodra i uginając kolana, aż uda będą co najmniej równoległe do podłogi.\nWstań, wypychając podłogę stopami.",
+      "mistakes": "Kolana uciekające do środka.\nOdrywanie pięt od podłogi.\nZaokrąglone plecy na dole."
+    },
+    "front-squat": {
+      "steps": "Połóż sztangę na przednich barkach, łokcie wysoko.\nStopy nieco szerzej niż biodra.\nZejdź w dół, tułów jak najbardziej pionowo.\nWstań, utrzymując łokcie wysoko.",
+      "mistakes": "Opadające łokcie.\nPochylanie tułowia do przodu.\nOdrywanie pięt."
+    },
+    "goblet-squat": {
+      "steps": "Trzymaj hantel pionowo przy klatce, stopy nieco szerzej niż biodra.\nZejdź w dół, łokcie między kolanami.\nTułów prosto, pięty na podłodze.\nWstań do pełnego wyprostu.",
+      "mistakes": "Zaokrąglone plecy.\nOdrywanie pięt.\nKolana uciekające do środka."
+    },
+    "smith-squat": {
+      "steps": "Ustaw się pod sztangą suwnicy, stopy lekko przed sztangą.\nOdblokuj sztangę.\nZejdź w dół, aż uda będą równoległe do podłogi.\nWstań i zablokuj sztangę po serii.",
+      "mistakes": "Stopy ustawione za bardzo pod sztangą.\nZapominanie o zabezpieczeniach.\nZa płytki przysiad."
+    },
+    "hack-squat": {
+      "steps": "Oprzyj plecy i barki o poduszki maszyny, stopy na środku platformy.\nOdblokuj zabezpieczenie.\nZejdź w dół pod kontrolą.\nWypchnij się do góry, nie blokując mocno kolan.",
+      "mistakes": "Odrywanie pięt od platformy.\nZa płytki ruch.\nGwałtowne blokowanie kolan."
+    },
+    "leg-press": {
+      "steps": "Usiądź na maszynie, plecy przy oparciu, stopy na szerokość bioder na środku platformy.\nOdblokuj zabezpieczenie.\nOpuść platformę, aż kolana zbliżą się do klatki.\nWypchnij platformę, nie blokując mocno kolan.",
+      "mistakes": "Odrywanie bioder od siedziska na dole.\nGwałtowne blokowanie kolan.\nKolana uciekające do środka."
+    },
+    "bodyweight-squat": {
+      "steps": "Stań ze stopami nieco szerzej niż biodra.\nWyciągnij ręce przed siebie.\nZejdź w dół, cofając biodra, pięty na podłodze.\nWstań do pełnego wyprostu.",
+      "mistakes": "Odrywanie pięt.\nKolana uciekające do środka.\nZa płytki przysiad."
+    },
+    "pistol-squat": {
+      "steps": "Stań na jednej nodze, drugą wyciągnij przed siebie.\nRęce przed sobą dla równowagi.\nZejdź w dół na nodze podporowej, jak najniżej.\nWstań bez dotykania podłogi drugą nogą.",
+      "mistakes": "Kolano uciekające do środka.\nOdrywanie pięty.\nOpadanie na dół bez kontroli."
+    },
+    "bulgarian-split-squat": {
+      "steps": "Stań przodem, tylną stopę połóż na ławce.\nTrzymaj hantle przy bokach.\nZejdź w dół, aż przednie udo będzie prawie równoległe do podłogi.\nWypchnij się przednią nogą do góry.",
+      "mistakes": "Przednia stopa za blisko ławki.\nKolano uciekające do środka.\nPochylanie się mocno do przodu."
+    },
+    "lunge": {
+      "steps": "Stań prosto z hantlami przy bokach.\nZrób duży krok do przodu.\nOpuść tylne kolano prawie do podłogi.\nWróć do pozycji wyjściowej i zmień nogę.",
+      "mistakes": "Za krótki krok.\nPrzednie kolano uciekające do środka.\nUderzanie kolanem o podłogę."
+    },
+    "walking-lunge": {
+      "steps": "Stań prosto z hantlami lub bez.\nZrób krok do przodu i opuść tylne kolano prawie do podłogi.\nWstań, przenosząc tylną nogę do przodu w kolejny krok.\nIdź dalej, zmieniając nogi.",
+      "mistakes": "Za krótkie kroki.\nPochylanie się do przodu.\nUtrata równowagi przez zbyt szybkie tempo."
+    },
+    "barbell-lunge": {
+      "steps": "Połóż sztangę na górnej części pleców.\nZrób krok do przodu.\nOpuść tylne kolano prawie do podłogi.\nWróć do pozycji wyjściowej i zmień nogę.",
+      "mistakes": "Za wąskie ustawienie stóp i chwianie się.\nPrzednie kolano uciekające do środka.\nPochylanie tułowia."
+    },
+    "reverse-lunge": {
+      "steps": "Stań prosto z hantlami przy bokach.\nZrób krok do tyłu.\nOpuść tylne kolano prawie do podłogi.\nWróć do pozycji wyjściowej, odpychając się przednią nogą.",
+      "mistakes": "Za krótki krok.\nPochylanie tułowia.\nPrzednie kolano uciekające do środka."
+    },
+    "step-up": {
+      "steps": "Stań przed skrzynią z hantlami przy bokach.\nPostaw całą stopę na skrzyni.\nWejdź, prostując nogę na skrzyni.\nZejdź pod kontrolą i powtórz.",
+      "mistakes": "Odbijanie się dolną nogą.\nZa wysoka skrzynia.\nKolano uciekające do środka."
+    },
+    "leg-extension": {
+      "steps": "Usiądź na maszynie, wałek na dole goleni, kolana na osi maszyny.\nChwyć uchwyty.\nWyprostuj nogi.\nOpuść je powoli.",
+      "mistakes": "Złe ustawienie oparcia.\nWybijanie ciężaru.\nOdrywanie bioder od siedziska."
+    },
+    "lying-leg-curl": {
+      "steps": "Połóż się na brzuchu, wałek nad piętami, kolana tuż za krawędzią ławki.\nChwyć uchwyty.\nUgnij nogi, przyciągając pięty do pośladków.\nOpuść je powoli.",
+      "mistakes": "Unoszenie bioder.\nSzarpanie.\nNiepełny zakres ruchu."
+    },
+    "seated-leg-curl": {
+      "steps": "Usiądź, wałek pod łydkami, kolana na osi maszyny.\nZablokuj uda górnym wałkiem.\nUgnij nogi w dół i pod siebie.\nWróć powoli.",
+      "mistakes": "Źle ustawione oparcie.\nZa szybki powrót.\nOdrywanie się od siedziska."
+    },
+    "nordic-curl": {
+      "steps": "Uklęknij i zablokuj pięty pod stabilnym oparciem lub z pomocą partnera.\nTułów i uda w jednej linii.\nOpuszczaj się powoli do przodu, hamując tyłem ud.\nZłap się rękami i wróć do góry.",
+      "mistakes": "Zginanie się w biodrach.\nSpadanie bez kontroli.\nNiestabilne zablokowanie pięt."
+    },
+    "single-leg-romanian-deadlift": {
+      "steps": "Stań na jednej nodze z hantlem w przeciwnej ręce.\nPochylaj tułów do przodu, unosząc wolną nogę do tyłu.\nZatrzymaj się, gdy tułów i noga są prawie równoległe do podłogi.\nWróć do wyprostu.",
+      "mistakes": "Skręcanie bioder.\nZaokrąglone plecy.\nZbyt szybkie tempo i utrata równowagi."
+    },
+    "hip-thrust": {
+      "steps": "Oprzyj łopatki o ławkę, sztanga na biodrach, stopy na podłodze.\nUnieś biodra, aż tułów i uda będą w jednej linii.\nŚciśnij pośladki na górze.\nOpuść biodra pod kontrolą.",
+      "mistakes": "Przeprost w odcinku lędźwiowym.\nStopy za daleko lub za blisko.\nNiepełny wyprost bioder."
+    },
+    "glute-bridge": {
+      "steps": "Połóż się na plecach, kolana ugięte, stopy na podłodze.\nUnieś biodra, aż tułów i uda będą w jednej linii.\nŚciśnij pośladki na górze.\nOpuść biodra powoli.",
+      "mistakes": "Przeprost w odcinku lędźwiowym.\nOdrywanie pięt.\nZbyt szybkie powtórzenia."
+    },
+    "cable-kickback": {
+      "steps": "Załóż mankiet na kostkę i stań przodem do wyciągu dolnego.\nPochyl się lekko i przytrzymaj się maszyny.\nOdprowadź nogę w tył, ściskając pośladek.\nWróć powoli.",
+      "mistakes": "Wyginanie pleców.\nBujanie nogą.\nZa duży ciężar."
+    },
+    "hip-abduction": {
+      "steps": "Usiądź na maszynie, poduszki po zewnętrznej stronie kolan.\nOprzyj plecy.\nRozsuń nogi na boki.\nWróć powoli.",
+      "mistakes": "Odrywanie się od oparcia.\nZa szybki powrót.\nSzarpanie."
+    },
+    "hip-adduction": {
+      "steps": "Usiądź na maszynie, poduszki po wewnętrznej stronie kolan.\nOprzyj plecy.\nZsuń nogi do środka.\nWróć powoli do rozstawu.",
+      "mistakes": "Zbyt szeroki rozstaw na start.\nSzarpanie.\nZa szybki powrót."
+    },
+    "kettlebell-swing": {
+      "steps": "Stań szerzej niż biodra, kettlebell przed sobą.\nChwyć ją oburącz i przenieś między nogami, cofając biodra.\nDynamicznie wypchnij biodra do przodu, kettlebell leci do wysokości klatki.\nPozwól jej opaść i powtórz.",
+      "mistakes": "Unoszenie kettlebell rękami zamiast biodrami.\nRobienie przysiadu zamiast zawiasu w biodrach.\nZaokrąglone plecy."
+    },
+    "standing-calf-raise": {
+      "steps": "Stań na krawędzi platformy, barki pod poduszkami.\nOpuść pięty jak najniżej.\nWspnij się na palce jak najwyżej.\nZatrzymaj się na chwilę i opuść powoli.",
+      "mistakes": "Odbijanie się na dole.\nUginanie kolan.\nNiepełny zakres ruchu."
+    },
+    "seated-calf-raise": {
+      "steps": "Usiądź, kolana pod poduszką, przednia część stóp na platformie.\nOpuść pięty jak najniżej.\nUnieś pięty jak najwyżej.\nOpuść je powoli.",
+      "mistakes": "Odbijanie się na dole.\nZa krótki zakres.\nZa szybkie tempo."
+    },
+    "leg-press-calf-raise": {
+      "steps": "Usiądź na suwnicy, przednia część stóp na dolnej krawędzi platformy.\nNogi prawie proste.\nWypchnij platformę samymi stopami.\nWróć powoli, rozciągając łydki.",
+      "mistakes": "Zginanie kolan.\nStopy zsuwające się z platformy.\nOdbijanie się."
+    },
+    "dumbbell-calf-raise": {
+      "steps": "Stań z hantlami przy bokach, przednia część stóp na podwyższeniu.\nOpuść pięty jak najniżej.\nWspnij się na palce.\nOpuść się powoli.",
+      "mistakes": "Odbijanie się.\nUtrata równowagi.\nNiepełny zakres ruchu."
+    },
+    "barbell-curl": {
+      "steps": "Stań prosto ze sztangą podchwytem na szerokość barków.\nŁokcie trzymaj przy tułowiu.\nUgnij ramiona, unosząc sztangę do barków.\nOpuść ją powoli do pełnego wyprostu.",
+      "mistakes": "Bujanie tułowiem.\nWysuwanie łokci do przodu.\nNiepełny wyprost na dole."
+    },
+    "ez-bar-curl": {
+      "steps": "Stań prosto i chwyć sztangę łamaną za wygięcia podchwytem.\nŁokcie przy tułowiu.\nUgnij ramiona, unosząc sztangę.\nOpuść ją powoli.",
+      "mistakes": "Bujanie tułowiem.\nZa szybkie opuszczanie.\nUnoszenie łokci."
+    },
+    "dumbbell-curl": {
+      "steps": "Stań prosto z hantlami przy bokach.\nŁokcie przy tułowiu.\nUgnij ramiona, obracając dłonie do góry.\nOpuść hantle powoli.",
+      "mistakes": "Bujanie tułowiem.\nWysuwanie łokci do przodu.\nZa duży ciężar."
+    },
+    "hammer-curl": {
+      "steps": "Stań prosto z hantlami, dłonie zwrócone do siebie.\nŁokcie przy tułowiu.\nUgnij ramiona, nie obracając dłoni.\nOpuść hantle powoli.",
+      "mistakes": "Bujanie tułowiem.\nOdsuwanie łokci od tułowia.\nSkracanie ruchu."
+    },
+    "incline-dumbbell-curl": {
+      "steps": "Usiądź na ławce skośnej, ramiona zwisają swobodnie.\nTrzymaj hantle podchwytem.\nUgnij ramiona, nie ruszając łokciami.\nOpuść hantle do pełnego wyprostu.",
+      "mistakes": "Wysuwanie łokci do przodu.\nOdrywanie pleców od oparcia.\nZa duży ciężar."
+    },
+    "preacher-curl": {
+      "steps": "Usiądź przy modlitewniku, ramiona oparte o poduszkę.\nChwyć sztangę lub hantel podchwytem.\nUgnij ramiona.\nOpuść ciężar powoli, prawie do wyprostu.",
+      "mistakes": "Gwałtowne opuszczanie na dole.\nOdrywanie ramion od poduszki.\nZa duży ciężar."
+    },
+    "concentration-curl": {
+      "steps": "Usiądź i oprzyj łokieć o wewnętrzną stronę uda.\nTrzymaj hantel w ręce opuszczonej w dół.\nUgnij ramię, unosząc hantel do barku.\nOpuść go powoli.",
+      "mistakes": "Pomaganie sobie tułowiem.\nZa szybkie opuszczanie.\nNiepełny wyprost."
+    },
+    "cable-curl": {
+      "steps": "Stań przed wyciągiem dolnym z drążkiem podchwytem.\nŁokcie przy tułowiu.\nUgnij ramiona.\nWróć powoli do wyprostu.",
+      "mistakes": "Odchylanie się do tyłu.\nWysuwanie łokci.\nSzarpanie."
+    },
+    "machine-curl": {
+      "steps": "Ustaw siedzisko tak, by łokcie były na osi maszyny.\nOprzyj ramiona o poduszkę.\nUgnij ramiona.\nWróć powoli.",
+      "mistakes": "Złe ustawienie siedziska.\nOdrywanie ramion od poduszki.\nZa szybki powrót."
+    },
+    "reverse-curl": {
+      "steps": "Stań prosto ze sztangą nachwytem na szerokość barków.\nŁokcie przy tułowiu.\nUgnij ramiona.\nOpuść sztangę powoli.",
+      "mistakes": "Zginanie nadgarstków.\nBujanie tułowiem.\nZa duży ciężar."
+    },
+    "triceps-pushdown": {
+      "steps": "Stań przed wyciągiem górnym, chwyć drążek nachwytem.\nŁokcie przy tułowiu.\nWyprostuj ramiona w dół.\nWróć powoli do kąta prostego w łokciach.",
+      "mistakes": "Odsuwanie łokci od tułowia.\nPochylanie się nad drążkiem.\nZa duży ciężar."
+    },
+    "rope-pushdown": {
+      "steps": "Stań przed wyciągiem górnym z liną.\nŁokcie przy tułowiu.\nWyprostuj ramiona, rozchylając końce liny na dole.\nWróć powoli.",
+      "mistakes": "Ruch łokci do przodu i do tyłu.\nPochylanie się.\nNiepełny wyprost."
+    },
+    "overhead-cable-extension": {
+      "steps": "Stań tyłem do wyciągu, linę trzymaj za głową.\nŁokcie skierowane do przodu, blisko głowy.\nWyprostuj ramiona przed sobą i w górę.\nWróć powoli.",
+      "mistakes": "Rozkładanie łokci na boki.\nWyginanie pleców.\nZa duży ciężar."
+    },
+    "skull-crusher": {
+      "steps": "Połóż się na ławce, sztangę trzymaj nad klatką na prostych ramionach.\nUgnij łokcie, opuszczając sztangę w stronę czoła.\nŁokcie trzymaj w miejscu.\nWyprostuj ramiona.",
+      "mistakes": "Rozkładanie łokci na boki.\nRuch w barkach.\nZbyt szybkie opuszczanie."
+    },
+    "overhead-dumbbell-extension": {
+      "steps": "Usiądź lub stań, hantel trzymaj oburącz nad głową.\nOpuść hantel za głowę, uginając łokcie.\nŁokcie skierowane do przodu.\nWyprostuj ramiona.",
+      "mistakes": "Łokcie uciekające na boki.\nWyginanie pleców.\nZa duży ciężar."
+    },
+    "dumbbell-kickback": {
+      "steps": "Oprzyj się o ławkę, tułów prawie równoległy do podłogi.\nRamię z hantlem przy tułowiu, łokieć ugięty.\nWyprostuj ramię do tyłu.\nWróć powoli.",
+      "mistakes": "Opuszczanie łokcia.\nBujanie ramieniem.\nZa duży ciężar."
+    },
+    "bench-dip": {
+      "steps": "Oprzyj dłonie o krawędź ławki za sobą, nogi wyprostuj przed sobą.\nOpuść się, uginając łokcie do około kąta prostego.\nPlecy blisko ławki.\nWypchnij się do góry.",
+      "mistakes": "Schodzenie za nisko.\nOdsuwanie się od ławki.\nŁokcie rozchylone na boki."
+    },
+    "machine-dip": {
+      "steps": "Usiądź na maszynie i chwyć uchwyty.\nŁokcie przy tułowiu.\nWypchnij uchwyty w dół.\nWróć powoli.",
+      "mistakes": "Odrywanie się od siedziska.\nUnoszenie barków.\nZa szybki powrót."
+    },
+    "wrist-curl": {
+      "steps": "Usiądź, przedramiona oparte na udach, dłonie z hantlami zwrócone do góry.\nOpuść hantle, uginając nadgarstki w dół.\nUnieś je, zginając nadgarstki.\nPowtarzaj powoli.",
+      "mistakes": "Ruch całym przedramieniem.\nZa duży ciężar.\nSzarpanie."
+    },
+    "reverse-wrist-curl": {
+      "steps": "Usiądź, przedramiona oparte na udach, dłonie z hantlami zwrócone w dół.\nOpuść dłonie w dół.\nUnieś je, prostując nadgarstki.\nPowtarzaj powoli.",
+      "mistakes": "Za duży ciężar.\nRuch przedramieniem.\nZa krótki zakres."
+    },
+    "farmers-walk": {
+      "steps": "Podnieś ciężkie hantle lub kettlebell z ziemi jak w martwym ciągu.\nStań prosto, barki ściągnięte.\nIdź krótkimi, pewnymi krokami.\nOdłóż ciężar, uginając nogi.",
+      "mistakes": "Garbienie się.\nUnoszenie barków do uszu.\nUpuszczanie ciężaru na koniec."
+    },
+    "dead-hang": {
+      "steps": "Chwyć drążek nachwytem na szerokość barków.\nZawiśnij na prostych ramionach.\nRozluźnij nogi, oddychaj spokojnie.\nZejdź, gdy skończy się czas.",
+      "mistakes": "Bujanie się.\nZeskakiwanie z wysokości.\nWstrzymywanie oddechu."
+    },
+    "plank": {
+      "steps": "Oprzyj się na przedramionach i palcach stóp.\nUtrzymaj ciało w jednej linii od głowy do pięt.\nNapnij brzuch i pośladki.\nOddychaj spokojnie przez cały czas.",
+      "mistakes": "Opadające biodra.\nBiodra uniesione zbyt wysoko.\nWstrzymywanie oddechu."
+    },
+    "side-plank": {
+      "steps": "Połóż się na boku i oprzyj na przedramieniu.\nUnieś biodra, ciało w jednej linii.\nDrugą rękę połóż na biodrze.\nWytrzymaj i zmień stronę.",
+      "mistakes": "Opadające biodra.\nŁokieć daleko od barku.\nSkręcanie tułowia."
+    },
+    "hollow-hold": {
+      "steps": "Połóż się na plecach i dociśnij lędźwie do podłogi.\nUnieś barki i nogi nad podłogę.\nWyciągnij ręce za głowę.\nWytrzymaj, nie odrywając lędźwi.",
+      "mistakes": "Odrywanie lędźwi od podłogi.\nNogi uniesione za wysoko.\nWstrzymywanie oddechu."
+    },
+    "crunch": {
+      "steps": "Połóż się na plecach, kolana ugięte, stopy na podłodze.\nDłonie przy skroniach lub na klatce.\nUnieś barki, zbliżając żebra do bioder.\nOpuść się powoli.",
+      "mistakes": "Ciągnięcie głowy rękami.\nSzarpanie.\nUnoszenie całych pleców z podłogi."
+    },
+    "bicycle-crunch": {
+      "steps": "Połóż się na plecach, dłonie przy skroniach.\nUnieś barki i nogi nad podłogę.\nNa zmianę przyciągaj łokieć do przeciwnego kolana, prostując drugą nogę.\nPracuj w spokojnym tempie.",
+      "mistakes": "Ciągnięcie głowy rękami.\nZbyt szybkie tempo.\nOdrywanie lędźwi."
+    },
+    "decline-sit-up": {
+      "steps": "Zablokuj stopy na ławce ustawionej w dół.\nDłonie przy skroniach lub na klatce.\nUnieś tułów w górę.\nOpuść się powoli.",
+      "mistakes": "Ciągnięcie głowy.\nSzarpanie tułowiem.\nZbyt szybkie opadanie."
+    },
+    "cable-crunch": {
+      "steps": "Uklęknij przed wyciągiem górnym i trzymaj linę przy głowie.\nBiodra nieruchome.\nZwiń tułów w dół, zbliżając łokcie do kolan.\nWróć powoli.",
+      "mistakes": "Ruch w biodrach zamiast w brzuchu.\nCiągnięcie rękami.\nZa duży ciężar."
+    },
+    "machine-crunch": {
+      "steps": "Usiądź na maszynie i chwyć uchwyty.\nZwiń tułów w przód.\nZatrzymaj się na chwilę.\nWróć powoli.",
+      "mistakes": "Ciągnięcie rękami.\nSzarpanie.\nZa duży ciężar."
+    },
+    "hanging-leg-raise": {
+      "steps": "Zawiśnij na drążku na prostych ramionach.\nUnieś proste nogi przed sobą do poziomu albo wyżej.\nPodwiń lekko miednicę na górze.\nOpuść nogi powoli.",
+      "mistakes": "Bujanie się.\nRzucanie nogami.\nOpuszczanie bez kontroli."
+    },
+    "hanging-knee-raise": {
+      "steps": "Zawiśnij na drążku na prostych ramionach.\nPrzyciągnij kolana do klatki.\nPodwiń lekko miednicę.\nOpuść nogi powoli.",
+      "mistakes": "Bujanie się.\nZa szybkie tempo.\nUnoszenie kolan tylko do poziomu bioder."
+    },
+    "lying-leg-raise": {
+      "steps": "Połóż się na plecach, dłonie pod pośladkami.\nUnieś proste nogi do pionu.\nOpuść je powoli, nie dotykając podłogi.\nLędźwie dociśnięte do podłogi.",
+      "mistakes": "Odrywanie lędźwi.\nOpuszczanie nóg zbyt szybko.\nZginanie nóg."
+    },
+    "captains-chair-leg-raise": {
+      "steps": "Oprzyj przedramiona na poręczach, plecy przy oparciu.\nUnieś nogi przed sobą.\nZatrzymaj się na chwilę.\nOpuść nogi powoli.",
+      "mistakes": "Bujanie nogami.\nOdrywanie pleców od oparcia.\nUnoszenie barków."
+    },
+    "ab-wheel-rollout": {
+      "steps": "Uklęknij i trzymaj kółko przed sobą.\nNapnij brzuch.\nRozwijaj się powoli do przodu, jak daleko zdołasz bez wyginania pleców.\nWróć, przyciągając kółko do kolan.",
+      "mistakes": "Zapadanie się w odcinku lędźwiowym.\nZa duży zakres na start.\nWypychanie bioder w tył przy powrocie."
+    },
+    "russian-twist": {
+      "steps": "Usiądź, kolana ugięte, tułów lekko odchylony.\nTrzymaj ciężar przed sobą.\nSkręcaj tułów na boki.\nPlecy przez cały czas proste.",
+      "mistakes": "Ruszanie samymi rękami.\nZaokrąglone plecy.\nZa szybkie tempo."
+    },
+    "pallof-press": {
+      "steps": "Stań bokiem do wyciągu, uchwyt przy klatce.\nNapnij brzuch.\nWypchnij uchwyt przed siebie i nie pozwól się obrócić.\nWróć powoli do klatki.",
+      "mistakes": "Skręcanie tułowia.\nStanie za blisko wyciągu.\nWstrzymywanie oddechu."
+    },
+    "wood-chop": {
+      "steps": "Stań bokiem do wyciągu ustawionego wysoko.\nChwyć uchwyt oburącz.\nPociągnij go po skosie w dół, obracając tułów i biodra.\nWróć powoli.",
+      "mistakes": "Ciągnięcie samymi rękami.\nZaokrąglone plecy.\nZa duży ciężar."
+    },
+    "dead-bug": {
+      "steps": "Połóż się na plecach, ręce w górze, nogi ugięte nad biodrami.\nDociśnij lędźwie do podłogi.\nOpuść przeciwną rękę i nogę, prostując je.\nWróć i zmień stronę.",
+      "mistakes": "Odrywanie lędźwi.\nZbyt szybkie tempo.\nWstrzymywanie oddechu."
+    },
+    "power-clean": {
+      "steps": "Stań ze sztangą nad śródstopiem, chwyt nieco szerszy niż biodra.\nPodnieś sztangę jak w martwym ciągu do wysokości kolan.\nDynamicznie wyprostuj biodra i podciągnij sztangę.\nZłap ją na przednich barkach w półprzysiadzie.",
+      "mistakes": "Ciągnięcie rękami zbyt wcześnie.\nOddalanie sztangi od ciała.\nUczenie się ruchu z dużym ciężarem."
+    },
+    "thruster": {
+      "steps": "Trzymaj hantle przy barkach.\nZrób przysiad.\nWstając, wypchnij hantle nad głowę jednym ruchem.\nOpuść hantle do barków i powtórz.",
+      "mistakes": "Wyginanie pleców przy wypychaniu.\nPłytki przysiad.\nPrzerwa między przysiadem a wypchnięciem."
+    },
+    "burpee": {
+      "steps": "Zrób przysiad i oprzyj dłonie o podłogę.\nWyrzuć nogi do tyłu do podporu.\nPrzyciągnij nogi z powrotem do dłoni.\nWyskocz w górę z rękami nad głową.",
+      "mistakes": "Opadające biodra w podporze.\nLądowanie na prostych nogach.\nZbyt szybkie tempo kosztem techniki."
+    },
+    "box-jump": {
+      "steps": "Stań przed skrzynią, stopy na szerokość bioder.\nUgnij nogi i zamachnij się rękami.\nWskocz na skrzynię, lądując miękko całymi stopami.\nZejdź ze skrzyni krokiem.",
+      "mistakes": "Za wysoka skrzynia.\nLądowanie na palcach lub z kolanami do środka.\nZeskakiwanie tyłem."
+    },
+    "mountain-climber": {
+      "steps": "Wejdź w podpór na prostych ramionach.\nPrzyciągnij jedno kolano do klatki.\nSzybko zmieniaj nogi.\nUtrzymaj biodra nisko.",
+      "mistakes": "Wypinanie bioder w górę.\nDłonie przed linią barków.\nZa szybkie tempo kosztem pozycji."
+    },
+    "rowing-machine": {
+      "steps": "Usiądź i zapnij stopy, chwyć rączkę.\nOdepchnij się nogami, potem odchyl tułów i przyciągnij rączkę do brzucha.\nWracaj w odwrotnej kolejności: ręce, tułów, nogi.\nOddychaj rytmicznie.",
+      "mistakes": "Ciągnięcie głównie rękami.\nZginanie kolan zanim ręce miną kolana.\nZaokrąglone plecy."
+    },
+    "stationary-bike": {
+      "steps": "Ustaw siodełko tak, by noga była prawie wyprostowana na dole.\nUstaw opór.\nPedałuj równo.\nOddychaj spokojnie.",
+      "mistakes": "Za nisko ustawione siodełko.\nKołysanie biodrami.\nZbyt duży opór na start."
+    },
+    "treadmill": {
+      "steps": "Wejdź na bieżnię i zacznij od wolnego tempa.\nZwiększaj prędkość stopniowo.\nIdź lub biegnij swobodnie, bez trzymania się poręczy.\nZwolnij przed zejściem.",
+      "mistakes": "Trzymanie się poręczy.\nZbyt duży skok prędkości.\nSchodzenie z ruchomej taśmy."
+    },
+    "jump-rope": {
+      "steps": "Trzymaj uchwyty przy biodrach, łokcie blisko tułowia.\nKręć skakanką nadgarstkami.\nSkacz nisko, na przedniej części stóp.\nUtrzymaj równy rytm.",
+      "mistakes": "Kręcenie całymi rękami.\nZbyt wysokie skoki.\nLądowanie na piętach."
+    },
+    "underhand-barbell-row": {
+      "steps": "Pochyl tułów do około 45°, kolana lekko ugięte.\nChwyć sztangę podchwytem na szerokość barków.\nPrzyciągnij sztangę do brzucha, łokcie blisko tułowia.\nOpuść ją pod kontrolą.",
+      "mistakes": "Praca głównie bicepsami.\nPodnoszenie tułowia.\nZaokrąglone plecy."
+    },
+    "single-arm-cable-row": {
+      "steps": "Usiądź lub stań przy wyciągu z uchwytem w jednej ręce.\nPlecy proste.\nPrzyciągnij uchwyt do boku tułowia.\nWróć powoli.",
+      "mistakes": "Skręcanie tułowia.\nZa duży ciężar.\nSkracanie ruchu."
+    },
+    "cable-rear-delt-fly": {
+      "steps": "Ustaw wyciągi na wysokości barków i chwyć linki skrzyżowanymi rękami.\nRamiona lekko ugięte.\nRozciągnij ramiona na boki do linii barków.\nWróć powoli.",
+      "mistakes": "Zginanie łokci.\nOdchylanie tułowia.\nZbyt duży ciężar."
+    },
+    "dumbbell-deadlift": {
+      "steps": "Stań z hantlami przy bokach, stopy na szerokość bioder.\nUgnij kolana i cofnij biodra, aż hantle znajdą się przy podłodze.\nWstań, prostując biodra i kolana.\nPlecy przez cały ruch proste.",
+      "mistakes": "Zaokrąglone plecy.\nPatrzenie w górę i wyginanie szyi.\nSzarpanie hantlami."
+    },
+    "sumo-dumbbell-squat": {
+      "steps": "Stań szeroko, palce stóp na zewnątrz, hantel trzymaj oburącz między nogami.\nZejdź w dół, prowadząc kolana nad palcami.\nTułów prosto.\nWstań do pełnego wyprostu.",
+      "mistakes": "Kolana uciekające do środka.\nPochylanie tułowia.\nZa płytki przysiad."
+    },
+    "machine-hip-thrust": {
+      "steps": "Oprzyj plecy o oparcie maszyny, pas na biodrach.\nStopy na platformie.\nUnieś biodra do pełnego wyprostu.\nOpuść je powoli.",
+      "mistakes": "Wyginanie pleców zamiast pracy bioder.\nSzarpanie.\nSkracanie ruchu."
+    }
   }
 }

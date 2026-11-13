@@ -11,6 +11,7 @@ import { createTestDb } from '../testing/nodeDb';
 import { BUILTIN_EXERCISES } from './exercises';
 import { BUILTIN_PROGRAMS } from './programs';
 import { seedBuiltinData } from './seed';
+import { tList } from '@/i18n';
 import pl from '@/i18n/locales/pl.json';
 
 async function freshDb() {
@@ -95,5 +96,30 @@ describe('seedBuiltinData', () => {
     expect((await getExercise(db, 'bench-press'))?.isHidden).toBe(true);
     expect((await getExercise(db, 'deadlift'))?.equipment).toBe('barbell');
     expect(await getExercise(db, customId)).toMatchObject({ name: 'Moje wiosłowanie' });
+  });
+});
+
+describe('opisy gotowych ćwiczeń', () => {
+  const guides = (pl as { exerciseGuides: Record<string, { steps: string; mistakes: string }> })
+    .exerciseGuides;
+
+  it('każde gotowe ćwiczenie ma 3–5 kroków i 2–3 typowe błędy', () => {
+    for (const exercise of BUILTIN_EXERCISES) {
+      const steps = tList(`exerciseGuides.${exercise.id}.steps`);
+      const mistakes = tList(`exerciseGuides.${exercise.id}.mistakes`);
+      expect({ id: exercise.id, steps: steps.length >= 3 && steps.length <= 5 }).toEqual({
+        id: exercise.id,
+        steps: true,
+      });
+      expect({ id: exercise.id, mistakes: mistakes.length >= 2 && mistakes.length <= 3 }).toEqual({
+        id: exercise.id,
+        mistakes: true,
+      });
+    }
+  });
+
+  it('nie ma opisów ćwiczeń, których nie ma na liście', () => {
+    const ids = new Set(BUILTIN_EXERCISES.map((e) => e.id));
+    expect(Object.keys(guides).filter((id) => !ids.has(id))).toEqual([]);
   });
 });
