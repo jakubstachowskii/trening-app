@@ -14,7 +14,7 @@ import {
   usesWeight,
 } from '@/domain/workout';
 import { exerciseIcon } from '@/features/exercises/icons';
-import { t, tPlural } from '@/i18n';
+import { t } from '@/i18n';
 import { useTheme } from '@/theme';
 
 import { progressionHint, type SessionExercise, workingNumbers } from './session';
@@ -93,7 +93,7 @@ export function CurrentExercise({
           <Text variant="footnote" color="label2">
             {t('workout.progress', {
               done: completedCount(item),
-              total: tPlural('units.sets', item.sets.length),
+              total: item.sets.length,
             })}
           </Text>
         </View>

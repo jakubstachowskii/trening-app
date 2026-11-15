@@ -1,11 +1,11 @@
 import { router } from 'expo-router';
-import { useEffect } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { useEffect, useRef } from 'react';
+import { Pressable, ScrollView, type ScrollViewInstance, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { FloatingButton, useFloatingButtonSpace } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
-import { HeaderIconButton } from '@/components/stack';
+import { HeaderIconButton, showMenu } from '@/components/stack';
 import { Text } from '@/components/Text';
 import { elapsedSec, formatClock } from '@/domain/workout';
 import { t } from '@/i18n';
@@ -28,6 +28,13 @@ export default function WorkoutScreen() {
   const floatingSpace = useFloatingButtonSpace();
 
   const { session, query } = w;
+  const scroll = useRef<ScrollViewInstance>(null);
+  const cardY = useRef(0);
+  const editingSetId = w.editing?.setId;
+  // Klawiatura zasłania dół ekranu: karta ćwiczenia jedzie do góry, żeby wiersz był widoczny.
+  useEffect(() => {
+    if (editingSetId) scroll.current?.scrollTo({ y: Math.max(0, cardY.current - space.xs) });
+  }, [editingSetId, space.xs]);
   useEffect(() => {
     if (!query.loading && session === null && router.canGoBack()) router.back();
   }, [query.loading, session]);
@@ -60,6 +67,7 @@ export default function WorkoutScreen() {
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
       <KeepAwake />
       <ScrollView
+        ref={scroll}
         style={{ flex: 1 }}
         contentContainerStyle={{
           paddingTop: insets.top + space.xs,
@@ -70,7 +78,7 @@ export default function WorkoutScreen() {
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <HeaderIconButton
             icon={{ ios: 'chevron.down', web: 'expand_more' }}
             label={t('workout.collapse')}
@@ -80,51 +88,71 @@ export default function WorkoutScreen() {
           <HeaderIconButton
             icon={{ ios: 'ellipsis', web: 'more_horiz' }}
             label={t('workout.more')}
-            onPress={w.discard}
+            onPress={() =>
+              showMenu(undefined, [
+                { label: t('workout.discard'), destructive: true, onPress: w.discard },
+              ])
+            }
           />
+        </View>
+        {/* Jak w makiecie F2-Trening: czas i nazwa po lewej, „Zakończ” po prawej. */}
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'flex-end',
+            gap: space.sm,
+            marginTop: -space.sm,
+          }}
+        >
+          <View style={{ flex: 1, gap: space.xxs / 2 }}>
+            <Text
+              variant="footnote"
+              color="label2"
+              accessibilityLabel={t('workout.elapsedLabel', { time })}
+              style={{ fontVariant: ['tabular-nums'] }}
+            >
+              {t('workout.elapsed', { time })}
+            </Text>
+            <Text variant="largeTitle" accessibilityRole="header">
+              {session.name ?? t('workout.emptyName')}
+            </Text>
+          </View>
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={t('workout.finish')}
             onPress={() => void w.finish()}
-            style={{
+            style={({ pressed }) => ({
               minHeight: size.touchMin,
-              paddingHorizontal: space.md,
+              paddingHorizontal: space.md + space.xxs / 2,
               borderRadius: radius.capsule,
               justifyContent: 'center',
-              backgroundColor: reduceTransparency ? colors.raised : colors.fill,
-            }}
+              backgroundColor: pressed
+                ? colors.selected
+                : reduceTransparency
+                  ? colors.raised
+                  : colors.fill,
+            })}
           >
             <Text variant="subheadline" style={{ fontWeight: '600' }}>
               {t('workout.finish')}
             </Text>
           </Pressable>
         </View>
-        <View style={{ gap: space.xxs / 2, marginTop: -space.sm }}>
-          <Text
-            variant="footnote"
-            color="label2"
-            accessibilityLabel={t('workout.elapsedLabel', { time })}
-            style={{ fontVariant: ['tabular-nums'] }}
-          >
-            {t('workout.elapsed', { time })}
-          </Text>
-          <Text variant="largeTitle" accessibilityRole="header">
-            {session.name ?? t('workout.emptyName')}
-          </Text>
-        </View>
 
         {w.item ? (
-          <CurrentExercise
-            item={w.item}
-            editing={w.editing}
-            stopwatchSec={w.stopwatchSec}
-            onEdit={(setId, field) => void w.openEditor(setId, field)}
-            onToggle={(setId) => void w.toggleSet(setId)}
-            onSetMenu={w.setMenu}
-            onAddSet={() => void w.addSetToCurrent()}
-            onMenu={w.exerciseMenu}
-            onStopwatch={() => void w.onStopwatch()}
-          />
+          <View onLayout={(e) => (cardY.current = e.nativeEvent.layout.y)}>
+            <CurrentExercise
+              item={w.item}
+              editing={w.editing}
+              stopwatchSec={w.stopwatchSec}
+              onEdit={(setId, field) => void w.openEditor(setId, field)}
+              onToggle={(setId) => void w.toggleSet(setId)}
+              onSetMenu={w.setMenu}
+              onAddSet={() => void w.addSetToCurrent()}
+              onMenu={w.exerciseMenu}
+              onStopwatch={() => void w.onStopwatch()}
+            />
+          </View>
         ) : (
           <EmptyState
             title={t('workout.noExercisesTitle')}

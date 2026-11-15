@@ -1165,7 +1165,7 @@
     "finishBody": "Nieodhaczone serie nie zostaną zapisane.",
     "finishConfirm": "Zakończ",
     "discardedInfo": "Trening bez odhaczonych serii nie został zapisany.",
-    "progress": "Zrobione: {done} z {total}",
+    "progress": "Zrobione: {done} z {total} serii",
     "hintIncrease": "Ostatnio wszystkie serie na górze zakresu. Dziś spróbuj {weight} kg.",
     "hintSame": "Ostatnio {weight} kg. Dojdź do {reps} powtórzeń we wszystkich seriach.",
     "colSet": "Seria",
