@@ -3,6 +3,8 @@ import type { Equipment, Exercise, Muscle } from '@/data/models';
 import type { ExerciseType } from '@/domain/types';
 import { tMaybe } from '@/i18n';
 
+import { popularityRank } from './popular';
+
 export type ExerciseFilters = {
   muscles: Muscle[];
   equipment: Equipment[];
@@ -48,37 +50,86 @@ export function normalizeForSearch(text: string): string {
     .trim();
 }
 
-export type NamedExercise = Exercise & { displayName: string; searchText: string };
+export type NamedExercise = Exercise & {
+  displayName: string;
+  /** Nazwa do wyszukiwania. */
+  searchText: string;
+  /** Dodatkowe słowa: potoczne nazwy („płaska ławka”, „bench”), główne mięśnie i sprzęt. */
+  extraText: string;
+};
+
+/** Słowa, po których też można znaleźć ćwiczenie, choć nie ma ich w nazwie. */
+function extraSearchWords(exercise: Exercise): string {
+  return [
+    exercise.source === 'builtin' ? tMaybe(`exerciseKeywords.${exercise.id}`) : undefined,
+    ...exercise.primaryMuscles.map((muscle) => tMaybe(`muscles.${muscle}`)),
+    tMaybe(`equipment.${exercise.equipment}`),
+  ]
+    .filter(Boolean)
+    .join(' ');
+}
 
 /** Dokłada nazwę i tekst do wyszukiwania raz, zamiast przy każdym wpisanym znaku. */
 export function withNames(exercises: Exercise[]): NamedExercise[] {
   return exercises.map((exercise) => {
     const displayName = exerciseName(exercise);
-    return { ...exercise, displayName, searchText: normalizeForSearch(displayName) };
+    return {
+      ...exercise,
+      displayName,
+      searchText: normalizeForSearch(displayName),
+      extraText: normalizeForSearch(extraSearchWords(exercise)),
+    };
   });
 }
 
 /**
- * Rdzeń słowa do porównania odmian: polskie końcówki zmieniają ostatnie 1–2 litery
- * („ławka”, „ławce”, „ławki” → „law”; „hantle”, „hantli” → „hant”). Krótkie słowa bez zmian.
+ * Rdzeń słowa do porównania odmian: polskie końcówki zmieniają ostatnie 1–3 litery
+ * („ławka”, „ławce” → „law”; „hantle”, „hantli” → „hant”; „płaskiej”, „płaska” → „plask”).
+ * Krótkie słowa bez zmian, dłuższe (7+) tracą 3 litery, bo mają dłuższe końcówki („-iej”, „-ami”).
  */
 export function searchStem(word: string): string {
   if (word.length <= 4) return word;
-  return word.slice(0, Math.max(3, word.length - 2));
+  const cut = word.length >= 7 ? 3 : 2;
+  return word.slice(0, Math.max(3, word.length - cut));
+}
+
+/** Słowo zapytania pasuje do tekstu jako fragment albo rdzeniem jako początek słowa (inna odmiana). */
+function wordMatches(word: string, text: string): boolean {
+  const stem = searchStem(word);
+  return text.includes(word) || text.split(' ').some((textWord) => textWord.startsWith(stem));
+}
+
+function queryWords(query: string): string[] {
+  return normalizeForSearch(query).split(' ').filter(Boolean);
 }
 
 /**
- * Każde słowo zapytania musi pasować do nazwy (kolejność słów dowolna):
- * albo jako fragment nazwy, albo jego rdzeń jako początek któregoś słowa nazwy (inna odmiana).
+ * Każde słowo zapytania musi pasować (kolejność słów dowolna) do nazwy
+ * albo do dodatkowych słów ćwiczenia (potoczne nazwy, mięśnie, sprzęt).
  */
 export function matchesQuery(exercise: NamedExercise, query: string): boolean {
-  const words = normalizeForSearch(query).split(' ').filter(Boolean);
-  const nameWords = exercise.searchText.split(' ');
-  return words.every(
-    (word) =>
-      exercise.searchText.includes(word) ||
-      nameWords.some((nameWord) => nameWord.startsWith(searchStem(word))),
+  return queryWords(query).every(
+    (word) => wordMatches(word, exercise.searchText) || wordMatches(word, exercise.extraText),
   );
+}
+
+/**
+ * Jak dobre jest trafienie (mniej = lepiej):
+ * 0 — nazwa zaczyna się od zapytania; 1 — każde słowo dosłownie w nazwie;
+ * 2 — każde słowo dosłownie w nazwie albo w dodatkowych słowach; 3 — tylko przez inną odmianę.
+ * Dzięki temu „plecy” daje najpierw wiosłowania (słowo kluczowe), a nie przysiad „na plecach”.
+ */
+export function matchTier(exercise: NamedExercise, query: string): number {
+  const normalized = normalizeForSearch(query);
+  if (exercise.searchText.startsWith(normalized)) return 0;
+  const words = queryWords(query);
+  if (words.every((word) => exercise.searchText.includes(word))) return 1;
+  if (
+    words.every((word) => exercise.searchText.includes(word) || exercise.extraText.includes(word))
+  ) {
+    return 2;
+  }
+  return 3;
 }
 
 export function matchesFilters(exercise: Exercise, filters: ExerciseFilters): boolean {
@@ -96,26 +147,29 @@ export function matchesFilters(exercise: Exercise, filters: ExerciseFilters): bo
 const collator = new Intl.Collator('pl', { sensitivity: 'base' });
 
 /**
- * Wynik dla listy: przefiltrowane i posortowane po nazwie.
- * Przy wpisanym zapytaniu najpierw te, których nazwa zaczyna się od zapytania.
+ * Wynik dla listy. Bez zapytania: alfabetycznie (lista dzieli się na litery).
+ * Z zapytaniem: najpierw najlepsze trafienia (matchTier), w nich popularne ćwiczenia, potem alfabetycznie.
  */
 export function searchExercises(
   exercises: NamedExercise[],
   query: string,
   filters: ExerciseFilters,
 ): NamedExercise[] {
-  const normalized = normalizeForSearch(query);
-  const found = exercises.filter(
-    (exercise) => matchesFilters(exercise, filters) && matchesQuery(exercise, query),
+  const hasQuery = normalizeForSearch(query) !== '';
+  const found = exercises
+    .filter((exercise) => matchesFilters(exercise, filters) && matchesQuery(exercise, query))
+    .map((exercise) => ({
+      exercise,
+      tier: hasQuery ? matchTier(exercise, query) : 0,
+      popularity: hasQuery ? popularityRank(exercise.id) : 0,
+    }));
+  found.sort(
+    (a, b) =>
+      a.tier - b.tier ||
+      a.popularity - b.popularity ||
+      collator.compare(a.exercise.displayName, b.exercise.displayName),
   );
-  return found.sort((a, b) => {
-    if (normalized) {
-      const aStarts = a.searchText.startsWith(normalized);
-      const bStarts = b.searchText.startsWith(normalized);
-      if (aStarts !== bStarts) return aStarts ? -1 : 1;
-    }
-    return collator.compare(a.displayName, b.displayName);
-  });
+  return found.map(({ exercise }) => exercise);
 }
 
 export type ExerciseSection = { title: string; data: NamedExercise[] };

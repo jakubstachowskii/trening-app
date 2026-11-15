@@ -1,11 +1,14 @@
 import type { Exercise } from '@/data/models';
 import { BUILTIN_EXERCISES } from '@/data/seed/exercises';
+import pl from '@/i18n/locales/pl.json';
 
+import { POPULAR_EXERCISE_IDS } from './popular';
 import {
   activeFilterCount,
   EMPTY_FILTERS,
   exerciseName,
   groupByLetter,
+  matchTier,
   normalizeForSearch,
   searchExercises,
   searchStem,
@@ -68,15 +71,61 @@ describe('wyszukiwanie ćwiczeń', () => {
     );
   });
 
-  it('rdzeń: krótkie słowa bez zmian, dłuższe bez dwóch ostatnich liter', () => {
+  it('rdzeń: krótkie słowa bez zmian, średnie bez 2 liter, długie bez 3', () => {
     expect(searchStem('law')).toBe('law');
     expect(searchStem('lawka')).toBe('law');
-    expect(searchStem('wyciskanie')).toBe('wyciskani'.slice(0, 8));
+    expect(searchStem('hantle')).toBe('hant');
+    expect(searchStem('plaskiej')).toBe('plask');
+    expect(searchStem('wyciskanie')).toBe('wyciska');
   });
 
   it('nazwy zaczynające się od zapytania są pierwsze', () => {
     const [first] = searchExercises(all, 'wyciskanie', EMPTY_FILTERS);
     expect(first.searchText.startsWith('wyciskanie')).toBe(true);
+  });
+
+  it('wśród równie dobrych trafień popularne ćwiczenia idą pierwsze', () => {
+    const ids = searchExercises(all, 'wyciskanie', EMPTY_FILTERS).map((e) => e.id);
+    expect(ids[0]).toBe('bench-press');
+    expect(ids.indexOf('bench-press')).toBeLessThan(ids.indexOf('arnold-press'));
+  });
+
+  it('znajduje po potocznych nazwach, których nie ma w nazwie ćwiczenia', () => {
+    const ids = (query: string) => searchExercises(all, query, EMPTY_FILTERS).map((e) => e.id);
+    expect(ids('plask')[0]).toBe('bench-press');
+    expect(ids('wyciskanie na lawce plaskiej')).toContain('bench-press');
+    expect(ids('bench')).toContain('bench-press');
+    expect(ids('klata')).toContain('bench-press');
+    expect(ids('squat')[0]).toBe('back-squat');
+    expect(ids('rdl')).toEqual(['romanian-deadlift']);
+  });
+
+  it('znajduje po głównym mięśniu i sprzęcie', () => {
+    const ids = searchExercises(all, 'biceps', EMPTY_FILTERS).map((e) => e.id);
+    expect(ids).toContain('hammer-curl');
+    expect(ids).not.toContain('pull-up');
+    expect(searchExercises(all, 'kettlebell', EMPTY_FILTERS).map((e) => e.id)).toContain(
+      'kettlebell-swing',
+    );
+  });
+
+  it('dosłowne trafienie w słowach kluczowych wyprzedza inną odmianę w nazwie', () => {
+    const ids = searchExercises(all, 'plecy', EMPTY_FILTERS).map((e) => e.id);
+    expect(ids.indexOf('barbell-row')).toBeLessThan(ids.indexOf('back-squat'));
+    expect(
+      matchTier(
+        all.find((e) => e.id === 'back-squat')!,
+        'plecy',
+      ),
+    ).toBe(3);
+  });
+
+  it('słowa kluczowe i lista popularnych odnoszą się do istniejących ćwiczeń', () => {
+    const builtinIds = new Set(builtin.map((e) => e.id));
+    for (const id of [...Object.keys(pl.exerciseKeywords), ...POPULAR_EXERCISE_IDS]) {
+      expect(builtinIds.has(id)).toBe(true);
+    }
+    expect(new Set(POPULAR_EXERCISE_IDS).size).toBe(POPULAR_EXERCISE_IDS.length);
   });
 
   it('ukryte tylko z filtrem „pokaż ukryte”', () => {
