@@ -125,6 +125,7 @@ Usunięte z szablonu, bo na razie niepotrzebne: `@expo/ui`, `expo-device`, `expo
 - **Dostępność:** każdy wiersz ma akcje VoiceOver „Przesuń wyżej” i „Przesuń niżej”, więc przeciąganie nie jest jedyną drogą.
 - **Koszt:** ok. 40 KB kodu JS. Wersja przypięta dokładnie (0.x może zmieniać API).
 - **Ważne:** lista z przeciąganiem jest głównym przewijanym widokiem ekranu (treść nad nią w `ListHeaderComponent`). Lista zagnieżdżona w `ScrollView` liczy pozycję z przesunięcia przewinięcia, które na iOS zawiera wcięcie pod nagłówkiem, więc wiersz odjeżdżał od palca (wykryte w teście na iPhonie).
+- **Też ważne:** lista nie korzysta z systemowego wcięcia pod nagłówkiem (`contentInsetAdjustmentBehavior="never"`), tylko ma własny odstęp o wysokości nagłówka (iOS 26+, gdzie treść wchodzi pod przezroczysty pasek). Z systemowym wcięciem biblioteka liczyła pozycję z ujemnego przesunięcia przewinięcia, a po chwyceniu wiersza lista podskakiwała o wysokość nagłówka i przesuwał się wiersz pod wciśniętym (drugi test na iPhonie).
 
 ## 19. `expo-haptics` (2026-11-13)
 
