@@ -490,7 +490,7 @@ export function useWorkoutSession() {
     } else if (fresh && !fresh.exercises.some((e) => e.sets.some((s) => s.completedAt))) {
       confirmDestructive(
         t('workout.finishTitle'),
-        t('workout.discardedInfo'),
+        t('workout.finishEmptyBody'),
         t('workout.finishConfirm'),
         () => void run(),
       );

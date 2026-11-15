@@ -1164,7 +1164,6 @@
     "finishTitle": "Zakończyć trening?",
     "finishBody": "Nieodhaczone serie nie zostaną zapisane.",
     "finishConfirm": "Zakończ",
-    "discardedInfo": "Trening bez odhaczonych serii nie został zapisany.",
     "progress": "Zrobione: {done} z {total} serii",
     "hintIncrease": "Ostatnio wszystkie serie na górze zakresu. Dziś spróbuj {weight} kg.",
     "hintSame": "Ostatnio {weight} kg. Dojdź do {reps} powtórzeń we wszystkich seriach.",
@@ -1273,6 +1272,7 @@
       "unfinishedResume": "Wznów",
       "unfinishedDiscard": "Porzuć i zacznij nowy",
       "startDay": "Zacznij trening"
-    }
+    },
+    "finishEmptyBody": "Nie odhaczono żadnej serii, więc trening nie zostanie zapisany."
   }
 }
