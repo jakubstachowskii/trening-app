@@ -103,7 +103,16 @@ CREATE TABLE schema_migration (
 );
 `;
 
-export const MIGRATIONS: readonly string[] = [V1];
+// F6: cele z planu kopiowane do treningu przy starcie (plan może się potem zmienić albo zniknąć).
+const V2 = `
+ALTER TABLE workout ADD COLUMN name TEXT;
+ALTER TABLE workout_exercise ADD COLUMN rest_sec INTEGER;
+ALTER TABLE workout_exercise ADD COLUMN reps_min INTEGER;
+ALTER TABLE workout_exercise ADD COLUMN reps_max INTEGER;
+ALTER TABLE workout_exercise ADD COLUMN target_duration_sec INTEGER;
+`;
+
+export const MIGRATIONS: readonly string[] = [V1, V2];
 export const LATEST_VERSION = MIGRATIONS.length;
 
 /** Ustawienia połączenia: przy każdym otwarciu bazy (klucze obce nie są zapisywane w pliku). */
