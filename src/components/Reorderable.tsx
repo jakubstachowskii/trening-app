@@ -1,6 +1,8 @@
 // Lista z przeciąganiem (docs/DECISIONS.md #18). Każdy wiersz ma też akcje VoiceOver „wyżej / niżej”.
-import { type ReactElement, type ReactNode, useCallback, useMemo } from 'react';
-import { View } from 'react-native';
+import { isLiquidGlassAvailable } from 'expo-glass-effect';
+import { HeaderHeightContext } from 'expo-router/react-navigation';
+import { type ReactElement, type ReactNode, use, useCallback, useMemo } from 'react';
+import { Platform, View } from 'react-native';
 import { Gesture } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
 import ReorderableList, {
@@ -86,8 +88,12 @@ function Row<T>({
 
 /**
  * Cały przewijany ekran z listą wierszy (każdy jako osobna karta) i przeciąganiem po przytrzymaniu.
- * Lista jest głównym przewijanym widokiem, a nie zagnieżdżoną listą: zagnieżdżona liczy pozycję
- * z przesunięcia przewinięcia, które na iOS zawiera wcięcie pod nagłówkiem, i wiersz odjeżdżał od palca.
+ * Lista jest głównym przewijanym widokiem, a nie zagnieżdżoną listą.
+ *
+ * Miejsce pod przezroczystym nagłówkiem robimy sami (odstęp o wysokości nagłówka), a nie systemowym
+ * wcięciem (`contentInsetAdjustmentBehavior="automatic"`). Z wcięciem przesunięcie przewinięcia na górze
+ * jest ujemne, a biblioteka liczy pozycję wiersza od niego wprost; do tego po chwyceniu wiersza lista
+ * podskakiwała o wysokość nagłówka i pod palcem lądował wiersz niżej (test na iPhonie).
  */
 export function ReorderableRows<T>({
   data,
@@ -100,6 +106,11 @@ export function ReorderableRows<T>({
   bottomSpace,
 }: Props<T>) {
   const { colors, space, motion, reduceMotion } = useTheme();
+  // Treść wchodzi pod nagłówek tylko na iOS 26+ (systemowy, przezroczysty pasek; ten sam warunek
+  // co w nawigacji). Gdzie indziej nagłówek stoi nad listą. Poza ekranem stosu (testy) nagłówka nie ma.
+  const stackHeaderHeight = use(HeaderHeightContext) ?? 0;
+  const contentUnderHeader = useMemo(() => Platform.OS === 'ios' && isLiquidGlassAvailable(), []);
+  const headerHeight = contentUnderHeader ? stackHeaderHeight : 0;
 
   const move = useCallback(
     (from: number, to: number) => onReorder(moveItem(data, from, to)),
@@ -118,10 +129,11 @@ export function ReorderableRows<T>({
   return (
     <ReorderableList
       style={{ flex: 1, backgroundColor: colors.bg }}
-      contentInsetAdjustmentBehavior="automatic"
+      contentInsetAdjustmentBehavior="never"
+      scrollIndicatorInsets={{ top: headerHeight }}
       contentContainerStyle={{
         paddingHorizontal: space.screen,
-        paddingTop: space.xs,
+        paddingTop: headerHeight + space.xs,
         paddingBottom: bottomSpace ?? space.section,
       }}
       ListHeaderComponent={header}
