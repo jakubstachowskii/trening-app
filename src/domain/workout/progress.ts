@@ -58,3 +58,21 @@ export function nextPlanDayId(
   const index = lastDoneDayId ? dayIds.indexOf(lastDoneDayId) : -1;
   return index === -1 ? dayIds[0] : dayIds[(index + 1) % dayIds.length];
 }
+
+/**
+ * Po wpisaniu wartości w serii: kolejne nieodhaczone serie, które miały tę samą starą wartość
+ * (albo były puste), dostają nową — żeby nie wpisywać ciężaru w każdej serii osobno.
+ */
+export function followingSetsToUpdate<S extends { id: string; completedAt?: string | null }>(
+  sets: S[],
+  setId: string,
+  read: (set: S) => number | null | undefined,
+  oldValue: number | null | undefined,
+): string[] {
+  const start = sets.findIndex((s) => s.id === setId);
+  if (start === -1) return [];
+  return sets
+    .slice(start + 1)
+    .filter((s) => !s.completedAt && (read(s) ?? null) === (oldValue ?? null))
+    .map((s) => s.id);
+}

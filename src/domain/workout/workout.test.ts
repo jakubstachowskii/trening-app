@@ -4,6 +4,7 @@ import {
   completedCount,
   elapsedSec,
   formatClock,
+  followingSetsToUpdate,
   formatKeypadValue,
   initialExerciseIndex,
   isFinished,
@@ -278,5 +279,21 @@ describe('rekord w trakcie treningu', () => {
     expect(
       recordsBrokenBySet({ ...base, history, doneBefore: [w(8, 82.5)], justDone: w(8, 82.5) }),
     ).toEqual([]);
+  });
+});
+
+describe('przenoszenie wpisanej wartości', () => {
+  const s = (id: string, weightKg: number | null, completedAt: string | null = null) => ({
+    id,
+    weightKg,
+    completedAt,
+  });
+  it('kolejne nieodhaczone serie z tą samą starą wartością', () => {
+    const sets = [s('a', 60), s('b', 60), s('c', 60, done), s('d', 70), s('e', 60)];
+    expect(followingSetsToUpdate(sets, 'a', (x) => x.weightKg, 60)).toEqual(['b', 'e']);
+    expect(
+      followingSetsToUpdate([s('a', null), s('b', null)], 'a', (x) => x.weightKg, null),
+    ).toEqual(['b']);
+    expect(followingSetsToUpdate(sets, 'zz', (x) => x.weightKg, 60)).toEqual([]);
   });
 });

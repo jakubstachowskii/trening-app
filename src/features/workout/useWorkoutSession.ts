@@ -20,6 +20,7 @@ import { useDbQuery } from '@/data/useDbQuery';
 import {
   adjustRest,
   DEFAULT_REST_SEC,
+  followingSetsToUpdate,
   formatKeypadValue,
   hasPendingSets,
   initialExerciseIndex,
@@ -73,6 +74,14 @@ function fieldsFor(item: SessionExercise): KeypadField[] {
 
 const valueOf = (set: WorkoutSet, field: KeypadField): number | null =>
   field === 'weight' ? set.weightKg : field === 'reps' ? set.reps : set.durationSec;
+
+const withField = (set: WorkoutSet, field: KeypadField, value: number | null) => ({
+  kind: set.kind,
+  reps: field === 'reps' ? value : set.reps,
+  weightKg: field === 'weight' ? value : set.weightKg,
+  durationSec: field === 'duration' ? value : set.durationSec,
+  completedAt: set.completedAt,
+});
 
 export function useWorkoutSession() {
   const db = useDb();
@@ -158,14 +167,19 @@ export function useWorkoutSession() {
     if (!found) return;
     const value = parseKeypadValue(editing.text);
     if (value === valueOf(found.set, editing.field)) return;
-    const { set } = found;
-    await updateSet(db, set.id, {
-      kind: set.kind,
-      reps: editing.field === 'reps' ? value : set.reps,
-      weightKg: editing.field === 'weight' ? value : set.weightKg,
-      durationSec: editing.field === 'duration' ? value : set.durationSec,
-      completedAt: set.completedAt,
-    });
+    const { set, exercise } = found;
+    const field = editing.field;
+    await updateSet(db, set.id, withField(set, field, value));
+    // Kolejne serie z tą samą starą wartością dostają nową (jeden wpis zamiast czterech).
+    const following = followingSetsToUpdate(
+      exercise.sets,
+      set.id,
+      (x) => valueOf(x, field),
+      valueOf(set, field),
+    );
+    for (const next of exercise.sets.filter((x) => following.includes(x.id))) {
+      await updateSet(db, next.id, withField(next, field, value));
+    }
   }, [db, editing, findSet]);
 
   const openEditor = useCallback(
