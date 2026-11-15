@@ -2,6 +2,3 @@ allowBuilds:
   lefthook: true
   # gotowe binarki są w paczkach opcjonalnych; budowanie ze źródeł niepotrzebne
   '@parcel/watcher': false
-minimumReleaseAgeExclude:
-  - expo@58.0.25
-  - expo-sqlite@58.0.17
