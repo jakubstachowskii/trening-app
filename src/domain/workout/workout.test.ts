@@ -15,6 +15,7 @@ import {
   prefillSets,
   pressKey,
   primaryAction,
+  recordsBrokenBySet,
   remainingSec,
   ringProgress,
   startRest,
@@ -245,5 +246,37 @@ describe('podsumowanie i zegar', () => {
     expect(formatClock(1934)).toBe('32:14');
     expect(formatClock(5)).toBe('0:05');
     expect(formatClock(3909)).toBe('1:05:09');
+  });
+});
+
+describe('rekord w trakcie treningu', () => {
+  const history = [{ ...w(8, 80), workoutId: 'old', date: '2026-11-01T10:00:00Z' }];
+  const base = { type: 'weight_reps' as const, workoutId: 'now', startedAt: done };
+
+  it('cięższa seria niż kiedykolwiek: rekord ciężaru i 1RM', () => {
+    expect(recordsBrokenBySet({ ...base, history, doneBefore: [], justDone: w(8, 82.5) })).toEqual([
+      'heaviestWeight',
+      'bestOneRepMax',
+    ]);
+  });
+
+  it('bez historii i dla serii nieukończonej: brak rekordu', () => {
+    expect(
+      recordsBrokenBySet({ ...base, history: [], doneBefore: [], justDone: w(8, 100) }),
+    ).toEqual([]);
+    expect(
+      recordsBrokenBySet({
+        ...base,
+        history,
+        doneBefore: [],
+        justDone: { ...w(8, 100), completedAt: null },
+      }),
+    ).toEqual([]);
+  });
+
+  it('ten sam wynik co wcześniej w tym treningu nie jest drugim rekordem', () => {
+    expect(
+      recordsBrokenBySet({ ...base, history, doneBefore: [w(8, 82.5)], justDone: w(8, 82.5) }),
+    ).toEqual([]);
   });
 });

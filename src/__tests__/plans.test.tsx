@@ -1,10 +1,10 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react-native';
 
-import PlanScreen from '@/app/plany/[id]';
-import PlanExerciseSheet from '@/app/plany/cwiczenie/[id]';
-import PlanDayScreen from '@/app/plany/dzien/[dayId]';
-import PlansScreen from '@/app/plany/index';
-import ProgramScreen from '@/app/plany/program/[programId]';
+import PlanScreen from '@/app/(tabs)/plany/[id]';
+import PlanExerciseSheet from '@/app/(tabs)/plany/cwiczenie/[id]';
+import PlanDayScreen from '@/app/(tabs)/plany/dzien/[dayId]';
+import PlansScreen from '@/app/(tabs)/plany/index';
+import ProgramScreen from '@/app/(tabs)/plany/program/[programId]';
 import type { Db } from '@/data/db';
 import { copyProgram, getPlan, listPlans, setActivePlan } from '@/data/repositories/plans';
 import { BUILTIN_PROGRAMS } from '@/data/seed/programs';
@@ -20,6 +20,9 @@ jest.mock('expo-router', () => {
   const React = jest.requireActual<typeof import('react')>('react');
   return {
     useRouter: () => mockRouter,
+    get router() {
+      return mockRouter;
+    },
     useLocalSearchParams: () => mockParams,
     useFocusEffect: (effect: () => void) => React.useEffect(effect, [effect]),
     Stack: { Screen: () => null },

@@ -25,6 +25,7 @@ import { useDbQuery } from '@/data/useDbQuery';
 import { exerciseIcon } from '@/features/exercises/icons';
 import { exerciseName } from '@/features/exercises/search';
 import { formatPlanExercise } from '@/features/plans/format';
+import { beginWorkout } from '@/features/workout/startWorkout';
 import { t } from '@/i18n';
 import { useTheme } from '@/theme';
 
@@ -171,6 +172,14 @@ export default function PlanDayScreen() {
                 {t('reorder.hint')}
               </Text>
             ) : null}
+            {items.length ? (
+              <Button
+                variant="secondary"
+                label={t('planDay.addExercise')}
+                icon={{ ios: 'plus', web: 'add' }}
+                onPress={addExercise}
+              />
+            ) : null}
             <Button variant="destructive" label={t('planDay.delete')} onPress={removeDay} />
           </View>
         }
@@ -207,9 +216,9 @@ export default function PlanDayScreen() {
       />
       {items.length ? (
         <FloatingButton
-          label={t('planDay.addExercise')}
-          icon={{ ios: 'plus', web: 'add' }}
-          onPress={addExercise}
+          label={t('workout.start.startDay')}
+          icon={{ ios: 'play.fill', web: 'play_arrow' }}
+          onPress={() => void beginWorkout(db, day.id)}
         />
       ) : null}
     </View>
