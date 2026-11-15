@@ -1,17 +1,19 @@
-import { ThemeProvider as NavigationThemeProvider } from 'expo-router';
+import { ThemeProvider as NavigationThemeProvider, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SystemUI from 'expo-system-ui';
 import { useEffect, useMemo } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { AppTabs } from '@/components/AppTabs';
+import { sheetOptions, useStackScreenOptions } from '@/components/stack';
 import { DatabaseProvider } from '@/data/DatabaseProvider';
+import { t } from '@/i18n';
 import { ThemeProvider, useTheme } from '@/theme';
 import { navigationTheme } from '@/theme/navigationTheme';
 
 function Root() {
   const { colors, scheme } = useTheme();
   const navTheme = useMemo(() => navigationTheme(scheme, colors), [scheme, colors]);
+  const screenOptions = useStackScreenOptions();
 
   // Tło okna pod ekranami (bez białego mignięcia przy przejściach i w ciemnym motywie).
   useEffect(() => {
@@ -21,7 +23,19 @@ function Root() {
   return (
     <NavigationThemeProvider value={navTheme}>
       <StatusBar style="auto" />
-      <AppTabs />
+      <Stack screenOptions={screenOptions}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        {/* Trening: pełny ekran bez zamykania gestem (łatwo przypadkiem przesunąć palcem w trakcie serii). */}
+        <Stack.Screen
+          name="trening/index"
+          options={{ presentation: 'fullScreenModal', gestureEnabled: false, headerShown: false }}
+        />
+        <Stack.Screen name="trening/dodaj" options={sheetOptions(t('workout.addExercise'))} />
+        <Stack.Screen
+          name="trening/podsumowanie"
+          options={{ presentation: 'fullScreenModal', gestureEnabled: false, headerShown: false }}
+        />
+      </Stack>
     </NavigationThemeProvider>
   );
 }
