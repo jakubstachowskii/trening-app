@@ -9,7 +9,26 @@ Fazy z `docs/PLAN.md`. Jedna faza = jedna gałąź = jeden PR.
 | F2 Design system     | zrobione (`design/tokens.json`, `docs/DESIGN.md`, makiety w `design/f2`) |
 | F3 Fundament         | zrobione (PR #1)                                                         |
 | F4 Dane i logika     | zrobione (PR #4)                                                         |
-| F5 Ćwiczenia i plany | w PR: `feat/f5-cwiczenia-plany`                                          |
+| F5 Ćwiczenia i plany | zrobione (PR #5)                                                         |
+| F6 Trening w toku    | w PR: `feat/f6-trening`                                                  |
+
+## F6 Trening w toku
+
+Zrobione:
+
+- **Start**: karta „Następny trening” (kolejny dzień aktywnego planu po ostatnio zrobionym), „Pusty trening”, karta „Trening w toku · Wznów”. Przy niedokończonym treningu pytanie „Wznów / Porzuć i zacznij nowy”.
+- **Dzień planu**: pływający przycisk „Zacznij trening” („Dodaj ćwiczenie” pod listą).
+- **Ekran treningu** (makieta F2-Trening): czas od startu, nazwa dnia, „Zakończ”, „Zwiń”; karta bieżącego ćwiczenia z podpowiedzią ciężaru i tabelą Seria / Poprzednio / kg / Powt. / odhaczenie; menu serii (rozgrzewka / robocza, usuń) i ćwiczenia (zamień, notatka, usuń); „Dodaj serię”, „Dodaj ćwiczenie”; lista „Następne”; stoper dla ćwiczeń na czas.
+- **Klawiatura** w dolnym panelu; wpisana wartość przechodzi na kolejne serie.
+- **Minutnik przerwy** z pierścieniem: start po odhaczeniu, −15 s / +15 s / Pomiń, „Dalej: seria 2 · 80 × 10”, wibracja i powiadomienie lokalne po końcu, przetrwa zamknięcie aplikacji.
+- **Rekord** w trakcie: komunikat u góry + wibracja + ogłoszenie VoiceOver.
+- **Podsumowanie**: czas, objętość, serie, ćwiczenia, nowe rekordy, notatka.
+- Ekran nie gaśnie w trakcie treningu.
+- Testy: logika treningu (wypełnianie serii, kolejność, minutnik, klawiatura, rekordy, podsumowanie), repozytoria na SQLite, migracja 1 → 2 z danymi, ekrany Start / trening / podsumowanie na bazie w pamięci.
+
+Odstępstwa od makiety F2: dodatkowy rząd z „Zwiń” i „Więcej” nad nagłówkiem; klawiatura to nowy element (zaakceptowany w planie F6).
+
+Do sprawdzenia na iPhonie: powiadomienie o końcu przerwy (zablokowany ekran, inna aplikacja), zamknięcie aplikacji w trakcie i wznowienie, szkło minutnika i klawiatury, gest zamykania wyłączony.
 
 ## F5 Ćwiczenia i plany
 

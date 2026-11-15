@@ -150,3 +150,16 @@ Usunięte z szablonu, bo na razie niepotrzebne: `@expo/ui`, `expo-device`, `expo
 - **Co:** poza nazwą wyszukiwarka sprawdza ukryte słowa kluczowe (`exerciseKeywords` w `pl.json`, np. „płaska ławka”, „bench”, „klata”), główne mięśnie i sprzęt. Odmiany słów: rdzeń bez 2 ostatnich liter (słowa 5–6 liter) albo 3 (7+ liter, np. „płaskiej” → „płask”).
 - **Kolejność wyników:** najpierw nazwa zaczynająca się od zapytania, potem słowa dosłownie w nazwie, potem dosłownie w słowach kluczowych, na końcu trafienia przez inną odmianę; w każdej grupie najpierw popularne ćwiczenia (`src/features/exercises/popular.ts`), potem alfabetycznie. Bez zapytania lista zostaje alfabetyczna z literami.
 - **Dlaczego:** test na iPhonie: „płaska” nie znajdowała wyciskania na ławce („poziomej”), a „wyciskanie” zaczynało się od wyciskania Arnolda.
+
+## 23. Trening w toku: nawigacja, dane i zależności (2026-11-15)
+
+- **Nawigacja:** karty przeniesione do grupy `src/app/(tabs)/` (adresy bez zmian) pod główny `Stack`. Trening (`trening/index`) i podsumowanie to `fullScreenModal` z `gestureEnabled: false` — przypadkowe przesunięcie palcem w trakcie serii nie zamyka treningu. Dokumentacja Expo nie opisuje wprost NativeTabs w grupie pod stosem; sprawdzone w podglądzie web i do potwierdzenia na iPhonie.
+- **`NativeTabs.BottomAccessory`** (pasek „trening w toku” nad kartami): pominięty w F6. Jest od SDK 55, ale renderuje dwie kopie naraz i wymaga stanu poza komponentem; karta „Wznów” na Start wystarcza. Do rozważenia w F11.
+- **Migracja 2:** `workout.name` oraz cele w `workout_exercise` (przerwa, zakres powtórzeń, czas) kopiowane z planu przy starcie — plan może się potem zmienić albo zniknąć, a ćwiczenie dodane w trakcie nie ma wiersza planu.
+- **Minutnik:** stan (`endsAt`, `totalSec`, seria, id powiadomienia) w tabeli `setting`. Pozostały czas liczony ze znacznika końca, więc przeżywa wygaszenie ekranu i zamknięcie aplikacji.
+- **Własna klawiatura** zamiast systemowej: większe klawisze, kroki −/+, „Dalej” prowadzi przez pola serii i odhacza ją na końcu. Nowy element (nie ma go w makiecie F2) zbudowany z tokenów i komponentów F2 (szkło `control`, `fill`, kapsuły); zaakceptowany w planie F6.
+- **Nowe zależności (bez kosztów, wszystkie w Expo Go):**
+  - `react-native-svg` 15.16 — pierścień minutnika (przyda się w wykresach F7). Alternatywa: obracane półkola z `View` — trudniejsze i mniej dokładne.
+  - `expo-keep-awake` — ekran nie gaśnie w trakcie treningu. Na web wersja pusta (`KeepAwake.web.tsx`).
+  - `expo-notifications` — tylko lokalne powiadomienie o końcu przerwy; plugin z `enableRemoteNotifications: false` (bez uprawnienia APNs, bez serwera). Dokumentacja: lokalne powiadomienia działają w Expo Go — do potwierdzenia na iPhonie.
+- **Rekord w trakcie treningu** (`recordsBrokenBySet`): przy odhaczeniu serii porównanie z wcześniejszymi treningami i seriami tego treningu; rekord objętości tylko w podsumowaniu (rośnie z każdą serią).
