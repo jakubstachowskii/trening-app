@@ -106,3 +106,13 @@ export async function updateCustomExercise(
 export async function setExerciseHidden(db: Db, id: string, hidden: boolean): Promise<void> {
   await db.run('UPDATE exercise SET is_hidden = ? WHERE id = ?', [toFlag(hidden), id]);
 }
+
+/** W ilu planach jest ćwiczenie (komunikat przy ukrywaniu: w planach zostaje). */
+export async function exercisePlanCount(db: Db, id: string): Promise<number> {
+  const row = await db.first<{ count: number }>(
+    `SELECT COUNT(DISTINCT d.plan_id) AS count FROM plan_exercise e
+     JOIN plan_day d ON d.id = e.plan_day_id WHERE e.exercise_id = ?`,
+    [id],
+  );
+  return Number(row?.count ?? 0);
+}

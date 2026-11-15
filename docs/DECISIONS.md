@@ -116,3 +116,37 @@ Usunięte z szablonu, bo na razie niepotrzebne: `@expo/ui`, `expo-device`, `expo
 ## 17. `expo-sqlite` w podglądzie web (2026-11-05)
 
 - `metro.config.js`: pliki `.wasm` jako zasoby i nagłówki COOP/COEP na serwerze podglądu (wymaga ich `SharedArrayBuffer`, z którego korzysta `expo-sqlite` na web).
+
+## 18. Przeciąganie na liście: `react-native-reorderable-list` + `react-native-gesture-handler` (2026-11-13)
+
+- **Co:** zmiana kolejności dni planu i ćwiczeń w dniu przez przytrzymanie i przeciągnięcie (`docs/PLAN.md` §3.3). `react-native-gesture-handler` ~3.3.0 (wersja z Expo SDK 58, jest w Expo Go) i `react-native-reorderable-list` 0.18.3 (MIT).
+- **Dlaczego:** React Native nie ma wbudowanej listy z przeciąganiem. Biblioteka to sam kod JS na Reanimated i Gesture Handler, które już są w projekcie albo przychodzą z Expo. Nie ma własnych zależności, skryptów instalacyjnych ani dostępu do sieci (przejrzane źródła 0.18.3). Działa z RN 0.88 (od 0.18.3 bez usuniętego `InteractionManager`). Gesture Handler 3 obsługuje jej starsze API gestów (`Gesture.Pan()`) przez warstwę zgodności.
+- **Alternatywy:** własne przeciąganie na Gesture Handler + Reanimated (więcej kodu do utrzymania; zostaje jako plan B), przyciski „wyżej / niżej” (bez nowej zależności, ale mniej wygodne).
+- **Dostępność:** każdy wiersz ma akcje VoiceOver „Przesuń wyżej” i „Przesuń niżej”, więc przeciąganie nie jest jedyną drogą.
+- **Koszt:** ok. 40 KB kodu JS. Wersja przypięta dokładnie (0.x może zmieniać API).
+- **Ważne:** lista z przeciąganiem jest głównym przewijanym widokiem ekranu (treść nad nią w `ListHeaderComponent`). Lista zagnieżdżona w `ScrollView` liczy pozycję z przesunięcia przewinięcia, które na iOS zawiera wcięcie pod nagłówkiem, więc wiersz odjeżdżał od palca (wykryte w teście na iPhonie).
+- **Też ważne:** lista nie korzysta z systemowego wcięcia pod nagłówkiem (`contentInsetAdjustmentBehavior="never"`), tylko ma własny odstęp o wysokości nagłówka (iOS 26+, gdzie treść wchodzi pod przezroczysty pasek). Z systemowym wcięciem biblioteka liczyła pozycję z ujemnego przesunięcia przewinięcia, a po chwyceniu wiersza lista podskakiwała o wysokość nagłówka i przesuwał się wiersz pod wciśniętym (drugi test na iPhonie).
+
+## 19. `expo-haptics` (2026-11-13)
+
+- **Co:** wibracje przy wyborze w przełączniku i po upuszczeniu przeciąganego wiersza (`docs/DESIGN.md` §7).
+- **Dlaczego:** biblioteka Expo, bez uprawnień. Wibracja zawsze tylko uzupełnia to, co widać. Dokumentacja nie mówi wprost, czy działa w Expo Go, więc wywołania są zabezpieczone (brak wibracji nie psuje działania).
+
+## 20. Systemowe nagłówki i stos w każdej karcie (2026-11-13)
+
+- **Co:** karty Ćwiczenia i Plany to foldery z `_layout.tsx` i `<Stack />` (wzór z dokumentacji native tabs w SDK 58). Duży tytuł, wyszukiwarka i przycisk Wstecz robi systemowy nagłówek (`headerLargeTitleEnabled`, `headerSearchBarOptions`). Formularze i filtry jako systemowy modal z przyciskiem „Anuluj” (`formSheet` z wysokościami pokazywał na iPhonie pusty arkusz).
+- **Dlaczego:** na iOS 26+ systemowe nagłówki mają Liquid Glass i gest wstecz bez dodatkowego kodu. Używam tylko stabilnego API opcji; API kompozycji (`Stack.Toolbar` itd.) jest w wersji alfa.
+- **Motyw nawigacji:** główny układ przekazuje nawigacji motyw z naszych tokenów (`ThemeProvider` z `expo-router`, `src/theme/navigationTheme.ts`). Bez niego nawigacja brała jasny motyw domyślny, a na iOS 26+ ustawia według niego styl paska: w ciemnym motywie przyciski nagłówka były jasnoszare.
+- **Menu „⋯”:** systemowy arkusz akcji (`ActionSheetIOS`), na podglądzie web zastępczo okno przeglądarki.
+
+## 21. Testy ekranów z bazą w pamięci (2026-11-13)
+
+- Ekrany testujemy na prawdziwym SQLite w pamięci (`node:sqlite`) z gotowymi danymi, z atrapami `expo-router` i `useDb`.
+- Reanimated 4 nie ładuje się w Jest bez modułu natywnego (jego atrapa też go wymaga), więc `jest.setup.ts` ma prostą atrapę tych kilku funkcji, których używamy. Lista z przeciąganiem jest w testach zwykłą listą; zmianę kolejności testujemy akcjami VoiceOver. Ruch i przeciąganie sprawdzamy na telefonie.
+- W RNTL 14 `fireEvent` jest asynchroniczne, więc w testach zawsze z `await`.
+
+## 22. Wyszukiwanie ćwiczeń po potocznych nazwach (2026-11-15)
+
+- **Co:** poza nazwą wyszukiwarka sprawdza ukryte słowa kluczowe (`exerciseKeywords` w `pl.json`, np. „płaska ławka”, „bench”, „klata”), główne mięśnie i sprzęt. Odmiany słów: rdzeń bez 2 ostatnich liter (słowa 5–6 liter) albo 3 (7+ liter, np. „płaskiej” → „płask”).
+- **Kolejność wyników:** najpierw nazwa zaczynająca się od zapytania, potem słowa dosłownie w nazwie, potem dosłownie w słowach kluczowych, na końcu trafienia przez inną odmianę; w każdej grupie najpierw popularne ćwiczenia (`src/features/exercises/popular.ts`), potem alfabetycznie. Bez zapytania lista zostaje alfabetyczna z literami.
+- **Dlaczego:** test na iPhonie: „płaska” nie znajdowała wyciskania na ławce („poziomej”), a „wyciskanie” zaczynało się od wyciskania Arnolda.
