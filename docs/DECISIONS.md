@@ -135,6 +135,7 @@ Usunięte z szablonu, bo na razie niepotrzebne: `@expo/ui`, `expo-device`, `expo
 
 - **Co:** karty Ćwiczenia i Plany to foldery z `_layout.tsx` i `<Stack />` (wzór z dokumentacji native tabs w SDK 58). Duży tytuł, wyszukiwarka i przycisk Wstecz robi systemowy nagłówek (`headerLargeTitleEnabled`, `headerSearchBarOptions`). Formularze i filtry jako systemowy modal z przyciskiem „Anuluj” (`formSheet` z wysokościami pokazywał na iPhonie pusty arkusz).
 - **Dlaczego:** na iOS 26+ systemowe nagłówki mają Liquid Glass i gest wstecz bez dodatkowego kodu. Używam tylko stabilnego API opcji; API kompozycji (`Stack.Toolbar` itd.) jest w wersji alfa.
+- **Motyw nawigacji:** główny układ przekazuje nawigacji motyw z naszych tokenów (`ThemeProvider` z `expo-router`, `src/theme/navigationTheme.ts`). Bez niego nawigacja brała jasny motyw domyślny, a na iOS 26+ ustawia według niego styl paska: w ciemnym motywie przyciski nagłówka były jasnoszare.
 - **Menu „⋯”:** systemowy arkusz akcji (`ActionSheetIOS`), na podglądzie web zastępczo okno przeglądarki.
 
 ## 21. Testy ekranów z bazą w pamięci (2026-11-13)
@@ -142,3 +143,9 @@ Usunięte z szablonu, bo na razie niepotrzebne: `@expo/ui`, `expo-device`, `expo
 - Ekrany testujemy na prawdziwym SQLite w pamięci (`node:sqlite`) z gotowymi danymi, z atrapami `expo-router` i `useDb`.
 - Reanimated 4 nie ładuje się w Jest bez modułu natywnego (jego atrapa też go wymaga), więc `jest.setup.ts` ma prostą atrapę tych kilku funkcji, których używamy. Lista z przeciąganiem jest w testach zwykłą listą; zmianę kolejności testujemy akcjami VoiceOver. Ruch i przeciąganie sprawdzamy na telefonie.
 - W RNTL 14 `fireEvent` jest asynchroniczne, więc w testach zawsze z `await`.
+
+## 22. Wyszukiwanie ćwiczeń po potocznych nazwach (2026-11-15)
+
+- **Co:** poza nazwą wyszukiwarka sprawdza ukryte słowa kluczowe (`exerciseKeywords` w `pl.json`, np. „płaska ławka”, „bench”, „klata”), główne mięśnie i sprzęt. Odmiany słów: rdzeń bez 2 ostatnich liter (słowa 5–6 liter) albo 3 (7+ liter, np. „płaskiej” → „płask”).
+- **Kolejność wyników:** najpierw nazwa zaczynająca się od zapytania, potem słowa dosłownie w nazwie, potem dosłownie w słowach kluczowych, na końcu trafienia przez inną odmianę; w każdej grupie najpierw popularne ćwiczenia (`src/features/exercises/popular.ts`), potem alfabetycznie. Bez zapytania lista zostaje alfabetyczna z literami.
+- **Dlaczego:** test na iPhonie: „płaska” nie znajdowała wyciskania na ławce („poziomej”), a „wyciskanie” zaczynało się od wyciskania Arnolda.
