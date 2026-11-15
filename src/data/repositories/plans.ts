@@ -147,6 +147,18 @@ export async function deletePlan(db: Db, planId: string): Promise<void> {
 }
 
 /**
+ * Nazwa, której nie ma jeszcze na liście: „Całe ciało, 3 dni” → „Całe ciało, 3 dni (2)” → „(3)”…
+ * Dzięki temu dwie kopie tego samego programu da się odróżnić.
+ */
+export function uniquePlanName(base: string, taken: readonly string[]): string {
+  const names = new Set(taken);
+  if (!names.has(base)) return base;
+  let n = 2;
+  while (names.has(`${base} (${n})`)) n += 1;
+  return `${base} (${n})`;
+}
+
+/**
  * Gotowy program → kopia w „moich planach”, którą można dowolnie zmieniać.
  * `translate` zamienia klucze tłumaczeń na tekst w momencie kopiowania.
  */
@@ -157,12 +169,17 @@ export async function copyProgram(
 ): Promise<string> {
   return db.transaction(async (tx) => {
     const planId = newId();
+    const taken = await tx.all<{ name: string }>('SELECT name FROM plan');
+    const name = uniquePlanName(
+      translate(`programs.${program.id}.name`),
+      taken.map((row) => row.name),
+    );
     await tx.run(
       `INSERT INTO plan (id, name, description, level, source_program_id, created_at)
        VALUES (?, ?, ?, ?, ?, ?)`,
       [
         planId,
-        translate(`programs.${program.id}.name`),
+        name,
         translate(`programs.${program.id}.description`),
         program.level,
         program.id,

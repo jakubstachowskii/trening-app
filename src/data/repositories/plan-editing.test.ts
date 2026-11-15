@@ -22,6 +22,7 @@ import {
   reorderPlanDays,
   reorderPlanExercises,
   setActivePlan,
+  uniquePlanName,
   updatePlan,
   updatePlanExercise,
 } from './plans';
@@ -84,6 +85,25 @@ describe('edycja planu', () => {
       exerciseCount: program.days.reduce((sum, d) => sum + d.exercises.length, 0),
     });
     expect(summaries[1]).toMatchObject({ dayCount: 0, exerciseCount: 0 });
+  });
+
+  it('kolejne kopie tego samego programu dostają numer w nazwie', async () => {
+    const db = await freshDb();
+    const program = BUILTIN_PROGRAMS[0];
+    const base = tr(`programs.${program.id}.name`);
+    const ids = [
+      await copyProgram(db, program, tr),
+      await copyProgram(db, program, tr),
+      await copyProgram(db, program, tr),
+    ];
+    const names = await Promise.all(ids.map(async (id) => (await getPlan(db, id))!.name));
+    expect(names).toEqual([base, `${base} (2)`, `${base} (3)`]);
+  });
+
+  it('wolna nazwa: bez zmian, zajęta: pierwszy wolny numer', () => {
+    expect(uniquePlanName('Plan', [])).toBe('Plan');
+    expect(uniquePlanName('Plan', ['Plan'])).toBe('Plan (2)');
+    expect(uniquePlanName('Plan', ['Plan', 'Plan (2)', 'Plan (4)'])).toBe('Plan (3)');
   });
 });
 
