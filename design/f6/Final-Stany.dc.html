@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Ekran treningu — projekt końcowy, pozostałe stany</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+button{font:inherit;color:inherit;border:0;padding:0;margin:0;cursor:pointer;background:none;text-align:inherit}
+.root{width:1760px;height:964px;box-sizing:border-box;padding:40px;display:flex;gap:40px;align-items:flex-start;background:#1E1F22;font-family:-apple-system,'SF Pro Text',Inter,system-ui,sans-serif}
+.col{display:flex;flex-direction:column;gap:12px;width:390px}
+.cap{font-size:15px;font-weight:700;color:#E8E8EA}
+.phone{--bg:#000000;--surface:#121214;--now:#1C1C1F;--cell:#2A2A2E;--fill:#2A2A2E;--track:#1C1C1F;--label:#F5F6FA;--label2:#A3A8B8;--ring:#80859A;--sep:rgba(128,128,140,.18);--accent:#4DA3FF;--accentText:#7AB8FF;--onAccent:#0B0C14;--accentSoft:rgba(77,163,255,.16);--glass:rgba(40,42,54,.72);--glassEdge:rgba(255,255,255,.16);--shadow:0 8px 24px rgba(0,0,0,.40);--outline:rgba(255,255,255,.10);
+position:relative;width:390px;height:844px;border-radius:48px;overflow:hidden;background:var(--bg);color:var(--label);box-shadow:0 0 0 1px var(--outline),0 24px 60px rgba(0,0,0,.25)}
+.scroll{height:844px;box-sizing:border-box;padding:62px 16px 120px;display:flex;flex-direction:column;overflow:hidden}
+.num{font-variant-numeric:tabular-nums}
+.l2{color:var(--label2)}
+.foot{font-size:13px;line-height:18px}
+.headline{font-size:17px;line-height:22px;font-weight:600}
+.glass{background:var(--glass);backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%);border:1px solid var(--glassEdge);box-sizing:border-box}
+.circle{flex:none;width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center}
+.pill{flex:none;min-height:44px;padding:0 18px;border-radius:999px;font-size:15px;line-height:20px;font-weight:600}
+.segs{display:flex;gap:4px;margin-top:16px}
+.seg{flex:1;height:4px;border-radius:2px;background:var(--fill)}
+.seg.on{background:var(--accent)}
+.card{display:flex;flex-direction:column;padding:16px 12px 12px;border-radius:28px;background:var(--surface)}
+.grid{display:grid;grid-template-columns:36px 1fr 76px 60px 44px;gap:8px;align-items:center}
+.grid.time{grid-template-columns:36px 1fr 104px 44px}
+.thead{padding:0 8px 6px;font-size:11px;line-height:13px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--label2)}
+.row{padding:6px 8px;min-height:60px;box-sizing:border-box;border-radius:16px}
+.row.now{background:var(--now);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.row.done .val,.row.done .lbl{color:var(--label2)}
+.lbl.warm{color:var(--accentText)}
+.val{display:flex;align-items:center;justify-content:center;height:44px;border-radius:12px;font-size:22px;line-height:28px;font-weight:700;letter-spacing:-0.01em}
+.row.now .val{background:var(--cell)}
+.row.now .val.edit{box-shadow:inset 0 0 0 2px var(--accent)}
+.rec{display:flex;align-items:center;gap:4px;color:var(--accentText);font-size:13px;line-height:18px;font-weight:600}
+.chk{width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;box-sizing:border-box;border:2px solid var(--ring)}
+.chk.on{background:var(--accentSoft);color:var(--accentText);border:0}
+.row.now .chk{border-color:var(--accent)}
+.ghost{margin-top:4px;width:100%;min-height:44px;border-radius:999px;color:var(--accentText);font-size:15px;line-height:20px;font-weight:600;text-align:center}
+.group{display:flex;flex-direction:column;padding:0 16px;border-radius:28px;background:var(--surface)}
+.nrow{display:flex;align-items:center;gap:12px;min-height:60px}
+.nrow + .nrow{border-top:1px solid var(--sep)}
+.ell{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.edge{position:absolute;left:0;right:0;bottom:0;height:130px;pointer-events:none;background:var(--bg);-webkit-mask-image:linear-gradient(transparent,#000 75%);mask-image:linear-gradient(transparent,#000 75%)}
+.float{position:absolute;left:20px;right:20px;bottom:34px;min-height:56px;border-radius:999px;background:var(--accent);color:var(--onAccent);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.bar{position:absolute;left:12px;right:12px;bottom:28px;padding:12px 12px 12px 20px;border-radius:36px;box-shadow:var(--shadow);display:flex;align-items:center;gap:8px;overflow:hidden}
+.bbtn{flex:none;width:44px;height:44px;border-radius:22px;background:var(--fill);font-size:15px;line-height:20px;font-weight:600;text-align:center}
+.bbtn.main{width:auto;padding:0 16px;background:var(--accent);color:var(--onAccent)}
+.toast{position:absolute;left:12px;right:12px;top:52px;min-height:68px;display:flex;gap:12px;align-items:center;padding:12px 16px;box-sizing:border-box;border-radius:28px;background:var(--accent);color:var(--onAccent);box-shadow:var(--shadow)}
+.kp{position:absolute;left:12px;right:12px;bottom:28px;padding:16px;border-radius:28px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
+.krow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.key{min-height:52px;border-radius:12px;background:var(--fill);display:flex;align-items:center;justify-content:center;font-size:22px;line-height:28px;font-weight:700}
+.key.step{font-size:17px;line-height:22px;font-weight:600}
+.kmain{flex:1;min-height:52px;border-radius:999px;background:var(--accent);color:var(--onAccent);font-size:17px;line-height:22px;font-weight:600;text-align:center}
+</style>
+</helmet>
+<div class="root">
+
+<div class="col">
+<div class="cap">Wpisywanie · własna klawiatura</div>
+<div class="phone">
+<div class="scroll">
+<div class="card">
+<div style="display: flex; flex-direction: column; gap: 4px; padding: 0 8px 14px">
+<span class="foot l2">Ćwiczenie 1 z 4</span>
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 700; letter-spacing: -0.01em">Wyciskanie sztangi na ławce poziomej</h2>
+<span class="foot" style="color: var(--accentText); font-weight: 600; display: flex; gap: 6px; align-items: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>Dziś spróbuj 82,5 kg · ostatnio 80 kg × 8</span>
+</div>
+<div class="grid thead"><span>Seria</span><span>Poprzednio</span><span style="text-align: center">kg</span><span style="text-align: center">Powt.</span><span></span></div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div class="grid row done"><span class="headline lbl warm">R</span><span class="foot num l2">40 × 10</span><span class="val num">40</span><span class="val num">10</span><button class="chk on" aria-pressed="true" aria-label="Seria rozgrzewkowa: 40 kg, 10 powtórzeń, zrobiona"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></button></div>
+<div class="grid row now"><span class="headline num lbl">1</span><span class="foot num l2">80 × 8</span><button class="val edit num" aria-label="Ciężar, seria 1: 85">85</button><button class="val num" aria-label="Powtórzenia, seria 1: 8">8</button><button class="chk" aria-pressed="false" aria-label="Seria 1: 85 kg, 8 powtórzeń, do zrobienia"></button></div>
+<div class="grid row"><span class="headline num lbl">2</span><span class="foot num l2">80 × 8</span><span class="val num">85</span><span class="val num">8</span><button class="chk" aria-pressed="false" aria-label="Seria 2: 85 kg, 8 powtórzeń, do zrobienia"></button></div>
+<div class="grid row"><span class="headline num lbl">3</span><span class="foot num l2">80 × 8</span><span class="val num">85</span><span class="val num">8</span><button class="chk" aria-pressed="false" aria-label="Seria 3: 85 kg, 8 powtórzeń, do zrobienia"></button></div>
+</div>
+</div>
+</div>
+<div class="kp glass">
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr); gap: 8px; align-items: center">
+<button class="key step num" aria-label="Mniej o 2,5">−2,5</button>
+<div style="display: flex; flex-direction: column; align-items: center"><span class="foot l2">Ciężar · seria 1</span><span class="num" style="font-size: 28px; line-height: 34px; font-weight: 700">85 kg</span></div>
+<button class="key step num" aria-label="Więcej o 2,5">+2,5</button>
+</div>
+<div class="krow"><button class="key num">1</button><button class="key num">2</button><button class="key num">3</button></div>
+<div class="krow"><button class="key num">4</button><button class="key num">5</button><button class="key num">6</button></div>
+<div class="krow"><button class="key num">7</button><button class="key num">8</button><button class="key num">9</button></div>
+<div class="krow"><button class="key" aria-label="Przecinek">,</button><button class="key num">0</button><button class="key" aria-label="Usuń cyfrę"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5h11a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H9l-6-7zM12 9.5l5 5M17 9.5l-5 5"></path></svg></button></div>
+<div style="display: flex; gap: 8px; align-items: center">
+<button class="circle" aria-label="Schowaj klawiaturę" style="color: var(--label2)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+<button class="kmain">Dalej · powtórzenia</button>
+</div>
+</div>
+</div>
+</div>
+
+<div class="col">
+<div class="cap">Ćwiczenie na czas · stoper działa</div>
+<div class="phone">
+<div class="scroll">
+<div style="display: flex; align-items: center; gap: 12px">
+<button class="circle glass" aria-label="Zwiń trening"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="headline ell">Push A</span><span class="foot num l2">51:08</span></div>
+<button class="circle glass" aria-label="Więcej opcji treningu"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg></button>
+<button class="pill glass">Zakończ</button>
+</div>
+<div class="segs" role="img" aria-label="Ćwiczenie 4 z 4"><div class="seg on"></div><div class="seg on"></div><div class="seg on"></div><div class="seg on"></div></div>
+<div class="card" style="margin-top: 20px">
+<div style="display: flex; flex-direction: column; gap: 4px; padding: 0 8px 14px">
+<span class="foot l2">Ćwiczenie 4 z 4</span>
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 700; letter-spacing: -0.01em">Deska</h2>
+<span class="foot l2">Cel: 1:00 w każdej serii</span>
+</div>
+<div class="grid time thead"><span>Seria</span><span>Poprzednio</span><span style="text-align: center">Czas</span><span></span></div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div class="grid time row done"><span class="headline num lbl">1</span><span class="foot num l2">0:55</span><span class="val num">1:00</span><button class="chk on" aria-pressed="true" aria-label="Seria 1: 1 minuta, zrobiona"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></button></div>
+<div class="grid time row now"><span class="headline num lbl">2</span><span class="foot num l2">0:50</span><span class="val num" style="color: var(--accentText)">0:42</span><button class="chk" aria-pressed="false" aria-label="Seria 2: stoper działa, 42 sekundy"></button></div>
+<div class="grid time row"><span class="headline num lbl">3</span><span class="foot num l2">0:45</span><span class="val num">1:00</span><button class="chk" aria-pressed="false" aria-label="Seria 3: 1 minuta, do zrobienia"></button></div>
+</div>
+<button class="ghost">Dodaj serię</button>
+</div>
+</div>
+<button class="float" aria-label="Zatrzymaj stoper i zapisz serię 2, 42 sekundy"><span class="num" style="font-size: 22px; line-height: 26px; font-weight: 700">0:42</span><span class="foot" style="font-weight: 600">Stop · zapisz serię 2</span></button>
+</div>
+</div>
+
+<div class="col">
+<div class="cap">Rekord · przerwa przed następnym ćwiczeniem</div>
+<div class="phone">
+<div class="scroll">
+<div style="display: flex; align-items: center; gap: 12px">
+<button class="circle glass" aria-label="Zwiń trening"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="headline ell">Push A</span><span class="foot num l2">38:02</span></div>
+<button class="circle glass" aria-label="Więcej opcji treningu"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg></button>
+<button class="pill glass">Zakończ</button>
+</div>
+<div class="segs" role="img" aria-label="Ćwiczenie 1 z 4"><div class="seg on"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div></div>
+<div class="card" style="margin-top: 20px">
+<div style="display: flex; flex-direction: column; gap: 4px; padding: 0 8px 14px">
+<span class="foot l2">Ćwiczenie 1 z 4</span>
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 700; letter-spacing: -0.01em">Wyciskanie sztangi na ławce poziomej</h2>
+<span class="foot" style="color: var(--accentText); font-weight: 600; display: flex; gap: 6px; align-items: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>Dziś spróbuj 82,5 kg · ostatnio 80 kg × 8</span>
+</div>
+<div class="grid thead"><span>Seria</span><span>Poprzednio</span><span style="text-align: center">kg</span><span style="text-align: center">Powt.</span><span></span></div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div class="grid row done"><span class="headline lbl warm">R</span><span class="foot num l2">40 × 10</span><span class="val num">40</span><span class="val num">10</span><button class="chk on" aria-pressed="true" aria-label="Seria rozgrzewkowa: 40 kg, 10 powtórzeń, zrobiona"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></button></div>
+<div class="grid row done"><span class="headline num lbl">1</span><span class="foot num l2">80 × 8</span><span class="val num">82,5</span><span class="val num">8</span><button class="chk on" aria-pressed="true" aria-label="Seria 1: 82,5 kg, 8 powtórzeń, zrobiona"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></button></div>
+<div class="grid row done"><span class="headline num lbl">2</span><span class="foot num l2">80 × 8</span><span class="val num">82,5</span><span class="val num">8</span><button class="chk on" aria-pressed="true" aria-label="Seria 2: 82,5 kg, 8 powtórzeń, zrobiona"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></button></div>
+<div class="grid row done"><span class="headline num lbl">3</span><span class="rec"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"></path></svg>Rekord</span><span class="val num">82,5</span><span class="val num">9</span><button class="chk on" aria-pressed="true" aria-label="Seria 3: 82,5 kg, 9 powtórzeń, zrobiona, rekord"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></button></div>
+</div>
+<button class="ghost">Dodaj serię</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 20px">
+<span class="foot l2" style="padding: 0 16px; font-weight: 600">Następne</span>
+<div class="group">
+<div class="nrow"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="headline ell">Wyciskanie hantli na skosie</span><span class="foot l2">3 serie · 30 kg × 10</span></div></div>
+<div class="nrow"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="headline ell">Rozpiętki na linkach</span><span class="foot l2">3 serie · 15 kg × 12</span></div></div>
+</div>
+</div>
+</div>
+<div class="edge" aria-hidden="true"></div>
+<div class="toast" role="status">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"></path></svg>
+<div style="display: flex; flex-direction: column"><span class="headline">Nowy rekord</span><span class="foot num">82,5 kg × 9 · najwięcej powtórzeń</span></div>
+</div>
+<div class="bar glass" role="timer" aria-label="Przerwa, zostało 1:27">
+<button aria-label="Powiększ minutnik" style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+<span class="foot l2 ell" style="max-width: 100%">Potem nowe ćwiczenie</span>
+<span class="num" style="font-size: 34px; line-height: 38px; font-weight: 700; letter-spacing: -0.02em">1:27</span>
+</button>
+<button class="bbtn num" aria-label="Skróć przerwę o 15 sekund">−15</button>
+<button class="bbtn num" aria-label="Wydłuż przerwę o 15 sekund">+15</button>
+<button class="bbtn main" aria-label="Pomiń przerwę">Pomiń</button>
+<div aria-hidden="true" style="position: absolute; left: 0; bottom: 0; height: 3px; width: 97%; background: var(--accent)"></div>
+</div>
+</div>
+</div>
+
+<div class="col">
+<div class="cap">Po przerwie · przejście do następnego ćwiczenia</div>
+<div class="phone">
+<div class="scroll">
+<div style="display: flex; align-items: center; gap: 12px">
+<button class="circle glass" aria-label="Zwiń trening"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="headline ell">Push A</span><span class="foot num l2">39:32</span></div>
+<button class="circle glass" aria-label="Więcej opcji treningu"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg></button>
+<button class="pill glass">Zakończ</button>
+</div>
+<div class="segs" role="img" aria-label="Ćwiczenie 1 z 4, ukończone"><div class="seg on"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div></div>
+<div class="card" style="margin-top: 20px">
+<div style="display: flex; flex-direction: column; gap: 4px; padding: 0 8px 14px">
+<span class="foot" style="color: var(--accentText); font-weight: 600">Ćwiczenie 1 z 4 · zrobione</span>
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 700; letter-spacing: -0.01em">Wyciskanie sztangi na ławce poziomej</h2>
+</div>
+<div class="grid thead"><span>Seria</span><span>Poprzednio</span><span style="text-align: center">kg</span><span style="text-align: center">Powt.</span><span></span></div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div class="grid row done"><span class="headline lbl warm">R</span><span class="foot num l2">40 × 10</span><span class="val num">40</span><span class="val num">10</span><button class="chk on" aria-pressed="true" aria-label="Seria rozgrzewkowa: 40 kg, 10 powtórzeń, zrobiona"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></button></div>
+<div class="grid row done"><span class="headline num lbl">1</span><span class="foot num l2">80 × 8</span><span class="val num">82,5</span><span class="val num">8</span><button class="chk on" aria-pressed="true" aria-label="Seria 1: 82,5 kg, 8 powtórzeń, zrobiona"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></button></div>
+<div class="grid row done"><span class="headline num lbl">2</span><span class="foot num l2">80 × 8</span><span class="val num">82,5</span><span class="val num">8</span><button class="chk on" aria-pressed="true" aria-label="Seria 2: 82,5 kg, 8 powtórzeń, zrobiona"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></button></div>
+<div class="grid row done"><span class="headline num lbl">3</span><span class="rec"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"></path></svg>Rekord</span><span class="val num">82,5</span><span class="val num">9</span><button class="chk on" aria-pressed="true" aria-label="Seria 3: 82,5 kg, 9 powtórzeń, zrobiona, rekord"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></button></div>
+</div>
+<button class="ghost">Dodaj serię</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 20px">
+<span class="foot l2" style="padding: 0 16px; font-weight: 600">Następne</span>
+<div class="group">
+<div class="nrow"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="headline ell">Wyciskanie hantli na skosie</span><span class="foot l2">3 serie · 30 kg × 10</span></div></div>
+<div class="nrow"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="headline ell">Rozpiętki na linkach</span><span class="foot l2">3 serie · 15 kg × 12</span></div></div>
+</div>
+</div>
+</div>
+<div class="edge" aria-hidden="true"></div>
+<button class="float"><span class="headline">Następne ćwiczenie</span><span class="foot ell" style="font-weight: 600; max-width: 300px">Wyciskanie hantli na skosie</span></button>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1760,"height":964}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

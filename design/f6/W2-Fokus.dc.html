@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Ekran treningu — W2 Fokus</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+button{font:inherit;color:inherit;border:0;padding:0;margin:0;cursor:pointer;background:none}
+.root{width:900px;height:964px;box-sizing:border-box;padding:40px;display:flex;gap:40px;align-items:flex-start;background:#1E1F22;font-family:-apple-system,'SF Pro Text',Inter,system-ui,sans-serif}
+.col{display:flex;flex-direction:column;gap:12px;width:390px}
+.cap{font-size:15px;font-weight:700;color:#E8E8EA}
+.phone{position:relative;width:390px;height:844px;border-radius:48px;overflow:hidden;background:#000;color:#F5F6FA;box-shadow:0 0 0 1px rgba(255,255,255,.10),0 24px 60px rgba(0,0,0,.25)}
+.scroll{height:844px;box-sizing:border-box;padding:62px 16px 120px;display:flex;flex-direction:column;overflow:hidden}
+.num{font-variant-numeric:tabular-nums}
+.l2{color:#A3A8B8}
+.foot{font-size:13px;line-height:18px}
+.headline{font-size:17px;line-height:22px;font-weight:600}
+.glass{background:rgba(40,42,54,.72);backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%);border:1px solid rgba(255,255,255,.16);box-sizing:border-box}
+.circle{flex:none;width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center}
+.pill{flex:none;min-height:44px;padding:0 18px;border-radius:999px;font-size:15px;line-height:20px;font-weight:600}
+.segs{display:flex;gap:4px;margin-top:16px}
+.seg{flex:1;height:4px;border-radius:2px;background:#2A2A2E}
+.seg.on{background:#4DA3FF}
+.chips{display:flex;gap:8px;margin-top:16px}
+.chip{min-width:56px;height:44px;padding:0 14px;box-sizing:border-box;border-radius:22px;display:flex;align-items:center;justify-content:center;gap:6px;background:#121214;color:#A3A8B8;font-size:15px;line-height:20px;font-weight:600}
+.chip.done{background:rgba(77,163,255,.16);color:#7AB8FF}
+.chip.now{background:#1C1C1F;color:#F5F6FA;box-shadow:inset 0 0 0 1.5px #4DA3FF}
+.card{display:flex;flex-direction:column;padding:20px;border-radius:28px;background:#121214}
+.tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:148px;border-radius:12px;background:#1C1C1F}
+.big{font-size:56px;line-height:60px;font-weight:700;letter-spacing:-0.02em}
+.nextrow{display:flex;align-items:center;gap:12px;min-height:68px;padding:0 16px 0 20px;border-radius:28px;background:#121214}
+.ell{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.float{position:absolute;left:20px;right:20px;bottom:34px;min-height:56px;border-radius:999px;background:#4DA3FF;color:#0B0C14;box-shadow:0 8px 24px rgba(0,0,0,.40);font-size:17px;line-height:22px;font-weight:600}
+.float.quiet{background:rgba(40,42,54,.72);color:#F5F6FA;border:1px solid rgba(255,255,255,.16);box-sizing:border-box;backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%)}
+.tbtn{width:104px;min-height:44px;border-radius:999px;background:#1C1C1F;font-size:15px;line-height:20px;font-weight:600}
+</style>
+</helmet>
+<div class="root">
+
+<div class="col">
+<div class="cap">W2 Fokus · w trakcie serii</div>
+<div class="phone">
+<div class="scroll">
+<div style="display: flex; align-items: center; gap: 12px">
+<button class="circle glass" aria-label="Zwiń trening"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+<span class="headline ell">Push A</span>
+<span class="foot num l2">32:14</span>
+</div>
+<button class="pill glass">Zakończ</button>
+</div>
+<div class="segs" role="img" aria-label="Ćwiczenie 1 z 4"><div class="seg on"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div></div>
+
+<div style="display: flex; align-items: flex-start; gap: 12px; margin-top: 20px">
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+<span class="foot l2">Ćwiczenie 1 z 4</span>
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 700; letter-spacing: -0.01em">Wyciskanie sztangi na ławce poziomej</h2>
+</div>
+<button class="circle" style="background: #121214" aria-label="Opcje ćwiczenia"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg></button>
+</div>
+
+<div class="chips">
+<button class="chip done" aria-label="Seria rozgrzewkowa, zrobiona"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>R</button>
+<button class="chip now num" aria-label="Seria 1, bieżąca" aria-current="true">1</button>
+<button class="chip num" aria-label="Seria 2, do zrobienia">2</button>
+<button class="chip num" aria-label="Seria 3, do zrobienia">3</button>
+<button class="chip" aria-label="Dodaj serię"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+
+<div class="card" style="margin-top: 20px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px">
+<span class="headline">Seria 1 z 3</span>
+<span class="foot num l2">Poprzednio 80 kg × 8</span>
+</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px">
+<button class="tile" aria-label="Ciężar: 82,5 kg. Stuknij, żeby zmienić"><span class="big num">82,5</span><span class="foot l2">kg</span></button>
+<button class="tile" aria-label="Powtórzenia: 8. Stuknij, żeby zmienić"><span class="big num">8</span><span class="foot l2">powtórzeń</span></button>
+</div>
+<span class="foot" style="margin-top: 14px; color: #7AB8FF; font-weight: 600; display: flex; gap: 6px; align-items: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>O 2,5 kg więcej niż ostatnio</span>
+</div>
+
+<button class="nextrow" style="margin-top: 16px; text-align: left">
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="foot l2">Potem</span><span class="headline ell">Wyciskanie hantli na skosie</span></div>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A3A8B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+</div>
+<button class="float">Odhacz serię 1</button>
+</div>
+</div>
+
+<div class="col">
+<div class="cap">W2 Fokus · przerwa po serii 1</div>
+<div class="phone">
+<div class="scroll">
+<div style="display: flex; align-items: center; gap: 12px">
+<button class="circle glass" aria-label="Zwiń trening"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+<span class="headline ell">Push A</span>
+<span class="foot num l2">33:40</span>
+</div>
+<button class="pill glass">Zakończ</button>
+</div>
+<div class="segs" role="img" aria-label="Ćwiczenie 1 z 4"><div class="seg on"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div></div>
+
+<div style="display: flex; align-items: flex-start; gap: 12px; margin-top: 20px">
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+<span class="foot l2">Ćwiczenie 1 z 4</span>
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 700; letter-spacing: -0.01em">Wyciskanie sztangi na ławce poziomej</h2>
+</div>
+<button class="circle" style="background: #121214" aria-label="Opcje ćwiczenia"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg></button>
+</div>
+
+<div class="chips">
+<button class="chip done" aria-label="Seria rozgrzewkowa, zrobiona"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>R</button>
+<button class="chip done num" aria-label="Seria 1, zrobiona"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>1</button>
+<button class="chip now num" aria-label="Seria 2, następna" aria-current="true">2</button>
+<button class="chip num" aria-label="Seria 3, do zrobienia">3</button>
+<button class="chip" aria-label="Dodaj serię"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+
+<div role="timer" aria-label="Przerwa, zostało 1:12" style="position: relative; width: 232px; height: 232px; margin: 20px auto 0">
+<svg width="232" height="232" viewBox="0 0 232 232" aria-hidden="true" style="transform: rotate(-90deg)"><circle cx="116" cy="116" r="106" fill="none" stroke="#1C1C1F" stroke-width="12"></circle><circle cx="116" cy="116" r="106" fill="none" stroke="#4DA3FF" stroke-width="12" stroke-linecap="round" stroke-dasharray="666" stroke-dashoffset="133.2"></circle></svg>
+<div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center">
+<span class="foot l2">Przerwa</span>
+<span class="num" style="font-size: 64px; line-height: 68px; font-weight: 700; letter-spacing: -0.02em">1:12</span>
+<span class="foot num l2">z 1:30</span>
+</div>
+</div>
+<div style="display: flex; justify-content: center; gap: 12px; margin-top: 16px">
+<button class="tbtn num" aria-label="Skróć przerwę o 15 sekund">−15 s</button>
+<button class="tbtn num" aria-label="Wydłuż przerwę o 15 sekund">+15 s</button>
+</div>
+
+<div class="nextrow" style="margin-top: 20px">
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="foot l2">Dalej · seria 2 z 3</span><span class="headline num">82,5 kg × 8</span></div>
+<button class="pill" style="color: #7AB8FF; padding: 0 8px">Zmień</button>
+</div>
+</div>
+<button class="float quiet">Pomiń przerwę</button>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":900,"height":964}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

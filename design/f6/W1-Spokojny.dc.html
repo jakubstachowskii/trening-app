@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Ekran treningu — W1 Spokojny</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+button{font:inherit;color:inherit;border:0;padding:0;margin:0;cursor:pointer;background:none}
+.root{width:900px;height:964px;box-sizing:border-box;padding:40px;display:flex;gap:40px;align-items:flex-start;background:#1E1F22;font-family:-apple-system,'SF Pro Text',Inter,system-ui,sans-serif}
+.col{display:flex;flex-direction:column;gap:12px;width:390px}
+.cap{font-size:15px;font-weight:700;color:#E8E8EA}
+.phone{position:relative;width:390px;height:844px;border-radius:48px;overflow:hidden;background:#000;color:#F5F6FA;box-shadow:0 0 0 1px rgba(255,255,255,.10),0 24px 60px rgba(0,0,0,.25)}
+.scroll{height:844px;box-sizing:border-box;padding:62px 16px 120px;display:flex;flex-direction:column;overflow:hidden}
+.num{font-variant-numeric:tabular-nums}
+.l2{color:#A3A8B8}
+.foot{font-size:13px;line-height:18px}
+.headline{font-size:17px;line-height:22px;font-weight:600}
+.glass{background:rgba(40,42,54,.72);backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%);border:1px solid rgba(255,255,255,.16);box-sizing:border-box}
+.circle{flex:none;width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center}
+.pill{flex:none;min-height:44px;padding:0 18px;border-radius:999px;font-size:15px;line-height:20px;font-weight:600}
+.segs{display:flex;gap:4px;margin-top:16px}
+.seg{flex:1;height:4px;border-radius:2px;background:#2A2A2E}
+.seg.on{background:#4DA3FF}
+.card{display:flex;flex-direction:column;padding:16px 12px 12px;border-radius:28px;background:#121214}
+.grid{display:grid;grid-template-columns:36px 1fr 76px 60px 44px;gap:8px;align-items:center}
+.thead{padding:0 8px 6px;font-size:11px;line-height:13px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:#A3A8B8}
+.row{padding:6px 8px;min-height:60px;box-sizing:border-box;border-radius:16px}
+.row.now{background:#1C1C1F;box-shadow:inset 0 0 0 1.5px #4DA3FF}
+.row.done .val{color:#A3A8B8}
+.val{display:flex;align-items:center;justify-content:center;height:44px;border-radius:12px;font-size:22px;line-height:28px;font-weight:700;letter-spacing:-0.01em}
+.row.now .val{background:#2A2A2E}
+.chk{width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;box-sizing:border-box;border:2px solid #80859A}
+.chk.on{background:rgba(77,163,255,.16);color:#7AB8FF;border:0}
+.row.now .chk{border-color:#4DA3FF}
+.ghost{margin-top:4px;width:100%;min-height:44px;border-radius:999px;color:#7AB8FF;font-size:15px;line-height:20px;font-weight:600}
+.group{display:flex;flex-direction:column;padding:0 16px;border-radius:28px;background:#121214}
+.nrow{display:flex;align-items:center;gap:12px;min-height:60px}
+.nrow + .nrow{border-top:1px solid rgba(128,128,140,.18)}
+.ell{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.edge{position:absolute;left:0;right:0;bottom:0;height:130px;pointer-events:none;background:linear-gradient(rgba(0,0,0,0),#000 75%)}
+.float{position:absolute;left:20px;right:20px;bottom:34px;min-height:56px;border-radius:999px;background:#4DA3FF;color:#0B0C14;box-shadow:0 8px 24px rgba(0,0,0,.40);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.bar{position:absolute;left:12px;right:12px;bottom:28px;padding:12px 12px 12px 20px;border-radius:36px;box-shadow:0 8px 24px rgba(0,0,0,.40);display:flex;align-items:center;gap:8px;overflow:hidden}
+.bbtn{flex:none;width:44px;height:44px;border-radius:22px;background:#2A2A2E;font-size:15px;line-height:20px;font-weight:600}
+.bbtn.main{width:auto;padding:0 16px;background:#4DA3FF;color:#0B0C14}
+</style>
+</helmet>
+<div class="root">
+
+<div class="col">
+<div class="cap">W1 Spokojny · w trakcie serii</div>
+<div class="phone">
+<div class="scroll">
+<div style="display: flex; align-items: center; gap: 12px">
+<button class="circle glass" aria-label="Zwiń trening"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+<span class="headline ell">Push A</span>
+<span class="foot num l2">32:14</span>
+</div>
+<button class="circle glass" aria-label="Więcej opcji treningu"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg></button>
+<button class="pill glass">Zakończ</button>
+</div>
+<div class="segs" role="img" aria-label="Ćwiczenie 1 z 4"><div class="seg on"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div></div>
+
+<div class="card" style="margin-top: 20px">
+<div style="display: flex; flex-direction: column; gap: 4px; padding: 0 8px 14px">
+<span class="foot l2">Ćwiczenie 1 z 4</span>
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 700; letter-spacing: -0.01em">Wyciskanie sztangi na ławce poziomej</h2>
+<span class="foot" style="color: #7AB8FF; font-weight: 600; display: flex; gap: 6px; align-items: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>Dziś spróbuj 82,5 kg · ostatnio 80 kg × 8</span>
+</div>
+<div class="grid thead"><span>Seria</span><span>Poprzednio</span><span style="text-align: center">kg</span><span style="text-align: center">Powt.</span><span></span></div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div class="grid row done"><span class="headline" style="color: #7AB8FF">R</span><span class="foot num l2">40 × 10</span><span class="val num">40</span><span class="val num">10</span><button class="chk on" aria-pressed="true" aria-label="Seria rozgrzewkowa: 40 kg, 10 powtórzeń, zrobiona"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></button></div>
+<div class="grid row now"><span class="headline num">1</span><span class="foot num l2">80 × 8</span><span class="val num">82,5</span><span class="val num">8</span><button class="chk" aria-pressed="false" aria-label="Seria 1: 82,5 kg, 8 powtórzeń, do zrobienia"></button></div>
+<div class="grid row"><span class="headline num">2</span><span class="foot num l2">80 × 8</span><span class="val num">82,5</span><span class="val num">8</span><button class="chk" aria-pressed="false" aria-label="Seria 2: 82,5 kg, 8 powtórzeń, do zrobienia"></button></div>
+<div class="grid row"><span class="headline num">3</span><span class="foot num l2">80 × 8</span><span class="val num">82,5</span><span class="val num">8</span><button class="chk" aria-pressed="false" aria-label="Seria 3: 82,5 kg, 8 powtórzeń, do zrobienia"></button></div>
+</div>
+<button class="ghost">Dodaj serię</button>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 20px">
+<span class="foot l2" style="padding: 0 16px; font-weight: 600">Następne</span>
+<div class="group">
+<div class="nrow"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="headline ell">Wyciskanie hantli na skosie</span><span class="foot l2">3 serie · 30 kg × 10</span></div></div>
+<div class="nrow"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="headline ell">Rozpiętki na linkach</span><span class="foot l2">3 serie · 15 kg × 12</span></div></div>
+</div>
+</div>
+</div>
+<div class="edge" aria-hidden="true"></div>
+<button class="float"><span class="headline">Odhacz serię 1</span><span class="foot num" style="font-weight: 600">82,5 kg × 8</span></button>
+</div>
+</div>
+
+<div class="col">
+<div class="cap">W1 Spokojny · przerwa po serii 1</div>
+<div class="phone">
+<div class="scroll">
+<div style="display: flex; align-items: center; gap: 12px">
+<button class="circle glass" aria-label="Zwiń trening"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+<span class="headline ell">Push A</span>
+<span class="foot num l2">33:40</span>
+</div>
+<button class="circle glass" aria-label="Więcej opcji treningu"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg></button>
+<button class="pill glass">Zakończ</button>
+</div>
+<div class="segs" role="img" aria-label="Ćwiczenie 1 z 4"><div class="seg on"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div></div>
+
+<div class="card" style="margin-top: 20px">
+<div style="display: flex; flex-direction: column; gap: 4px; padding: 0 8px 14px">
+<span class="foot l2">Ćwiczenie 1 z 4</span>
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 700; letter-spacing: -0.01em">Wyciskanie sztangi na ławce poziomej</h2>
+<span class="foot" style="color: #7AB8FF; font-weight: 600; display: flex; gap: 6px; align-items: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>Dziś spróbuj 82,5 kg · ostatnio 80 kg × 8</span>
+</div>
+<div class="grid thead"><span>Seria</span><span>Poprzednio</span><span style="text-align: center">kg</span><span style="text-align: center">Powt.</span><span></span></div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div class="grid row done"><span class="headline" style="color: #7AB8FF">R</span><span class="foot num l2">40 × 10</span><span class="val num">40</span><span class="val num">10</span><button class="chk on" aria-pressed="true" aria-label="Seria rozgrzewkowa: 40 kg, 10 powtórzeń, zrobiona"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></button></div>
+<div class="grid row done"><span class="headline num l2">1</span><span class="foot num l2">80 × 8</span><span class="val num">82,5</span><span class="val num">8</span><button class="chk on" aria-pressed="true" aria-label="Seria 1: 82,5 kg, 8 powtórzeń, zrobiona"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></button></div>
+<div class="grid row now"><span class="headline num">2</span><span class="foot num l2">80 × 8</span><span class="val num">82,5</span><span class="val num">8</span><button class="chk" aria-pressed="false" aria-label="Seria 2: 82,5 kg, 8 powtórzeń, do zrobienia"></button></div>
+<div class="grid row"><span class="headline num">3</span><span class="foot num l2">80 × 8</span><span class="val num">82,5</span><span class="val num">8</span><button class="chk" aria-pressed="false" aria-label="Seria 3: 82,5 kg, 8 powtórzeń, do zrobienia"></button></div>
+</div>
+<button class="ghost">Dodaj serię</button>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 20px">
+<span class="foot l2" style="padding: 0 16px; font-weight: 600">Następne</span>
+<div class="group">
+<div class="nrow"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="headline ell">Wyciskanie hantli na skosie</span><span class="foot l2">3 serie · 30 kg × 10</span></div></div>
+<div class="nrow"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="headline ell">Rozpiętki na linkach</span><span class="foot l2">3 serie · 15 kg × 12</span></div></div>
+</div>
+</div>
+</div>
+<div class="edge" aria-hidden="true"></div>
+<div class="bar glass" role="timer" aria-label="Przerwa, zostało 1:12">
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+<span class="foot l2 ell">Przerwa · do serii 2</span>
+<span class="num" style="font-size: 34px; line-height: 38px; font-weight: 700; letter-spacing: -0.02em">1:12</span>
+</div>
+<button class="bbtn num" aria-label="Skróć przerwę o 15 sekund">−15</button>
+<button class="bbtn num" aria-label="Wydłuż przerwę o 15 sekund">+15</button>
+<button class="bbtn main" aria-label="Pomiń przerwę">Pomiń</button>
+<div aria-hidden="true" style="position: absolute; left: 0; bottom: 0; height: 3px; width: 80%; background: #4DA3FF"></div>
+</div>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":900,"height":964}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

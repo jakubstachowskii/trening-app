@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Ekran treningu — projekt końcowy (klikalny)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+button{font:inherit;color:inherit;border:0;padding:0;margin:0;cursor:pointer;background:none;text-align:inherit}
+.root{width:900px;height:964px;box-sizing:border-box;padding:40px;display:flex;gap:40px;align-items:flex-start;background:#1E1F22;font-family:-apple-system,'SF Pro Text',Inter,system-ui,sans-serif}
+.col{display:flex;flex-direction:column;gap:12px;width:390px}
+.cap{font-size:15px;font-weight:700;color:#E8E8EA}
+.phone{--bg:#000000;--surface:#121214;--now:#1C1C1F;--cell:#2A2A2E;--fill:#2A2A2E;--track:#1C1C1F;--label:#F5F6FA;--label2:#A3A8B8;--ring:#80859A;--sep:rgba(128,128,140,.18);--accent:#4DA3FF;--accentText:#7AB8FF;--onAccent:#0B0C14;--accentSoft:rgba(77,163,255,.16);--glass:rgba(40,42,54,.72);--glassEdge:rgba(255,255,255,.16);--shadow:0 8px 24px rgba(0,0,0,.40);--outline:rgba(255,255,255,.10);
+position:relative;width:390px;height:844px;border-radius:48px;overflow:hidden;background:var(--bg);color:var(--label);box-shadow:0 0 0 1px var(--outline),0 24px 60px rgba(0,0,0,.25)}
+.phone.light{--bg:#F2F2F7;--surface:#FFFFFF;--now:#F2F2F7;--cell:#FFFFFF;--fill:#E8E8EF;--track:#E8E8EF;--label:#111218;--label2:#5C5F6B;--ring:#8A8D99;--sep:rgba(17,18,24,.10);--accent:#0A6BDB;--accentText:#0A5FC4;--onAccent:#FFFFFF;--accentSoft:rgba(10,107,219,.12);--glass:rgba(255,255,255,.78);--glassEdge:rgba(255,255,255,.95);--shadow:0 8px 24px rgba(17,18,24,.14);--outline:rgba(17,18,24,.10)}
+.scroll{height:844px;box-sizing:border-box;padding:62px 16px 120px;display:flex;flex-direction:column;overflow:hidden}
+.num{font-variant-numeric:tabular-nums}
+.l2{color:var(--label2)}
+.foot{font-size:13px;line-height:18px}
+.headline{font-size:17px;line-height:22px;font-weight:600}
+.glass{background:var(--glass);backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%);border:1px solid var(--glassEdge);box-sizing:border-box}
+.circle{flex:none;width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center}
+.pill{flex:none;min-height:44px;padding:0 18px;border-radius:999px;font-size:15px;line-height:20px;font-weight:600}
+.segs{display:flex;gap:4px;margin-top:16px}
+.seg{flex:1;height:4px;border-radius:2px;background:var(--fill)}
+.seg.on{background:var(--accent)}
+.card{display:flex;flex-direction:column;padding:16px 12px 12px;border-radius:28px;background:var(--surface)}
+.grid{display:grid;grid-template-columns:36px 1fr 76px 60px 44px;gap:8px;align-items:center}
+.thead{padding:0 8px 6px;font-size:11px;line-height:13px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--label2)}
+.row{padding:6px 8px;min-height:60px;box-sizing:border-box;border-radius:16px;transition:background-color 250ms ease,box-shadow 250ms ease}
+.row.now{background:var(--now);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.row.done .val,.row.done .lbl{color:var(--label2)}
+.lbl.warm{color:var(--accentText)}
+.val{display:flex;align-items:center;justify-content:center;height:44px;border-radius:12px;font-size:22px;line-height:28px;font-weight:700;letter-spacing:-0.01em}
+.row.now .val{background:var(--cell)}
+.rec{display:flex;align-items:center;gap:4px;color:var(--accentText);font-size:13px;line-height:18px;font-weight:600}
+.chk{width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;box-sizing:border-box;border:2px solid var(--ring)}
+.chk.on{background:var(--accentSoft);color:var(--accentText);border:0}
+.row.now .chk{border-color:var(--accent)}
+.ghost{margin-top:4px;width:100%;min-height:44px;border-radius:999px;color:var(--accentText);font-size:15px;line-height:20px;font-weight:600;text-align:center}
+.group{display:flex;flex-direction:column;padding:0 16px;border-radius:28px;background:var(--surface)}
+.nrow{display:flex;align-items:center;gap:12px;min-height:60px}
+.nrow + .nrow{border-top:1px solid var(--sep)}
+.ell{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.edge{position:absolute;left:0;right:0;bottom:0;height:130px;pointer-events:none;background:var(--bg);-webkit-mask-image:linear-gradient(transparent,#000 75%);mask-image:linear-gradient(transparent,#000 75%)}
+.float{position:absolute;left:20px;right:20px;bottom:34px;min-height:56px;border-radius:999px;background:var(--accent);color:var(--onAccent);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.bar{position:absolute;left:12px;right:12px;bottom:28px;padding:12px 12px 12px 20px;border-radius:36px;box-shadow:var(--shadow);display:flex;align-items:center;gap:8px;overflow:hidden}
+.bbtn{flex:none;width:44px;height:44px;border-radius:22px;background:var(--fill);font-size:15px;line-height:20px;font-weight:600;text-align:center}
+.bbtn.main{width:auto;padding:0 16px;background:var(--accent);color:var(--onAccent)}
+.prog{position:absolute;left:0;bottom:0;height:3px;background:var(--accent);transition:width 1s linear}
+.sheet{position:absolute;left:0;right:0;bottom:0;padding:8px 20px 34px;border-radius:36px 36px 0 0;box-shadow:0 -8px 32px rgba(0,0,0,.30);display:flex;flex-direction:column;align-items:center;--glass-blur:22px}
+.tbtn{width:104px;min-height:44px;border-radius:999px;background:var(--fill);font-size:15px;line-height:20px;font-weight:600;text-align:center}
+.quiet{width:100%;min-height:52px;border-radius:999px;background:var(--fill);font-size:17px;line-height:22px;font-weight:600;text-align:center}
+.nextrow{display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;min-height:60px;padding:0 4px}
+.toast{position:absolute;left:12px;right:12px;top:52px;min-height:68px;display:flex;gap:12px;align-items:center;padding:12px 16px;box-sizing:border-box;border-radius:28px;background:var(--accent);color:var(--onAccent);box-shadow:var(--shadow)}
+.ringarc{transition:stroke-dashoffset 1s linear}
+.press{transition:transform 150ms cubic-bezier(0.2,0.8,0.2,1)}
+.press:active{transform:scale(0.97)}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes popin{0%{opacity:0;transform:scale(.3)}60%{opacity:1;transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes slideup{from{transform:translateY(140%)}to{transform:none}}
+@keyframes toastin{0%{opacity:0;transform:translateY(-20px) scale(.95)}100%{opacity:1;transform:none}}
+.popin{animation:popin 420ms cubic-bezier(0.3,1.5,0.5,1) both}
+.slideup{animation:slideup 400ms cubic-bezier(0.2,0.9,0.3,1) both}
+.toastin{animation:toastin 420ms cubic-bezier(0.3,1.5,0.5,1) both}
+.fadein{animation:fade 250ms ease both}
+.rm .popin,.rm .slideup,.rm .toastin{animation:fade 150ms ease both}
+.rm .row,.rm .prog,.rm .ringarc{transition:none}
+.rm .press:active{transform:none}
+@media (prefers-reduced-motion: reduce){.popin,.slideup,.toastin{animation:fade 150ms ease both}.row,.prog,.ringarc{transition:none}.press:active{transform:none}}
+</style>
+</helmet>
+<div class="{{rootClass}}">
+<sc-for list="{{modes}}" as="c" hint-placeholder-count="2">
+<div class="col">
+<div class="cap">{{c.title}}</div>
+<div class="{{c.phoneCls}}">
+<div class="scroll">
+<div style="display: flex; align-items: center; gap: 12px">
+<button class="circle glass press" aria-label="Zwiń trening"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+<span class="headline ell">Push A</span>
+<span class="foot num l2">{{c.clock}}</span>
+</div>
+<button class="circle glass press" aria-label="Więcej opcji treningu"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg></button>
+<button class="pill glass press">Zakończ</button>
+</div>
+<div class="segs" role="img" aria-label="Ćwiczenie 1 z 4"><div class="seg on"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div></div>
+
+<div class="card" style="margin-top: 20px">
+<div style="display: flex; flex-direction: column; gap: 4px; padding: 0 8px 14px">
+<span class="foot l2">Ćwiczenie 1 z 4</span>
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 700; letter-spacing: -0.01em">Wyciskanie sztangi na ławce poziomej</h2>
+<span class="foot" style="color: var(--accentText); font-weight: 600; display: flex; gap: 6px; align-items: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>Dziś spróbuj 82,5 kg · ostatnio 80 kg × 8</span>
+</div>
+<div class="grid thead"><span>Seria</span><span>Poprzednio</span><span style="text-align: center">kg</span><span style="text-align: center">Powt.</span><span></span></div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<sc-for list="{{c.rows}}" as="r" hint-placeholder-count="4">
+<div class="{{r.cls}}">
+<span class="{{r.lblCls}}">{{r.lbl}}</span>
+<sc-if value="{{r.rec}}" hint-placeholder-val="{{false}}"><span class="rec popin"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"></path></svg>Rekord</span></sc-if>
+<sc-if value="{{r.norec}}" hint-placeholder-val="{{true}}"><span class="foot num l2">{{r.prev}}</span></sc-if>
+<span class="val num">{{r.kg}}</span>
+<span class="val num">{{r.reps}}</span>
+<button class="{{r.chkCls}}" aria-pressed="{{r.done}}" aria-label="{{r.aria}}" onClick="{{r.toggle}}">
+<sc-if value="{{r.done}}" hint-placeholder-val="{{false}}"><svg class="popin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
+</button>
+</div>
+</sc-for>
+</div>
+<button class="ghost press">Dodaj serię</button>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 20px">
+<span class="foot l2" style="padding: 0 16px; font-weight: 600">Następne</span>
+<div class="group">
+<div class="nrow"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="headline ell">Wyciskanie hantli na skosie</span><span class="foot l2">3 serie · 30 kg × 10</span></div></div>
+<div class="nrow"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="headline ell">Rozpiętki na linkach</span><span class="foot l2">3 serie · 15 kg × 12</span></div></div>
+</div>
+</div>
+</div>
+<div class="edge" aria-hidden="true"></div>
+
+<sc-if value="{{c.showToast}}" hint-placeholder-val="{{false}}">
+<div class="toast toastin" role="status">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"></path></svg>
+<div style="display: flex; flex-direction: column"><span class="headline">Nowy rekord</span><span class="foot num">82,5 kg × 8 · najwięcej powtórzeń</span></div>
+</div>
+</sc-if>
+
+<sc-if value="{{c.showBtn}}" hint-placeholder-val="{{true}}">
+<button class="float press fadein" onClick="{{c.primary}}"><span class="headline">{{c.btnTitle}}</span><span class="foot num" style="font-weight: 600">{{c.btnSub}}</span></button>
+</sc-if>
+
+<sc-if value="{{c.showBar}}" hint-placeholder-val="{{false}}">
+<div class="bar glass slideup" role="timer" aria-label="{{c.timerAria}}">
+<button onClick="{{c.expand}}" aria-label="Powiększ minutnik" style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+<span class="foot l2 ell" style="max-width: 100%">{{c.barLabel}}</span>
+<span class="num" style="font-size: 34px; line-height: 38px; font-weight: 700; letter-spacing: -0.02em">{{c.timeText}}</span>
+</button>
+<button class="bbtn num press" aria-label="Skróć przerwę o 15 sekund" onClick="{{c.minus}}">−15</button>
+<button class="bbtn num press" aria-label="Wydłuż przerwę o 15 sekund" onClick="{{c.plus}}">+15</button>
+<button class="bbtn main press" aria-label="Pomiń przerwę" onClick="{{c.skip}}">Pomiń</button>
+<div class="prog" aria-hidden="true" style="{{c.sProg}}"></div>
+</div>
+</sc-if>
+
+<sc-if value="{{c.showSheet}}" hint-placeholder-val="{{false}}">
+<div class="sheet glass slideup" role="timer" aria-label="{{c.timerAria}}">
+<div style="display: flex; align-items: center; justify-content: space-between; width: 100%">
+<span class="headline" style="padding-left: 4px">Przerwa</span>
+<button class="circle press" style="background: var(--fill)" aria-label="Zmniejsz minutnik" onClick="{{c.collapse}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+</div>
+<div style="position: relative; width: 232px; height: 232px; margin-top: 4px">
+<svg width="232" height="232" viewBox="0 0 232 232" aria-hidden="true" style="transform: rotate(-90deg)"><circle cx="116" cy="116" r="106" fill="none" stroke="var(--track)" stroke-width="12"></circle><circle class="ringarc" cx="116" cy="116" r="106" fill="none" stroke="var(--accent)" stroke-width="12" stroke-linecap="round" stroke-dasharray="666" stroke-dashoffset="{{c.ringOffset}}"></circle></svg>
+<div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center">
+<span class="num" style="font-size: 64px; line-height: 68px; font-weight: 700; letter-spacing: -0.02em">{{c.timeText}}</span>
+<span class="foot num l2">{{c.totalText}}</span>
+</div>
+</div>
+<div style="display: flex; justify-content: center; gap: 12px; margin-top: 16px">
+<button class="tbtn num press" aria-label="Skróć przerwę o 15 sekund" onClick="{{c.minus}}">−15 s</button>
+<button class="tbtn num press" aria-label="Wydłuż przerwę o 15 sekund" onClick="{{c.plus}}">+15 s</button>
+</div>
+<div class="nextrow" style="margin-top: 12px">
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="foot l2">Dalej</span><span class="headline num ell">{{c.nextText}}</span></div>
+</div>
+<button class="quiet press" style="margin-top: 8px" onClick="{{c.skip}}">Pomiń przerwę</button>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"ograniczRuch":{"editor":"boolean","default":false,"section":"Podgląd"},"$preview":{"width":900,"height":964}}'>
+var ROWS = [
+  { lbl: 'R', prev: '40 × 10', kg: '40', reps: '10', warm: true },
+  { lbl: '1', prev: '80 × 8', kg: '82,5', reps: '8' },
+  { lbl: '2', prev: '80 × 8', kg: '82,5', reps: '8' },
+  { lbl: '3', prev: '80 × 8', kg: '82,5', reps: '8' }
+];
+var REST = 90;
+var KEYS = ['dark', 'light'];
+function fmt(s) { var m = Math.floor(s / 60); var r = s % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
+function copy(o) { return JSON.parse(JSON.stringify(o)); }
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      done: { dark: [true, false, false, false], light: [true, false, false, false] },
+      left: { dark: 0, light: 0 },
+      total: { dark: REST, light: REST },
+      toast: { dark: false, light: false },
+      pr: { dark: false, light: false },
+      open: { dark: false, light: false },
+      clock: 32 * 60 + 14
+    };
+  }
+  componentDidMount() {
+    var self = this;
+    this.iv = setInterval(function () {
+      var l = copy(self.state.left);
+      KEYS.forEach(function (k) { if (l[k] > 0) l[k] -= 1; });
+      self.setState({ left: l, clock: self.state.clock + 1 });
+    }, 1000);
+  }
+  componentWillUnmount() { clearInterval(this.iv); (this.tos || []).forEach(clearTimeout); }
+  toggle(k, i) {
+    var s = this.state; var done = copy(s.done); done[k][i] = !done[k][i]; var next = { done: done };
+    var l = copy(s.left);
+    if (done[k][i]) {
+      l[k] = REST; next.left = l;
+      var t = copy(s.total); t[k] = REST; next.total = t;
+      if (i === 1 && !s.pr[k]) {
+        var pr = copy(s.pr); pr[k] = true; next.pr = pr;
+        var to = copy(s.toast); to[k] = true; next.toast = to;
+        var self = this;
+        this.tos = (this.tos || []).concat(setTimeout(function () { var t2 = copy(self.state.toast); t2[k] = false; self.setState({ toast: t2 }); }, 3200));
+      }
+    } else {
+      l[k] = 0; next.left = l;
+    }
+    this.setState(next);
+  }
+  adjust(k, d) {
+    var l = copy(this.state.left); l[k] = Math.max(0, l[k] + d);
+    var t = copy(this.state.total); if (l[k] > t[k]) t[k] = l[k];
+    this.setState({ left: l, total: t });
+  }
+  setOpen(k, v) { var o = copy(this.state.open); o[k] = v; this.setState({ open: o }); }
+  renderVals() {
+    var self = this; var st = this.state;
+    var rm = this.props.ograniczRuch ?? false;
+    var modes = KEYS.map(function (k) {
+      var c = {};
+      c.title = k === 'dark' ? 'Ciemny · klikalny' : 'Jasny · klikalny';
+      c.phoneCls = k === 'dark' ? 'phone' : 'phone light';
+      c.clock = fmt(st.clock);
+      var arr = st.done[k];
+      var ni = arr.indexOf(false);
+      c.rows = ROWS.map(function (r, i) {
+        var d = arr[i];
+        var rec = d && i === 1 && st.pr[k];
+        return {
+          lbl: r.lbl, prev: r.prev, kg: r.kg, reps: r.reps, done: d, rec: rec, norec: !rec,
+          cls: 'grid row' + (d ? ' done' : '') + (i === ni ? ' now' : ''),
+          lblCls: 'headline num lbl' + (r.warm ? ' warm' : ''),
+          chkCls: d ? 'chk on' : 'chk',
+          aria: (r.warm ? 'Seria rozgrzewkowa' : 'Seria ' + r.lbl) + ': ' + r.kg + ' kg, ' + r.reps + ' powtórzeń, ' + (d ? 'zrobiona' : 'do zrobienia'),
+          toggle: function () { self.toggle(k, i); }
+        };
+      });
+      var left = st.left[k];
+      var resting = left > 0;
+      c.showBtn = !resting;
+      c.showBar = resting && !st.open[k];
+      c.showSheet = resting && st.open[k];
+      c.showToast = st.toast[k];
+      c.btnTitle = ni === -1 ? 'Następne ćwiczenie' : 'Odhacz serię ' + ROWS[ni].lbl;
+      c.btnSub = ni === -1 ? 'Wyciskanie hantli na skosie' : ROWS[ni].kg + ' kg × ' + ROWS[ni].reps;
+      c.primary = function () { if (ni !== -1) self.toggle(k, ni); };
+      c.barLabel = ni === -1 ? 'Potem nowe ćwiczenie' : 'Przerwa · do serii ' + ROWS[ni].lbl;
+      c.nextText = ni === -1 ? 'Wyciskanie hantli na skosie' : 'Seria ' + ROWS[ni].lbl + ' · ' + ROWS[ni].kg + ' kg × ' + ROWS[ni].reps;
+      c.timeText = fmt(left);
+      c.totalText = 'z ' + fmt(st.total[k]);
+      c.timerAria = 'Przerwa, zostało ' + fmt(left);
+      var frac = st.total[k] > 0 ? left / st.total[k] : 0;
+      c.sProg = 'width:' + (frac * 100).toFixed(1) + '%';
+      c.ringOffset = (666 * (1 - frac)).toFixed(1);
+      c.minus = function () { self.adjust(k, -15); };
+      c.plus = function () { self.adjust(k, 15); };
+      c.skip = function () { var l = copy(self.state.left); l[k] = 0; var o = copy(self.state.open); o[k] = false; self.setState({ left: l, open: o }); };
+      c.expand = function () { self.setOpen(k, true); };
+      c.collapse = function () { self.setOpen(k, false); };
+      return c;
+    });
+    return { modes: modes, rootClass: rm ? 'root rm' : 'root' };
+  }
+}
+</script>
+</body>
+</html>
