@@ -200,6 +200,7 @@ export default function WorkoutScreen() {
               total={session.exercises.length}
               editing={w.editing}
               recordSetIds={w.recordSetIds}
+              stopwatchSec={w.stopwatchSec}
               onEdit={(setId, field) => void w.openEditor(setId, field)}
               onToggle={(setId) => void w.toggleSet(setId)}
               onSetMenu={w.setMenu}

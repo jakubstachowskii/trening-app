@@ -7,6 +7,7 @@ import type { WorkoutSet } from '@/data/models';
 import type { ExerciseType } from '@/domain/types';
 import {
   displayKeypadText,
+  formatClock,
   formatKeypadValue,
   type KeypadField,
   usesDuration,
@@ -33,6 +34,8 @@ type Props = {
   current: boolean;
   /** Seria pobiła rekord w tym treningu: plakietka zamiast „Poprzednio”. */
   record: boolean;
+  /** Czas stopera w trakcie serii (pokazywany zamiast wpisanego czasu). */
+  liveSec?: number | null;
   /** Edytowane pole (podświetlone) i jego tekst z klawiatury. */
   editing: { field: KeypadField; text: string } | null;
   onEdit: (field: KeypadField) => void;
@@ -47,6 +50,7 @@ export function SetRow({
   previous,
   current,
   record,
+  liveSec = null,
   editing,
   onEdit,
   onToggle,
@@ -76,7 +80,10 @@ export function SetRow({
 
   const cell = (field: KeypadField, value: number | null, width: number) => {
     const active = editing?.field === field;
-    const text = displayKeypadText(active ? editing.text : formatKeypadValue(value, field), field);
+    const live = field === 'duration' && liveSec != null && !active;
+    const text = live
+      ? formatClock(liveSec)
+      : displayKeypadText(active ? editing.text : formatKeypadValue(value, field), field);
     const key =
       field === 'weight'
         ? 'workout.editWeight'

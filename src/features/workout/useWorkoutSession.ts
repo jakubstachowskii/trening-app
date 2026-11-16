@@ -665,6 +665,7 @@ export function useWorkoutSession() {
     onAdjustRest,
     skipRest: clearRest,
     recordSetIds,
+    stopwatchSec,
     primary,
     onPrimary,
     finish,

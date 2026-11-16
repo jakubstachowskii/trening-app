@@ -63,7 +63,8 @@ export async function loadSummary(db: Db, workoutId: string): Promise<SummaryDat
   const goal = clampWeeklyGoal(
     await getSetting<number>(db, WEEKLY_GOAL_SETTING, WEEKLY_GOAL_DEFAULT),
   );
-  const starts = (await listFinishedStarts(db)).filter((s) => s <= session.startedAt);
+  const until = Date.parse(session.startedAt);
+  const starts = (await listFinishedStarts(db)).filter((s) => Date.parse(s) <= until);
 
   let previousVolumeKg: number | null = null;
   if (session.planDayId) {

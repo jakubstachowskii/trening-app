@@ -66,7 +66,12 @@ async function loadLastRecord(db: Db): Promise<LastRecord | null> {
       const history = await exerciseHistory(db, e.exerciseId);
       const kinds = newRecordsInWorkout(e.exercise.type, history, workout.id);
       if (!kinds.length) continue;
-      const records = computeRecords(e.exercise.type, history);
+      // Wynik z chwili tego treningu (późniejsze treningi mogły go już poprawić).
+      const until = Date.parse(workout.startedAt);
+      const records = computeRecords(
+        e.exercise.type,
+        history.filter((x) => Date.parse(x.date) <= until),
+      );
       const entry = records[kinds[0]];
       if (!entry) continue;
       const value =

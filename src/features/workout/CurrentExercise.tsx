@@ -28,6 +28,8 @@ type Props = {
   editing: Editing;
   /** Serie, które pobiły rekord w tym treningu. */
   recordSetIds: readonly string[];
+  /** Stoper ćwiczenia na czas (sekundy) — rośnie w bieżącym wierszu. */
+  stopwatchSec: number | null;
   onEdit: (setId: string, field: KeypadField) => void;
   onToggle: (setId: string) => void;
   onSetMenu: (setId: string) => void;
@@ -42,6 +44,7 @@ export function CurrentExercise({
   total,
   editing,
   recordSetIds,
+  stopwatchSec,
   onEdit,
   onToggle,
   onSetMenu,
@@ -159,6 +162,7 @@ export function CurrentExercise({
               number={numbers[index]}
               previous={previous}
               current={index === pendingIndex}
+              liveSec={index === pendingIndex ? stopwatchSec : null}
               record={recordSetIds.includes(set.id)}
               editing={editing?.setId === set.id ? editing : null}
               onEdit={(field) => onEdit(set.id, field)}
