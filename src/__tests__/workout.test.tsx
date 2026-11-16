@@ -70,6 +70,22 @@ async function activePlan() {
   return { planId, dayId };
 }
 
+/** Zakończony trening dnia planu ze wszystkimi seriami odhaczonymi (ciężar opcjonalnie zmieniony). */
+async function finishedWorkout(dayId: string, startedAt: string, weightKg?: number) {
+  const id = await startWorkoutFromDay(mockDb, dayId, { startedAt });
+  const workout = await getWorkout(mockDb, id);
+  for (const set of workout!.exercises[0].sets) {
+    await updateSet(mockDb, set.id, {
+      ...set,
+      weightKg: weightKg ?? set.weightKg,
+      reps: 10,
+      completedAt: startedAt,
+    });
+  }
+  await completeWorkout(mockDb, id, new Date(Date.parse(startedAt) + 3600_000).toISOString());
+  return id;
+}
+
 beforeEach(async () => {
   jest.clearAllMocks();
   mockParams = {};
@@ -209,6 +225,20 @@ describe('trening w toku', () => {
       expect((await getWorkout(mockDb, workoutId))!.exercises[0].sets[1].completedAt).toBeNull(),
     );
   });
+
+  it('rekord: plakietka w wierszu i „Nowy rekord” w pasku przerwy', async () => {
+    const { dayId } = await activePlan();
+    await finishedWorkout(dayId, '2026-11-10T10:00:00Z');
+    const workoutId = await startWorkoutFromDay(mockDb, dayId);
+    const workout = await getWorkout(mockDb, workoutId);
+    const first = workout!.exercises[0].sets[0];
+    await updateSet(mockDb, first.id, { ...first, weightKg: 70 });
+    await renderWithTheme(<WorkoutScreen />);
+
+    await fireEvent.press((await screen.findAllByRole('checkbox'))[0]);
+    expect(await screen.findByLabelText(t('workout.recordBadgeLabel'))).toBeOnTheScreen();
+    expect(screen.getByText(t('workout.record.title'))).toBeOnTheScreen();
+  });
 });
 
 describe('podsumowanie', () => {
@@ -247,5 +277,20 @@ describe('podsumowanie', () => {
     await fireEvent.press(screen.getByRole('button', { name: t('workout.summary.done') }));
     await waitFor(() => expect(mockRouter.back).toHaveBeenCalled());
     expect((await getWorkout(mockDb, workoutId))!.note).toBe('Dobrze szło');
+  });
+  it('porównanie z poprzednim treningiem tego dnia planu', async () => {
+    const { dayId } = await activePlan();
+    await finishedWorkout(dayId, '2026-11-10T10:00:00Z');
+    const workoutId = await finishedWorkout(dayId, '2026-11-12T10:00:00Z', 70);
+    mockParams = { id: workoutId };
+
+    await renderWithTheme(<WorkoutSummaryScreen />);
+    // 2 serie × 10: 1200 kg poprzednio, 1400 kg dziś.
+    expect(
+      await screen.findByText(t('workout.summary.compareMore', { value: '200' })),
+    ).toBeOnTheScreen();
+    expect(
+      screen.getByText(t('workout.summary.compareBody', { today: '1400', previous: '1200' })),
+    ).toBeOnTheScreen();
   });
 });
