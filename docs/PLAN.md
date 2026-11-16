@@ -26,7 +26,7 @@ Dla kogo: dla dowolnej osoby z App Store. Autor jest jednym z użytkowników, ni
 
 ## 3. Ekrany
 
-Nawigacja: dolny pasek z 5 kartami: **Start, Plany, Ćwiczenia, Postępy, Historia**. Ustawienia otwierane z ikony na ekranie Start. Trening w toku otwiera się na pełnym ekranie.
+Nawigacja: dolny pasek z 5 kartami: **Dziś (Start), Plany, Ćwiczenia, Postępy, Historia**. Ustawienia otwierane z ikony na ekranie Start. Trening w toku otwiera się na pełnym ekranie.
 
 ### 3.1 Pierwsze uruchomienie (onboarding, 3–4 kroki, każdy z „Pomiń”)
 
@@ -35,13 +35,14 @@ Nawigacja: dolny pasek z 5 kartami: **Start, Plany, Ćwiczenia, Postępy, Histor
 3. **Masa ciała** (opcjonalnie): jedno pole, z wyjaśnieniem, po co (wykres, ćwiczenia z masą ciała). Można pominąć.
 4. **Plan na start**: wybór gotowego programu albo „Zbuduję własny plan”.
 
-### 3.2 Start
+### 3.2 Start („Dziś”, od F6 według `design/v2/Start`)
 
-- Następny trening z aktywnego planu i przycisk „Zacznij”.
-- „Pusty trening”: start bez planu, ćwiczenia dodawane na bieżąco.
-- Skrót tygodnia: liczba treningów i ostatni trening.
-- Ostatnio pobite rekordy.
-- Wejście do ustawień.
+- **Pierścień tygodnia:** segment = trening. Z aktywnym planem tyle segmentów, ile dni ma plan (plan to rotacja dni, bez dni tygodnia); bez planu cel tygodnia 2–6 (ustawienie `weeklyGoal`, domyślnie 3) zmieniany na ekranie.
+- W środku pierścienia: następny dzień planu z „Zacznij” (liczba ćwiczeń, szacowany czas), „Trening trwa · Wznów”, „Zrobione · Podsumowanie” po dzisiejszym treningu albo cel tygodnia bez planu.
+- Pasek dni tygodnia (zrobione, dziś), kafle „Seria” (tygodnie z pełnym planem) i „Ostatni rekord”.
+- „Trening bez planu”: start pustego treningu, ćwiczenia dodawane na bieżąco.
+- Bez planu: „Wybierz gotowy plan” i „Ułóż własny plan”.
+- Wejście do ustawień: w F8.
 
 ### 3.3 Plany
 

@@ -163,3 +163,10 @@ Usunięte z szablonu, bo na razie niepotrzebne: `@expo/ui`, `expo-device`, `expo
   - `expo-keep-awake` — ekran nie gaśnie w trakcie treningu. Na web wersja pusta (`KeepAwake.web.tsx`).
   - `expo-notifications` — tylko lokalne powiadomienie o końcu przerwy; plugin z `enableRemoteNotifications: false` (bez uprawnienia APNs, bez serwera). Dokumentacja: lokalne powiadomienia działają w Expo Go — do potwierdzenia na iPhonie.
 - **Rekord w trakcie treningu** (`recordsBrokenBySet`): przy odhaczeniu serii porównanie z wcześniejszymi treningami i seriami tego treningu; rekord objętości tylko w podsumowaniu (rośnie z każdą serią).
+
+## 24. Nowy wygląd z projektu `design/v2` (2026-11-16)
+
+- **Co:** właściciel zatwierdził nowy projekt całej aplikacji (`design/v2/*.dc.html`, „tydzień jako pierścień”) i zgodził się na zmianę zatwierdzonych makiet F2. Styl F2 (kolory, szkło, tokeny) zostaje; zmienia się układ ekranów i krój tytułów. Wdrożenie etapami: A (F6) trening, „Dziś”, podsumowanie; B figurka mięśni; C Postępy z Historią (4 karty); D Ustawienia.
+- **Krój Archivo Expanded** (OFL, statyczne pliki 700 i 800 w `assets/fonts`, ładowane przez `useFonts` z `expo-font`, które już było w projekcie). Statyczne pliki zamiast zmiennej czcionki, bo osie zmiennej czcionki w React Native nie są pewne; szerokość 125% zamiast 120% z makiety. Bez nowej paczki npm.
+- **Cel tygodnia:** z aktywnym planem segmentów jest tyle, ile dni ma plan; bez planu ustawienie `weeklyGoal` (2–6). Seria tygodni liczona względem dzisiejszego celu (historia celów nie jest zapisywana).
+- **Rekord w trakcie:** plakietka w wierszu i etykieta w pasku przerwy zamiast komunikatu u góry — komunikat zasłaniał nagłówek. Zapamiętane tylko w sesji ekranu (po ponownym otwarciu treningu plakietki nie ma, rekord jest w podsumowaniu).
