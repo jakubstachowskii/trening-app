@@ -1,4 +1,6 @@
+import { useFonts } from 'expo-font';
 import { ThemeProvider as NavigationThemeProvider, Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import * as SystemUI from 'expo-system-ui';
 import { useEffect, useMemo } from 'react';
@@ -40,7 +42,23 @@ function Root() {
   );
 }
 
+// Ekran powitalny czeka na krój Archivo (tytuły i liczby), żeby nic nie mignęło czcionką systemową.
+SplashScreen.preventAutoHideAsync().catch(() => undefined);
+
 export default function RootLayout() {
+  const [fontsLoaded, fontError] = useFonts({
+    'ArchivoExpanded-Bold': require('../../assets/fonts/ArchivoExpanded-Bold.ttf'),
+    'ArchivoExpanded-ExtraBold': require('../../assets/fonts/ArchivoExpanded-ExtraBold.ttf'),
+  });
+  const ready = fontsLoaded || fontError != null;
+
+  useEffect(() => {
+    if (ready) SplashScreen.hideAsync().catch(() => undefined);
+  }, [ready]);
+
+  // Błąd ładowania kroju nie blokuje aplikacji: zostaje czcionka systemowa.
+  if (!ready) return null;
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider>
