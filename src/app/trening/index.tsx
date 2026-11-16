@@ -33,8 +33,10 @@ export default function WorkoutScreen() {
   const editingSetId = w.editing?.setId;
   // Klawiatura zasłania dół ekranu: karta ćwiczenia jedzie do góry, żeby wiersz był widoczny.
   useEffect(() => {
-    if (editingSetId) scroll.current?.scrollTo({ y: Math.max(0, cardY.current - space.xs) });
-  }, [editingSetId, space.xs]);
+    // Odejmujemy wcięcie pod paskiem stanu, żeby nazwa ćwiczenia nie chowała się pod Dynamic Island.
+    if (editingSetId)
+      scroll.current?.scrollTo({ y: Math.max(0, cardY.current - insets.top - space.xs) });
+  }, [editingSetId, insets.top, space.xs]);
   useEffect(() => {
     if (!query.loading && session === null && router.canGoBack()) router.back();
   }, [query.loading, session]);

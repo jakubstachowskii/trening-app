@@ -455,10 +455,15 @@ export function useWorkoutSession() {
       await cancelRestEnd(rest.notificationId);
       const left = remainingSec(next, Date.now());
       const notificationId =
-        left > 0 ? await scheduleRestEnd(left, t('workout.rest.notificationBody')) : null;
+        left > 0
+          ? await scheduleRestEnd(
+              left,
+              (session && nextUpText(session, rest.setId)) ?? t('workout.rest.notificationBody'),
+            )
+          : null;
       await saveRest(left > 0 ? { ...next, notificationId } : null);
     },
-    [rest, saveRest],
+    [rest, saveRest, session, nextUpText],
   );
 
   // --- zakończenie ---
