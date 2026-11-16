@@ -9,7 +9,7 @@ import {
 } from '@/data/repositories/workouts';
 import type { ExerciseType } from '@/domain/types';
 import { suggestNextWeight } from '@/domain/suggestion';
-import { usesDuration, usesReps, usesWeight } from '@/domain/workout';
+import { formatClock, usesDuration, usesReps, usesWeight } from '@/domain/workout';
 import { formatNumber, t, tPlural } from '@/i18n';
 import { exerciseName } from '@/features/exercises/search';
 import { formatDuration, formatRepRange } from '@/features/plans/format';
@@ -42,10 +42,10 @@ export async function loadSession(db: Db, workoutId?: string): Promise<Session |
   return { ...workout, exercises };
 }
 
-/** „82,5 × 8”, „× 12”, „45 s” — krótko, do kolumny „Poprzednio” i podpowiedzi. */
+/** „82,5 × 8”, „× 12”, „0:45” — krótko, do kolumny „Poprzednio” i podpowiedzi. */
 export function formatSetValues(type: ExerciseType, set: Partial<WorkoutSet> | undefined): string {
   if (!set) return '—';
-  if (usesDuration(type)) return set.durationSec != null ? formatDuration(set.durationSec) : '—';
+  if (usesDuration(type)) return set.durationSec != null ? formatClock(set.durationSec) : '—';
   const reps = set.reps != null ? String(set.reps) : '—';
   if (!usesWeight(type)) return `× ${reps}`;
   const weight = set.weightKg != null ? formatNumber(set.weightKg) : '—';

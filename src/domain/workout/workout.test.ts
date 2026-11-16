@@ -12,6 +12,7 @@ import {
   nextPendingSetIndex,
   nextPlanDayId,
   parseKeypadValue,
+  displayKeypadText,
   parseRestTimer,
   prefillSets,
   pressKey,
@@ -216,6 +217,22 @@ describe('klawiatura', () => {
     expect(formatKeypadValue(82.5, 'weight')).toBe('82,5');
     expect(formatKeypadValue(8, 'reps')).toBe('8');
     expect(formatKeypadValue(null, 'reps')).toBe('');
+  });
+
+  it('czas wpisywany jak w minutniku (m:ss)', () => {
+    expect(parseKeypadValue('130', 'duration')).toBe(90);
+    expect(parseKeypadValue('45', 'duration')).toBe(45);
+    expect(parseKeypadValue('90', 'duration')).toBe(90);
+    expect(parseKeypadValue('1000', 'duration')).toBe(600);
+    expect(formatKeypadValue(90, 'duration')).toBe('130');
+    expect(formatKeypadValue(45, 'duration')).toBe('45');
+    expect(formatKeypadValue(600, 'duration')).toBe('1000');
+    expect(displayKeypadText('130', 'duration')).toBe('1:30');
+    expect(displayKeypadText('5', 'duration')).toBe('0:05');
+    expect(displayKeypadText('', 'duration')).toBe('');
+    expect(displayKeypadText('82,5', 'weight')).toBe('82,5');
+    expect(pressKey('', ',', 'duration')).toBe('');
+    expect(pressKey('9959', '1', 'duration')).toBe('9959');
   });
 
   it('kroki −/+ bez wartości ujemnych', () => {

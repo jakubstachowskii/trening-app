@@ -4,3 +4,4 @@ export * from './progress';
 export * from './restTimer';
 export * from './summary';
 export * from './liveRecords';
+export * from './estimate';

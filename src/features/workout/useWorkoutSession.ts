@@ -165,7 +165,7 @@ export function useWorkoutSession() {
     if (!editing) return;
     const found = findSet(editing.setId);
     if (!found) return;
-    const value = parseKeypadValue(editing.text);
+    const value = parseKeypadValue(editing.text, editing.field);
     if (value === valueOf(found.set, editing.field)) return;
     const { set, exercise } = found;
     const field = editing.field;
@@ -204,7 +204,7 @@ export function useWorkoutSession() {
   const onStep = useCallback((direction: 1 | -1) => {
     setEditing((e) => {
       if (!e) return e;
-      const value = stepValue(parseKeypadValue(e.text), direction, e.field);
+      const value = stepValue(parseKeypadValue(e.text, e.field), direction, e.field);
       return { ...e, text: formatKeypadValue(value, e.field) };
     });
     replaceNext.current = true;
@@ -296,7 +296,8 @@ export function useWorkoutSession() {
         await updateSet(db, setId, { ...found.set, completedAt: null });
         if (rest?.setId === setId) await clearRest();
       } else {
-        const pending = editing?.setId === setId ? parseKeypadValue(editing.text) : undefined;
+        const pending =
+          editing?.setId === setId ? parseKeypadValue(editing.text, editing.field) : undefined;
         const override =
           editing?.setId === setId && pending !== undefined
             ? {
@@ -324,7 +325,7 @@ export function useWorkoutSession() {
       await commit();
       replaceNext.current = true;
       const latest = { ...found.set };
-      const value = parseKeypadValue(editing.text);
+      const value = parseKeypadValue(editing.text, editing.field);
       if (editing.field === 'weight') latest.weightKg = value;
       if (editing.field === 'reps') latest.reps = value;
       setEditing({

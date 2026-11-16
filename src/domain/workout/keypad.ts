@@ -1,4 +1,5 @@
 // Własna klawiatura treningu: wpisywanie liczb jak w kalkulatorze, przecinek, kroki −/+ i limity.
+// Czas wpisuje się cyframi jak w minutniku: „130” = 1:30, „45” = 0:45 („90” = 1:30 po przeliczeniu).
 import { DEFAULT_WEIGHT_STEP_KG } from '../suggestion';
 import { roundWeight } from '../units';
 
@@ -12,20 +13,45 @@ const STEPS: Record<KeypadField, number> = {
   duration: 5,
 };
 const MAX_DECIMALS = 2;
+/** Najwięcej cyfr czasu: mm ss. */
+const MAX_DURATION_DIGITS = 4;
+
+/** Sekundy jako cyfry minutnika: 90 → „130”, 45 → „45”. */
+function durationDigits(totalSec: number): string {
+  const sec = Math.max(0, Math.round(totalSec));
+  const minutes = Math.floor(sec / 60);
+  const seconds = sec % 60;
+  return minutes > 0 ? `${minutes}${String(seconds).padStart(2, '0')}` : String(seconds);
+}
 
 /** Tekst w polu (z przecinkiem dziesiętnym). Pusty tekst = brak wartości. */
 export function formatKeypadValue(value: number | null | undefined, field: KeypadField): string {
   if (value == null) return '';
+  if (field === 'duration') return durationDigits(value);
   if (field !== 'weight') return String(Math.round(value));
   return String(roundWeight(value)).replace('.', ',');
 }
 
-/** Przyjmuje i przecinek, i kropkę. Pusty albo niepoprawny tekst = null. */
-export function parseKeypadValue(text: string): number | null {
+/**
+ * Przyjmuje i przecinek, i kropkę. Pusty albo niepoprawny tekst = null.
+ * Czas: cyfry minutnika na sekundy (ostatnie dwie cyfry to sekundy, ponad 59 przeliczane).
+ */
+export function parseKeypadValue(text: string, field?: KeypadField): number | null {
   const normalized = text.replace(',', '.');
   if (normalized === '' || normalized === '.') return null;
   const value = Number(normalized);
-  return Number.isFinite(value) ? value : null;
+  if (!Number.isFinite(value)) return null;
+  if (field !== 'duration') return value;
+  const digits = Math.floor(value);
+  return Math.floor(digits / 100) * 60 + (digits % 100);
+}
+
+/** Tekst do pokazania: czas jako m:ss (także w trakcie wpisywania), reszta bez zmian. */
+export function displayKeypadText(text: string, field: KeypadField): string {
+  if (field !== 'duration' || text === '') return text;
+  const digits = text.padStart(3, '0');
+  const minutes = Number(digits.slice(0, -2));
+  return `${minutes}:${digits.slice(-2)}`;
 }
 
 /**
@@ -46,10 +72,11 @@ export function pressKey(
     return base === '' ? '0,' : `${base},`;
   }
 
+  if (field === 'duration' && base.length >= MAX_DURATION_DIGITS) return text;
   const [, decimals] = base.split(',');
   if (decimals !== undefined && decimals.length >= MAX_DECIMALS) return text;
   const next = base === '0' ? key : `${base}${key}`;
-  const value = parseKeypadValue(next);
+  const value = parseKeypadValue(next, field);
   return value != null && value > LIMITS[field] ? text : next;
 }
 

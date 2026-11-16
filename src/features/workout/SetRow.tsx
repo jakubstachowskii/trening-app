@@ -6,6 +6,7 @@ import { Text } from '@/components/Text';
 import type { WorkoutSet } from '@/data/models';
 import type { ExerciseType } from '@/domain/types';
 import {
+  displayKeypadText,
   formatKeypadValue,
   type KeypadField,
   usesDuration,
@@ -58,7 +59,7 @@ export function SetRow({ set, type, number, previous, editing, onEdit, onToggle,
 
   const cell = (field: KeypadField, value: number | null, width: number) => {
     const active = editing?.field === field;
-    const text = active ? editing.text : formatKeypadValue(value, field);
+    const text = displayKeypadText(active ? editing.text : formatKeypadValue(value, field), field);
     const key =
       field === 'weight'
         ? 'workout.editWeight'
