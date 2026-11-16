@@ -470,3 +470,26 @@ export async function lastSetsForExercise(db: Db, exerciseId: string): Promise<W
   );
   return rows.map(toSet);
 }
+
+/** Daty rozpoczęcia wszystkich zakończonych treningów (tydzień, seria tygodni na ekranie „Dziś”). */
+export async function listFinishedStarts(db: Db): Promise<string[]> {
+  const rows = await db.all<{ started_at: string }>(
+    'SELECT started_at FROM workout WHERE finished_at IS NOT NULL ORDER BY started_at',
+  );
+  return rows.map((r) => r.started_at);
+}
+
+/** Poprzedni zakończony trening tego samego dnia planu (porównanie w podsumowaniu). */
+export async function previousFinishedForDay(
+  db: Db,
+  planDayId: string,
+  beforeStartedAt: string,
+): Promise<Workout | null> {
+  const row = await db.first<WorkoutRow>(
+    `SELECT ${WORKOUT_COLUMNS} FROM workout
+     WHERE plan_day_id = ? AND finished_at IS NOT NULL AND started_at < ?
+     ORDER BY started_at DESC LIMIT 1`,
+    [planDayId, beforeStartedAt],
+  );
+  return row ? toWorkout(row) : null;
+}

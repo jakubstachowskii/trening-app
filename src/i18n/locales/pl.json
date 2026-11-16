@@ -1,6 +1,6 @@
 {
   "tabs": {
-    "start": "Start",
+    "start": "Dziś",
     "plans": "Plany",
     "exercises": "Ćwiczenia",
     "progress": "Postępy",
@@ -8,7 +8,7 @@
   },
   "screens": {
     "start": {
-      "title": "Start",
+      "title": "Dziś",
       "body": "Tu zobaczysz dzisiejszy trening, ostatnie wyniki i swój tydzień w skrócie."
     },
     "plans": {
@@ -1320,5 +1320,50 @@
     "setDetailWeight": "{weight} kg × {reps}",
     "recordBadge": "Rekord",
     "recordBadgeLabel": "Nowy rekord w tej serii"
+  },
+  "today": {
+    "ofWeek": "Trening {n} z {total} w tym tygodniu",
+    "overGoal": "Cel tygodnia już zrobiony",
+    "dayMeta": "{exercises} · ok. {min} min",
+    "start": "Zacznij",
+    "startLabel": "Zacznij trening {name}",
+    "active": "Trening trwa",
+    "activeBody": "Serie zapisują się na bieżąco",
+    "resume": "Wznów",
+    "resumeLabel": "Wznów trening {name}",
+    "doneWeek": "{done} z {total} w tym tygodniu",
+    "done": "Zrobione",
+    "doneMeta": "{name} · {time} · {volume} kg",
+    "summary": "Podsumowanie",
+    "goalTitle": "Twój cel na tydzień",
+    "goalLess": "Mniej treningów w tygodniu",
+    "goalMore": "Więcej treningów w tygodniu",
+    "goalValue": "Cel: {count}",
+    "startEmpty": "Zacznij trening",
+    "choosePlan": "Wybierz gotowy plan",
+    "choosePlanBody": "Góra/dół, PPL, całe ciało, siła",
+    "ownPlan": "Ułóż własny plan",
+    "ownPlanBody": "Dni, ćwiczenia i serie po swojemu",
+    "noPlanNote": "Bez planu też działa: każdy trening domyka kolejny segment pierścienia.",
+    "streak": "Seria",
+    "streakUnit": {
+      "one": "tydzień z pełnym planem",
+      "few": "tygodnie z pełnym planem",
+      "many": "tygodni z pełnym planem"
+    },
+    "lastRecord": "Ostatni rekord",
+    "noRecord": "Jeszcze bez rekordów",
+    "noRecordBody": "Pojawią się po kilku treningach",
+    "today": "dziś",
+    "yesterday": "wczoraj",
+    "onWeekday": "w niedzielę,w poniedziałek,we wtorek,w środę,w czwartek,w piątek,w sobotę",
+    "dayInitials": "N,P,W,Ś,C,P,S",
+    "withoutPlan": "Trening bez planu",
+    "ringPlanned": "Tydzień: {done} z {total} treningów zrobione",
+    "ringToday": "Tydzień: {done} z {total} treningów zrobione, dziś kolejny",
+    "dayDone": "{day}, trening zrobiony",
+    "dayToday": "{day}, dziś",
+    "dayTodayDone": "{day}, dziś, trening zrobiony",
+    "emptyDay": "Ten dzień planu nie ma jeszcze ćwiczeń."
   }
 }

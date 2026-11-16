@@ -15,6 +15,7 @@ import {
   updateSet,
 } from '@/data/repositories/workouts';
 import { REST_SETTING } from '@/features/workout/restStore';
+import { WEEKLY_GOAL_SETTING } from '@/features/workout/startData';
 import { t } from '@/i18n';
 
 import { renderWithTheme, seededDb } from './helpers/screen';
@@ -75,11 +76,17 @@ beforeEach(async () => {
   mockDb = await seededDb();
 });
 
-describe('Start', () => {
-  it('bez planu: pusty stan i pusty trening', async () => {
+describe('Dziś', () => {
+  it('bez planu: cel tygodnia −/+ i pusty trening', async () => {
     await renderWithTheme(<StartScreen />);
-    expect(await screen.findByText(t('workout.start.noPlanTitle'))).toBeOnTheScreen();
-    await fireEvent.press(screen.getByRole('button', { name: t('workout.start.empty') }));
+    expect(await screen.findByText(t('today.goalTitle'))).toBeOnTheScreen();
+    expect(screen.getByLabelText(t('today.goalValue', { count: 3 }))).toBeOnTheScreen();
+
+    await fireEvent.press(screen.getByRole('button', { name: t('today.goalMore') }));
+    await waitFor(async () => expect(await getSetting(mockDb, WEEKLY_GOAL_SETTING, 0)).toBe(4));
+    expect(await screen.findByLabelText(t('today.goalValue', { count: 4 }))).toBeOnTheScreen();
+
+    await fireEvent.press(screen.getByRole('button', { name: t('today.startEmpty') }));
     await waitFor(() => expect(mockRouter.push).toHaveBeenCalledWith('/trening'));
     expect(await getUnfinishedWorkout(mockDb)).not.toBeNull();
   });
@@ -88,20 +95,44 @@ describe('Start', () => {
     const { dayId } = await activePlan();
     await renderWithTheme(<StartScreen />);
     expect(await screen.findByRole('header', { name: 'Push A' })).toBeOnTheScreen();
+    // Plan ma 1 dzień, więc pierścień ma 1 segment.
+    expect(screen.getByText(t('today.ofWeek', { n: 1, total: 1 }))).toBeOnTheScreen();
+    expect(screen.getByText(t('today.streak'))).toBeOnTheScreen();
 
     await fireEvent.press(
-      screen.getByRole('button', { name: t('workout.start.startLabel', { name: 'Push A' }) }),
+      screen.getByRole('button', { name: t('today.startLabel', { name: 'Push A' }) }),
     );
     await waitFor(() => expect(mockRouter.push).toHaveBeenCalledWith('/trening'));
     expect((await getUnfinishedWorkout(mockDb))?.planDayId).toBe(dayId);
   });
 
-  it('trening w toku: karta „Wznów”', async () => {
+  it('trening w toku: „Wznów”', async () => {
     const { dayId } = await activePlan();
     await startWorkoutFromDay(mockDb, dayId);
     await renderWithTheme(<StartScreen />);
-    await fireEvent.press(await screen.findByRole('button', { name: t('workout.start.resume') }));
+    expect(await screen.findByText(t('today.active'))).toBeOnTheScreen();
+    await fireEvent.press(
+      screen.getByRole('button', { name: t('today.resumeLabel', { name: 'Push A' }) }),
+    );
     expect(mockRouter.push).toHaveBeenCalledWith('/trening');
+  });
+
+  it('po treningu: „Zrobione” i podsumowanie', async () => {
+    const { dayId } = await activePlan();
+    const workoutId = await startWorkoutFromDay(mockDb, dayId);
+    const workout = await getWorkout(mockDb, workoutId);
+    for (const set of workout!.exercises[0].sets) {
+      await updateSet(mockDb, set.id, { ...set, completedAt: new Date().toISOString() });
+    }
+    await completeWorkout(mockDb, workoutId);
+    await renderWithTheme(<StartScreen />);
+    expect(await screen.findByRole('header', { name: t('today.done') })).toBeOnTheScreen();
+    expect(screen.getByText(t('today.doneWeek', { done: 1, total: 1 }))).toBeOnTheScreen();
+    await fireEvent.press(screen.getByRole('button', { name: t('today.summary') }));
+    expect(mockRouter.push).toHaveBeenCalledWith({
+      pathname: '/trening/podsumowanie',
+      params: { id: workoutId },
+    });
   });
 });
 
