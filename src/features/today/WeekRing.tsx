@@ -4,8 +4,6 @@ import Svg, { Circle } from 'react-native-svg';
 
 import { useTheme } from '@/theme';
 
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
-
 type Props = {
   /** Średnica w pt. */
   size: number;
@@ -56,13 +54,13 @@ export function WeekRing({
           toValue: 0.85,
           duration: half,
           easing: Easing.inOut(Easing.ease),
-          useNativeDriver: false,
+          useNativeDriver: true,
         }),
         Animated.timing(pulse, {
           toValue: 0.3,
           duration: half,
           easing: Easing.inOut(Easing.ease),
-          useNativeDriver: false,
+          useNativeDriver: true,
         }),
       ]),
     );
@@ -98,13 +96,7 @@ export function WeekRing({
   return (
     <View style={{ width: size, height: size, alignSelf: 'center' }}>
       <View accessible accessibilityRole="image" accessibilityLabel={accessibilityLabel}>
-        <Svg
-          width={size}
-          height={size}
-          style={{ transform: [{ rotate: `${rotation}deg` }] }}
-          importantForAccessibility="no-hide-descendants"
-          accessibilityElementsHidden
-        >
+        <Svg width={size} height={size} style={{ transform: [{ rotate: `${rotation}deg` }] }}>
           <Circle
             cx={size / 2}
             cy={size / 2}
@@ -143,20 +135,26 @@ export function WeekRing({
               opacity={closing > 0 ? 1 : 0}
             />
           ) : null}
-          {pulseIndex != null && pulseIndex < n ? (
-            <AnimatedCircle
-              cx={size / 2}
-              cy={size / 2}
-              r={r}
-              fill="none"
-              stroke={colors.accent}
-              strokeWidth={stroke}
-              strokeLinecap="round"
-              {...arc(pulseIndex, dash)}
-              opacity={reduceMotion ? 0.5 : pulse}
-            />
-          ) : null}
         </Svg>
+        {pulseIndex != null && pulseIndex < n ? (
+          // Pulsuje cała warstwa z jednym segmentem (przezroczystość widoku, bez animowania SVG).
+          <Animated.View
+            style={{ position: 'absolute', top: 0, left: 0, opacity: reduceMotion ? 0.5 : pulse }}
+          >
+            <Svg width={size} height={size} style={{ transform: [{ rotate: `${rotation}deg` }] }}>
+              <Circle
+                cx={size / 2}
+                cy={size / 2}
+                r={r}
+                fill="none"
+                stroke={colors.accent}
+                strokeWidth={stroke}
+                strokeLinecap="round"
+                {...arc(pulseIndex, dash)}
+              />
+            </Svg>
+          </Animated.View>
+        ) : null}
       </View>
       {children ? (
         <View
