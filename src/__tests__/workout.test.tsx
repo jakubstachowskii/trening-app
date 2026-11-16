@@ -113,6 +113,7 @@ describe('trening w toku', () => {
 
     expect(await screen.findByRole('header', { name: 'Push A' })).toBeOnTheScreen();
     expect(screen.getByText(t('workout.primaryComplete', { n: '1' }))).toBeOnTheScreen();
+    expect(screen.getByText('60 kg × 10')).toBeOnTheScreen();
 
     // Ciężar serii 1: 6, 2, przecinek, 5 → 62,5; „Dalej” przechodzi do powtórzeń.
     await fireEvent.press(
@@ -121,7 +122,7 @@ describe('trening w toku', () => {
     for (const key of ['6', '2', t('workout.keypad.decimal'), '5']) {
       await fireEvent.press(screen.getByRole('button', { name: key }));
     }
-    await fireEvent.press(screen.getByRole('button', { name: t('workout.keypad.next') }));
+    await fireEvent.press(screen.getByRole('button', { name: t('workout.keypad.nextReps') }));
     await fireEvent.press(screen.getByRole('button', { name: '9' }));
     // Ostatnie pole: przycisk odhacza serię.
     await fireEvent.press(screen.getByRole('button', { name: t('workout.keypad.complete') }));
@@ -134,6 +135,13 @@ describe('trening w toku', () => {
     expect(await screen.findByRole('timer')).toBeOnTheScreen();
     const rest = await getSetting<{ totalSec: number } | null>(mockDb, REST_SETTING, null);
     expect(rest?.totalSec).toBe(90);
+    // Przerwa to pasek zamiast przycisku; stuknięcie w czas powiększa minutnik, „Zmniejsz” go nie pomija.
+    expect(screen.getByText(t('workout.rest.toSet', { n: 2 }))).toBeOnTheScreen();
+    expect(screen.queryByText(t('workout.primaryComplete', { n: '2' }))).toBeNull();
+    await fireEvent.press(screen.getByRole('timer'));
+    expect(await screen.findByText(t('workout.rest.of', { time: '1:30' }))).toBeOnTheScreen();
+    await fireEvent.press(screen.getByRole('button', { name: t('workout.rest.collapse') }));
+    expect(await screen.findByText(t('workout.rest.toSet', { n: 2 }))).toBeOnTheScreen();
 
     await fireEvent.press(screen.getByRole('button', { name: t('workout.rest.skipLabel') }));
     await waitFor(() => expect(screen.queryByRole('timer')).toBeNull());

@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import { ListGroup, ListRow } from '@/components/ListRow';
 import { Text } from '@/components/Text';
 import { nextPendingSetIndex } from '@/domain/workout';
-import { exerciseIcon } from '@/features/exercises/icons';
 import { t } from '@/i18n';
 import { useTheme } from '@/theme';
 
@@ -33,9 +32,10 @@ export function NextExercises({ exercises, current, onSelect, onAdd }: Props) {
       {order.length ? (
         <>
           <Text
-            variant="headline"
+            variant="footnote"
+            color="label2"
             accessibilityRole="header"
-            style={{ paddingHorizontal: space.xxs }}
+            style={{ paddingHorizontal: space.md, fontWeight: '600' }}
           >
             {t('workout.next')}
           </Text>
@@ -45,7 +45,6 @@ export function NextExercises({ exercises, current, onSelect, onAdd }: Props) {
               return (
                 <ListRow
                   key={item.id}
-                  icon={exerciseIcon(item.exercise.type, item.exercise.equipment)}
                   title={item.name}
                   subtitle={
                     finished

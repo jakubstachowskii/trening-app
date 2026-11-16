@@ -1,31 +1,68 @@
 import { router } from 'expo-router';
 import { useEffect, useRef } from 'react';
-import { Pressable, ScrollView, type ScrollViewInstance, View } from 'react-native';
+import { ScrollView, type ScrollViewInstance, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { BottomFade } from '@/components/BottomFade';
 import { FloatingButton, useFloatingButtonSpace } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
-import { HeaderIconButton, showMenu } from '@/components/stack';
+import { GlassIconButton, GlassPillButton } from '@/components/GlassControl';
+import { showMenu } from '@/components/stack';
 import { Text } from '@/components/Text';
-import { elapsedSec, formatClock } from '@/domain/workout';
+import { elapsedSec, formatClock, nextPendingSetIndex } from '@/domain/workout';
 import { t } from '@/i18n';
 import { CurrentExercise } from '@/features/workout/CurrentExercise';
 import { KeepAwake } from '@/features/workout/KeepAwake';
 import { Keypad } from '@/features/workout/Keypad';
 import { NextExercises } from '@/features/workout/NextExercises';
-import { RecordToast } from '@/features/workout/RecordToast';
-import { RestTimer } from '@/features/workout/RestTimer';
+import { RestBar, RestSheet } from '@/features/workout/RestTimer';
+import { type SessionExercise } from '@/features/workout/session';
 import { useNow } from '@/features/workout/useNow';
 import { useWorkoutSession } from '@/features/workout/useWorkoutSession';
 import { useTheme } from '@/theme';
 
-/** Trening w toku (makieta design/f2/F2-Trening). Zapis na bieżąco, więc „Zwiń” niczego nie traci. */
+/** Pasek segmentów = ćwiczenia treningu; zrobione i bieżące w kolorze akcentu. */
+function ExerciseSegments({
+  exercises,
+  current,
+}: {
+  exercises: SessionExercise[];
+  current: number;
+}) {
+  const { colors, space, size } = useTheme();
+  if (exercises.length < 2) return null;
+  return (
+    <View
+      accessible
+      accessibilityRole="progressbar"
+      accessibilityLabel={t('workout.segmentsLabel', { n: current + 1, total: exercises.length })}
+      style={{ flexDirection: 'row', gap: space.xxs }}
+    >
+      {exercises.map((e, i) => {
+        const on = i === current || (e.sets.length > 0 && nextPendingSetIndex(e) === -1);
+        return (
+          <View
+            key={e.id}
+            style={{
+              flex: 1,
+              height: size.segment,
+              borderRadius: size.segment / 2,
+              backgroundColor: on ? colors.accent : colors.fill,
+            }}
+          />
+        );
+      })}
+    </View>
+  );
+}
+
+/** Trening w toku (makieta design/v2/Trening). Zapis na bieżąco, więc „Zwiń” niczego nie traci. */
 export default function WorkoutScreen() {
-  const { colors, space, radius, size, reduceTransparency } = useTheme();
+  const { colors, space } = useTheme();
   const insets = useSafeAreaInsets();
   const w = useWorkoutSession();
   const now = useNow(1000);
-  const floatingSpace = useFloatingButtonSpace();
+  const floatingSpace = useFloatingButtonSpace(true);
 
   const { session, query } = w;
   const scroll = useRef<ScrollViewInstance>(null);
@@ -44,24 +81,65 @@ export default function WorkoutScreen() {
   if (!session) return <View style={{ flex: 1, backgroundColor: colors.bg }} />;
 
   const time = formatClock(elapsedSec(session.startedAt, now));
-  const bottomPanel = w.editing ? (
-    <Keypad
-      field={w.editing.field}
-      text={w.editing.text}
-      step={w.keypadStep}
-      isLast={w.editingIsLast}
-      onKey={w.onKey}
-      onStep={w.onStep}
-      onNext={() => void w.onNextField()}
-      onClose={() => void w.closeEditor()}
-    />
-  ) : w.rest ? (
-    <RestTimer
-      remainingSec={w.rest.left}
-      progress={w.rest.progress}
-      nextText={w.rest.next}
-      onAdjust={(d) => void w.onAdjustRest(d)}
-      onSkip={() => void w.skipRest()}
+  const rest = w.rest;
+  const panelBottom = Math.max(insets.bottom, space.md) + space.xs;
+
+  // Dół ekranu: klawiatura albo przerwa (pasek / arkusz) albo główny przycisk — nigdy dwa naraz.
+  const bottom = w.editing ? (
+    <View
+      pointerEvents="box-none"
+      style={{
+        position: 'absolute',
+        left: space.sm,
+        right: space.sm,
+        bottom: Math.max(insets.bottom, space.sm),
+      }}
+    >
+      <Keypad
+        field={w.editing.field}
+        text={w.editing.text}
+        step={w.keypadStep}
+        setNumber={w.keypadSetNumber}
+        nextLabel={w.keypadNext}
+        onKey={w.onKey}
+        onStep={w.onStep}
+        onNext={() => void w.onNextField()}
+        onClose={() => void w.closeEditor()}
+      />
+    </View>
+  ) : rest?.expanded ? (
+    <View pointerEvents="box-none" style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}>
+      <RestSheet
+        remainingSec={rest.left}
+        progress={rest.progress}
+        totalSec={rest.total}
+        nextText={rest.next}
+        onAdjust={(d) => void w.onAdjustRest(d)}
+        onSkip={() => void w.skipRest()}
+        onCollapse={w.collapseRest}
+      />
+    </View>
+  ) : rest ? (
+    <View
+      pointerEvents="box-none"
+      style={{ position: 'absolute', left: space.sm, right: space.sm, bottom: panelBottom }}
+    >
+      <RestBar
+        remainingSec={rest.left}
+        progress={rest.progress}
+        label={rest.label}
+        highlight={rest.highlight}
+        onAdjust={(d) => void w.onAdjustRest(d)}
+        onSkip={() => void w.skipRest()}
+        onExpand={w.expandRest}
+      />
+    </View>
+  ) : w.item ? (
+    <FloatingButton
+      label={w.primary.label}
+      detail={w.primary.detail}
+      large
+      onPress={() => void w.onPrimary()}
     />
   ) : null;
 
@@ -74,85 +152,59 @@ export default function WorkoutScreen() {
         contentContainerStyle={{
           paddingTop: insets.top + space.xs,
           paddingHorizontal: space.md,
-          // Zapas na panel minutnika / klawiatury i pływający przycisk.
-          paddingBottom: floatingSpace + (bottomPanel ? size.button * 4 : 0),
-          gap: space.section,
+          // Zapas na klawiaturę (wysoka) albo pasek przerwy / przycisk.
+          paddingBottom: floatingSpace + (w.editing ? floatingSpace * 3 : 0),
+          gap: space.lg,
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <HeaderIconButton
-            icon={{ ios: 'chevron.down', web: 'expand_more' }}
-            label={t('workout.collapse')}
-            onPress={() => router.back()}
-          />
-          <View style={{ flex: 1 }} />
-          <HeaderIconButton
-            icon={{ ios: 'ellipsis', web: 'more_horiz' }}
-            label={t('workout.more')}
-            onPress={() =>
-              showMenu(undefined, [
-                { label: t('workout.discard'), destructive: true, onPress: w.discard },
-              ])
-            }
-          />
-        </View>
-        {/* Jak w makiecie F2-Trening: czas i nazwa po lewej, „Zakończ” po prawej. */}
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'flex-end',
-            gap: space.sm,
-            marginTop: -space.sm,
-          }}
-        >
-          <View style={{ flex: 1, gap: space.xxs / 2 }}>
-            <Text
-              variant="footnote"
-              color="label2"
-              accessibilityLabel={t('workout.elapsedLabel', { time })}
-              style={{ fontVariant: ['tabular-nums'] }}
-            >
-              {t('workout.elapsed', { time })}
-            </Text>
-            <Text variant="largeTitle" accessibilityRole="header">
-              {session.name ?? t('workout.emptyName')}
-            </Text>
+        <View style={{ gap: space.md }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
+            <GlassIconButton
+              icon={{ ios: 'chevron.down', web: 'expand_more' }}
+              label={t('workout.collapse')}
+              onPress={() => router.back()}
+            />
+            <View style={{ flex: 1, minWidth: 0 }}>
+              <Text variant="headline" accessibilityRole="header" numberOfLines={1}>
+                {session.name ?? t('workout.emptyName')}
+              </Text>
+              <Text
+                variant="footnote"
+                color="label2"
+                accessibilityLabel={t('workout.elapsedLabel', { time })}
+                style={{ fontVariant: ['tabular-nums'] }}
+              >
+                {time}
+              </Text>
+            </View>
+            <GlassIconButton
+              icon={{ ios: 'ellipsis', web: 'more_horiz' }}
+              label={t('workout.more')}
+              onPress={() =>
+                showMenu(undefined, [
+                  { label: t('workout.discard'), destructive: true, onPress: w.discard },
+                ])
+              }
+            />
+            <GlassPillButton label={t('workout.finish')} onPress={() => void w.finish()} />
           </View>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={t('workout.finish')}
-            onPress={() => void w.finish()}
-            style={({ pressed }) => ({
-              minHeight: size.touchMin,
-              paddingHorizontal: space.md + space.xxs / 2,
-              borderRadius: radius.capsule,
-              justifyContent: 'center',
-              backgroundColor: pressed
-                ? colors.selected
-                : reduceTransparency
-                  ? colors.raised
-                  : colors.fill,
-            })}
-          >
-            <Text variant="subheadline" style={{ fontWeight: '600' }}>
-              {t('workout.finish')}
-            </Text>
-          </Pressable>
+          <ExerciseSegments exercises={session.exercises} current={w.index} />
         </View>
 
         {w.item ? (
           <View onLayout={(e) => (cardY.current = e.nativeEvent.layout.y)}>
             <CurrentExercise
               item={w.item}
+              position={w.index + 1}
+              total={session.exercises.length}
               editing={w.editing}
-              stopwatchSec={w.stopwatchSec}
+              recordSetIds={w.recordSetIds}
               onEdit={(setId, field) => void w.openEditor(setId, field)}
               onToggle={(setId) => void w.toggleSet(setId)}
               onSetMenu={w.setMenu}
               onAddSet={() => void w.addSetToCurrent()}
               onMenu={w.exerciseMenu}
-              onStopwatch={() => void w.onStopwatch()}
             />
           </View>
         ) : (
@@ -176,25 +228,8 @@ export default function WorkoutScreen() {
         ) : null}
       </ScrollView>
 
-      {bottomPanel ? (
-        <View
-          pointerEvents="box-none"
-          style={{
-            position: 'absolute',
-            left: space.sm,
-            right: space.sm,
-            bottom: w.editing ? Math.max(insets.bottom, space.sm) : floatingSpace - space.sm,
-          }}
-        >
-          {bottomPanel}
-        </View>
-      ) : null}
-
-      {!w.editing && w.item ? (
-        <FloatingButton label={w.primaryLabel} onPress={() => void w.onPrimary()} />
-      ) : null}
-
-      {w.record ? <RecordToast detail={w.record} onHide={w.hideRecord} /> : null}
+      {w.editing ? null : <BottomFade height={floatingSpace + space.xl} />}
+      {bottom}
     </View>
   );
 }

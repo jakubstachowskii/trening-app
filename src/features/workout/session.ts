@@ -52,6 +52,16 @@ export function formatSetValues(type: ExerciseType, set: Partial<WorkoutSet> | u
   return `${weight} × ${reps}`;
 }
 
+/** „82,5 kg × 8”, „12 powtórzeń”, „1:30” — druga linia głównego przycisku i podpowiedź. */
+export function formatSetDetail(type: ExerciseType, set: Partial<WorkoutSet> | undefined): string {
+  if (!set) return '';
+  if (usesDuration(type)) return set.durationSec != null ? formatClock(set.durationSec) : '';
+  // Bez wpisanego ciężaru (np. pierwszy raz) sam ciężar pomijamy zamiast „— kg”.
+  if (set.reps == null) return '';
+  if (!usesWeight(type) || set.weightKg == null) return tPlural('units.reps', set.reps);
+  return t('workout.setDetailWeight', { weight: formatNumber(set.weightKg), reps: set.reps });
+}
+
 /** Podpowiedź nad tabelą z prostej progresji (tylko gdy jest historia i zakres powtórzeń). */
 export function progressionHint(item: SessionExercise): string | null {
   if (item.repsMax == null) return null;
@@ -62,8 +72,12 @@ export function progressionHint(item: SessionExercise): string | null {
   });
   if (!suggestion) return null;
   const weight = formatNumber(suggestion.weightKg);
+  const lastWorking = item.previous.find((x) => x.kind === 'working');
   return suggestion.reason === 'increase'
-    ? t('workout.hintIncrease', { weight })
+    ? t('workout.hintIncrease', {
+        weight,
+        previous: formatSetDetail(item.exercise.type, lastWorking),
+      })
     : t('workout.hintSame', { weight, reps: item.repsMax });
 }
 

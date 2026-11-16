@@ -43,7 +43,8 @@
     "errorBody": "Nie udało się wczytać danych. Spróbuj jeszcze raz.",
     "retry": "Spróbuj ponownie",
     "notFound": "Nie ma już tego elementu.",
-    "optional": "opcjonalnie"
+    "optional": "opcjonalnie",
+    "labelWithDetail": "{label}, {detail}"
   },
   "units": {
     "sets": {
@@ -73,7 +74,22 @@
     },
     "kg": "{value} kg",
     "seconds": "{value} s",
-    "minutes": "{value} min"
+    "minutes": "{value} min",
+    "reps": {
+      "one": "{count} powtórzenie",
+      "few": "{count} powtórzenia",
+      "many": "{count} powtórzeń"
+    },
+    "workoutsPerWeek": {
+      "one": "trening w tygodniu",
+      "few": "treningi w tygodniu",
+      "many": "treningów w tygodniu"
+    },
+    "weeks": {
+      "one": "{count} tydzień",
+      "few": "{count} tygodnie",
+      "many": "{count} tygodni"
+    }
   },
   "plan": {
     "repsAtLeast": "{min}+",
@@ -1164,9 +1180,8 @@
     "finishTitle": "Zakończyć trening?",
     "finishBody": "Nieodhaczone serie nie zostaną zapisane.",
     "finishConfirm": "Zakończ",
-    "progress": "Zrobione: {done} z {total} serii",
-    "hintIncrease": "Ostatnio wszystkie serie na górze zakresu. Dziś spróbuj {weight} kg.",
-    "hintSame": "Ostatnio {weight} kg. Dojdź do {reps} powtórzeń we wszystkich seriach.",
+    "hintIncrease": "Dziś spróbuj {weight} kg · ostatnio {previous}",
+    "hintSame": "Dziś {weight} kg · dojdź do {reps} powtórzeń",
     "colSet": "Seria",
     "colPrevious": "Poprzednio",
     "colKg": "kg",
@@ -1208,7 +1223,7 @@
     "keypad": {
       "weight": "Ciężar",
       "reps": "Powtórzenia",
-      "duration": "Czas (s)",
+      "duration": "Czas",
       "minus": "Mniej o {step}",
       "plus": "Więcej o {step}",
       "next": "Dalej",
@@ -1216,13 +1231,25 @@
       "close": "Schowaj klawiaturę",
       "backspace": "Usuń cyfrę",
       "decimal": "Przecinek",
-      "value": "{field}: {value}"
+      "value": "{field}: {value}",
+      "fieldSet": "{field} · seria {n}",
+      "fieldWarmup": "{field} · rozgrzewka",
+      "nextReps": "Dalej · powtórzenia",
+      "done": "Gotowe",
+      "stepWeight": "{sign}{step}",
+      "minusLabelWeight": "Mniej o {step} kilograma",
+      "plusLabelWeight": "Więcej o {step} kilograma",
+      "minusLabelReps": "Jedno powtórzenie mniej",
+      "plusLabelReps": "Jedno powtórzenie więcej",
+      "minusLabelDuration": "Mniej o {step} sekund",
+      "plusLabelDuration": "Więcej o {step} sekund",
+      "unitKg": "{value} kg"
     },
     "rest": {
       "title": "Przerwa",
       "remaining": "Przerwa, zostało {time}",
       "nextUp": "Dalej: {text}",
-      "nextSet": "seria {n} · {values}",
+      "nextSet": "Seria {n} · {values}",
       "minus": "−15 s",
       "plus": "+15 s",
       "minusLabel": "Skróć przerwę o 15 sekund",
@@ -1231,17 +1258,30 @@
       "skipLabel": "Pomiń przerwę",
       "notificationTitle": "Koniec przerwy",
       "notificationBody": "Czas na kolejną serię.",
-      "finished": "Koniec przerwy"
+      "finished": "Koniec przerwy",
+      "toSet": "Przerwa · do serii {n}",
+      "toWarmup": "Przerwa · do rozgrzewki",
+      "thenNewExercise": "Potem nowe ćwiczenie",
+      "expand": "Powiększ minutnik",
+      "collapse": "Zmniejsz minutnik",
+      "of": "z {time}",
+      "next": "Dalej",
+      "minusShort": "−15",
+      "plusShort": "+15",
+      "skipLong": "Pomiń przerwę"
     },
     "record": {
       "title": "Nowy rekord",
       "announce": "Nowy rekord: {kinds}"
     },
     "stopwatch": {
-      "start": "Start",
+      "start": "Start stopera",
       "stop": "Stop",
       "startLabel": "Uruchom stoper serii",
-      "stopLabel": "Zatrzymaj stoper i zapisz czas"
+      "stopLabel": "Zatrzymaj stoper i zapisz czas",
+      "target": "cel {time}",
+      "stopSet": "Stop · zapisz serię {n}",
+      "noTarget": "bez celu"
     },
     "summary": {
       "title": "Trening zakończony",
@@ -1273,6 +1313,12 @@
       "unfinishedDiscard": "Porzuć i zacznij nowy",
       "startDay": "Zacznij trening"
     },
-    "finishEmptyBody": "Nie odhaczono żadnej serii, więc trening nie zostanie zapisany."
+    "finishEmptyBody": "Nie odhaczono żadnej serii, więc trening nie zostanie zapisany.",
+    "exerciseOf": "Ćwiczenie {n} z {total}",
+    "exerciseOfDone": "Ćwiczenie {n} z {total} · zrobione",
+    "segmentsLabel": "Ćwiczenie {n} z {total}",
+    "setDetailWeight": "{weight} kg × {reps}",
+    "recordBadge": "Rekord",
+    "recordBadgeLabel": "Nowy rekord w tej serii"
   }
 }

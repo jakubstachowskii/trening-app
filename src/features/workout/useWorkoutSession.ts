@@ -1,6 +1,7 @@
 // Sterowanie treningiem w toku: zapis serii na bieżąco, klawiatura, minutnik, rekordy, zakończenie.
 import { router } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { AccessibilityInfo } from 'react-native';
 
 import { confirmDestructive, showMenu } from '@/components/stack';
 import { useDb } from '@/data/DatabaseProvider';
@@ -20,6 +21,7 @@ import { useDbQuery } from '@/data/useDbQuery';
 import {
   adjustRest,
   DEFAULT_REST_SEC,
+  formatClock,
   followingSetsToUpdate,
   formatKeypadValue,
   hasPendingSets,
@@ -50,7 +52,7 @@ import type { Editing } from './CurrentExercise';
 import { cancelRestEnd, scheduleRestEnd } from './notifications';
 import { promptText } from './prompt';
 import {
-  formatSetValues,
+  formatSetDetail,
   loadSession,
   type Session,
   type SessionExercise,
@@ -60,6 +62,11 @@ import { useNow } from './useNow';
 
 import { REST_SETTING } from './restStore';
 type StoredRest = RestTimerState & { notificationId?: string | null };
+
+/** Jak długo pasek przerwy mówi „Nowy rekord”. */
+const RECORD_FLASH_MS = 3200;
+
+type NextUp = { text: string; label: string };
 
 const STEP: Record<KeypadField, number> = { weight: DEFAULT_WEIGHT_STEP_KG, reps: 1, duration: 5 };
 
@@ -134,9 +141,16 @@ export function useWorkoutSession() {
     await saveRest(null);
   }, [rest, saveRest]);
 
-  // --- komunikat rekordu ---
-  const [record, setRecord] = useState<string | null>(null);
-  const hideRecord = useCallback(() => setRecord(null), []);
+  // --- rekordy: plakietka w wierszu i chwilowa etykieta w pasku przerwy ---
+  const [recordSetIds, setRecordSetIds] = useState<string[]>([]);
+  const [recordFlash, setRecordFlash] = useState(false);
+  useEffect(() => {
+    if (!recordFlash) return;
+    const timer = setTimeout(() => setRecordFlash(false), RECORD_FLASH_MS);
+    return () => clearTimeout(timer);
+  }, [recordFlash]);
+  // Rozwinięty minutnik (stan widoku, nie w bazie).
+  const [restExpanded, setRestExpanded] = useState(false);
 
   // --- stoper ćwiczeń na czas ---
   const [stopwatch, setStopwatch] = useState<{ start: number; index: number } | null>(null);
@@ -217,7 +231,7 @@ export function useWorkoutSession() {
   }, [commit, reload]);
 
   // --- serie ---
-  const nextUpText = useCallback((s: Session, afterSetId: string): string | null => {
+  const nextUp = useCallback((s: Session, afterSetId: string): NextUp | null => {
     const exercises = s.exercises.map((e) => ({
       ...e,
       sets: e.sets.map((x) => (x.id === afterSetId ? { ...x, completedAt: 'done' } : x)),
@@ -234,11 +248,25 @@ export function useWorkoutSession() {
       set.kind === 'warmup'
         ? t('workout.warmupLabel')
         : String(workingNumbers(target.sets)[setIndex]);
-    const values = formatSetValues(target.exercise.type, set);
-    return action.kind === 'complete'
-      ? t('workout.rest.nextSet', { n: label, values })
-      : `${target.name} · ${values}`;
+    const values = formatSetDetail(target.exercise.type, set);
+    if (action.kind !== 'complete') {
+      return {
+        text: values ? `${target.name} · ${values}` : target.name,
+        label: t('workout.rest.thenNewExercise'),
+      };
+    }
+    return {
+      text: t('workout.rest.nextSet', { n: label, values }),
+      label:
+        set.kind === 'warmup'
+          ? t('workout.rest.toWarmup')
+          : t('workout.rest.toSet', { n: workingNumbers(target.sets)[setIndex] }),
+    };
   }, []);
+  const nextUpText = useCallback(
+    (s: Session, afterSetId: string): string | null => nextUp(s, afterSetId)?.text ?? null,
+    [nextUp],
+  );
 
   const completeSet = useCallback(
     async (s: Session, owner: SessionExercise, set: WorkoutSet, override?: Partial<WorkoutSet>) => {
@@ -259,8 +287,12 @@ export function useWorkoutSession() {
       });
       if (kinds.length) {
         hapticSuccess();
-        setRecord(
-          `${formatSetValues(owner.exercise.type, done)} · ${kinds.map((k) => t(`records.${k}`)).join(', ')}`,
+        setRecordSetIds((ids) => (ids.includes(set.id) ? ids : [...ids, set.id]));
+        setRecordFlash(true);
+        AccessibilityInfo.announceForAccessibility(
+          t('workout.record.announce', {
+            kinds: kinds.map((k) => t(`records.${k}`)).join(', '),
+          }),
         );
       }
 
@@ -271,6 +303,8 @@ export function useWorkoutSession() {
         const total = owner.restSec ?? DEFAULT_REST_SEC;
         const nextText = nextUpText(s, set.id);
         if (rest) await cancelRestEnd(rest.notificationId);
+        // Każda przerwa zaczyna się jako pasek.
+        setRestExpanded(false);
         const state = startRest(total, set.id, Date.now());
         await saveRest(state);
         const notificationId = await scheduleRestEnd(
@@ -294,6 +328,7 @@ export function useWorkoutSession() {
       if (!found) return;
       if (found.set.completedAt) {
         await updateSet(db, setId, { ...found.set, completedAt: null });
+        setRecordSetIds((ids) => ids.filter((id) => id !== setId));
         if (rest?.setId === setId) await clearRest();
       } else {
         const pending =
@@ -528,28 +563,67 @@ export function useWorkoutSession() {
 
   const onPrimary = useCallback(async () => {
     if (!session) return;
-    if (action.kind === 'complete' && item) await toggleSet(item.sets[action.setIndex].id);
+    if (action.kind === 'complete' && item && usesDuration(item.exercise.type)) await onStopwatch();
+    else if (action.kind === 'complete' && item) await toggleSet(item.sets[action.setIndex].id);
     else if (action.kind === 'nextExercise') {
       await closeEditor();
       setCurrent(action.exerciseIndex);
     } else await finish();
-  }, [session, action, item, toggleSet, closeEditor, finish]);
+  }, [session, action, item, toggleSet, closeEditor, finish, onStopwatch]);
 
-  const primaryLabel = useMemo(() => {
+  /** Główny przycisk: dwie linie — co zrobi i z jakimi wartościami (makieta design/v2/Trening). */
+  const primary = useMemo((): { label: string; detail?: string } => {
     if (action.kind === 'complete' && item) {
       const set = item.sets[action.setIndex];
       const n =
         set.kind === 'warmup'
           ? t('workout.warmupShort')
           : String(workingNumbers(item.sets)[action.setIndex]);
-      return t('workout.primaryComplete', { n });
+      if (usesDuration(item.exercise.type)) {
+        if (stopwatchSec != null) {
+          return {
+            label: t('workout.stopwatch.stopSet', { n }),
+            detail: formatClock(stopwatchSec),
+          };
+        }
+        const target = set.durationSec ?? item.targetDurationSec;
+        return {
+          label: t('workout.stopwatch.start'),
+          detail:
+            target != null
+              ? t('workout.stopwatch.target', { time: formatClock(target) })
+              : t('workout.stopwatch.noTarget'),
+        };
+      }
+      return {
+        label: t('workout.primaryComplete', { n }),
+        detail: formatSetDetail(item.exercise.type, set),
+      };
     }
-    return action.kind === 'nextExercise'
-      ? t('workout.primaryNextExercise')
-      : t('workout.primaryFinish');
-  }, [action, item]);
+    if (action.kind === 'nextExercise' && session) {
+      return {
+        label: t('workout.primaryNextExercise'),
+        detail: session.exercises[action.exerciseIndex]?.name,
+      };
+    }
+    return { label: t('workout.primaryFinish') };
+  }, [action, item, session, stopwatchSec]);
 
-  const restNext = session && rest ? nextUpText(session, rest.setId) : null;
+  const restNext = session && rest ? nextUp(session, rest.setId) : null;
+  const editingSet = editing ? findSet(editing.setId) : null;
+  const keypadNext = (() => {
+    if (!editing || !editingSet) return '';
+    const fields = fieldsFor(editingSet.exercise);
+    const nextField = fields[fields.indexOf(editing.field) + 1];
+    if (nextField === 'reps') return t('workout.keypad.nextReps');
+    if (nextField) return t('workout.keypad.next');
+    return editingSet.set.completedAt ? t('workout.keypad.done') : t('workout.keypad.complete');
+  })();
+  const keypadSetNumber = (() => {
+    if (!editingSet || editingSet.set.kind === 'warmup') return null;
+    const i = editingSet.exercise.sets.findIndex((x) => x.id === editingSet.set.id);
+    return workingNumbers(editingSet.exercise.sets)[i] ?? null;
+  })();
 
   return {
     query,
@@ -561,13 +635,8 @@ export function useWorkoutSession() {
       setCurrent(i);
     },
     editing,
-    editingIsLast: (() => {
-      if (!editing) return false;
-      const found = findSet(editing.setId);
-      if (!found) return false;
-      const fields = fieldsFor(found.exercise);
-      return fields.indexOf(editing.field) === fields.length - 1 && !found.set.completedAt;
-    })(),
+    keypadNext,
+    keypadSetNumber,
     keypadStep: editing ? STEP[editing.field] : 1,
     openEditor,
     onKey,
@@ -578,14 +647,25 @@ export function useWorkoutSession() {
     addSetToCurrent,
     setMenu,
     exerciseMenu,
-    stopwatchSec,
-    onStopwatch,
-    rest: rest ? { left: restLeft, progress: ringProgress(rest, now), next: restNext } : null,
+    rest: rest
+      ? {
+          left: restLeft,
+          total: rest.totalSec,
+          progress: ringProgress(rest, now),
+          next: restNext?.text ?? null,
+          label: recordFlash
+            ? t('workout.record.title')
+            : (restNext?.label ?? t('workout.rest.title')),
+          highlight: recordFlash,
+          expanded: restExpanded,
+        }
+      : null,
+    expandRest: () => setRestExpanded(true),
+    collapseRest: () => setRestExpanded(false),
     onAdjustRest,
     skipRest: clearRest,
-    record,
-    hideRecord,
-    primaryLabel,
+    recordSetIds,
+    primary,
     onPrimary,
     finish,
     discard,

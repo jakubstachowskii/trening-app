@@ -4,7 +4,7 @@ import { Button } from '@/components/Button';
 import { GlassPanel } from '@/components/GlassPanel';
 import { Icon } from '@/components/Icon';
 import { Text } from '@/components/Text';
-import type { KeypadField, KeypadKey } from '@/domain/workout';
+import { displayKeypadText, type KeypadField, type KeypadKey } from '@/domain/workout';
 import { formatNumber, t } from '@/i18n';
 import { useTheme } from '@/theme';
 
@@ -24,13 +24,36 @@ const FIELD_LABEL: Record<
   duration: 'workout.keypad.duration',
 };
 
+const STEP_LABELS: Record<
+  KeypadField,
+  {
+    minus:
+      | 'workout.keypad.minusLabelWeight'
+      | 'workout.keypad.minusLabelReps'
+      | 'workout.keypad.minusLabelDuration';
+    plus:
+      | 'workout.keypad.plusLabelWeight'
+      | 'workout.keypad.plusLabelReps'
+      | 'workout.keypad.plusLabelDuration';
+  }
+> = {
+  weight: { minus: 'workout.keypad.minusLabelWeight', plus: 'workout.keypad.plusLabelWeight' },
+  reps: { minus: 'workout.keypad.minusLabelReps', plus: 'workout.keypad.plusLabelReps' },
+  duration: {
+    minus: 'workout.keypad.minusLabelDuration',
+    plus: 'workout.keypad.plusLabelDuration',
+  },
+};
+
 type Props = {
   field: KeypadField;
   text: string;
   /** Krok −/+ (2,5 kg, 1 powt., 5 s). */
   step: number;
-  /** Ostatnie pole serii: „Dalej” odhacza serię. */
-  isLast: boolean;
+  /** Numer serii roboczej albo null dla rozgrzewki (podpis „Ciężar · seria 2”). */
+  setNumber: number | null;
+  /** Co zrobi główny przycisk: „Dalej · powtórzenia”, „Odhacz serię”, „Gotowe”. */
+  nextLabel: string;
   onKey: (key: KeypadKey) => void;
   onStep: (direction: 1 | -1) => void;
   onNext: () => void;
@@ -38,10 +61,26 @@ type Props = {
 };
 
 /** Duża klawiatura w dolnym szklanym panelu, zamiast systemowej (szybkie wpisywanie między seriami). */
-export function Keypad({ field, text, step, isLast, onKey, onStep, onNext, onClose }: Props) {
+export function Keypad({
+  field,
+  text,
+  step,
+  setNumber,
+  nextLabel,
+  onKey,
+  onStep,
+  onNext,
+  onClose,
+}: Props) {
   const { colors, space, radius, size } = useTheme();
-  const label = t(FIELD_LABEL[field]);
-  const stepText = formatNumber(step);
+  const fieldName = t(FIELD_LABEL[field]);
+  const label =
+    setNumber == null
+      ? t('workout.keypad.fieldWarmup', { field: fieldName })
+      : t('workout.keypad.fieldSet', { field: fieldName, n: setNumber });
+  const shown = displayKeypadText(text, field);
+  const value = shown && field === 'weight' ? t('workout.keypad.unitKg', { value: shown }) : shown;
+  const stepText = field === 'duration' ? t('units.seconds', { value: step }) : formatNumber(step);
   const keyStyle = ({ pressed }: { pressed: boolean }) => ({
     flex: 1,
     minHeight: size.button,
@@ -57,17 +96,19 @@ export function Keypad({ field, text, step, isLast, onKey, onStep, onNext, onClo
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }}>
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={t('workout.keypad.minus', { step: stepText })}
+          accessibilityLabel={t(STEP_LABELS[field].minus, { step: formatNumber(step) })}
           onPress={() => onStep(-1)}
           style={keyStyle}
         >
-          <Text variant="title3">−</Text>
+          <Text variant="callout" style={{ fontWeight: '700', fontVariant: ['tabular-nums'] }}>
+            −{stepText}
+          </Text>
         </Pressable>
         <View
           accessible
           accessibilityLabel={t('workout.keypad.value', {
             field: label,
-            value: text || t('workout.emptyValue'),
+            value: value || t('workout.emptyValue'),
           })}
           accessibilityLiveRegion="polite"
           style={{ flex: 2, alignItems: 'center' }}
@@ -75,17 +116,19 @@ export function Keypad({ field, text, step, isLast, onKey, onStep, onNext, onClo
           <Text variant="footnote" color="label2">
             {label}
           </Text>
-          <Text variant="title1" style={{ fontVariant: ['tabular-nums'] }}>
-            {text || '—'}
+          <Text variant="brandL" style={{ fontVariant: ['tabular-nums'] }} numberOfLines={1}>
+            {value || '—'}
           </Text>
         </View>
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={t('workout.keypad.plus', { step: stepText })}
+          accessibilityLabel={t(STEP_LABELS[field].plus, { step: formatNumber(step) })}
           onPress={() => onStep(1)}
           style={keyStyle}
         >
-          <Text variant="title3">+</Text>
+          <Text variant="callout" style={{ fontWeight: '700', fontVariant: ['tabular-nums'] }}>
+            +{stepText}
+          </Text>
         </Pressable>
       </View>
 
@@ -112,7 +155,7 @@ export function Keypad({ field, text, step, isLast, onKey, onStep, onNext, onClo
                 {key === 'back' ? (
                   <Icon name={{ ios: 'delete.left', web: 'backspace' }} size={size.icon} />
                 ) : (
-                  <Text variant="title2">{key}</Text>
+                  <Text variant="brandKey">{key}</Text>
                 )}
               </Pressable>
             );
@@ -140,10 +183,7 @@ export function Keypad({ field, text, step, isLast, onKey, onStep, onNext, onClo
           />
         </Pressable>
         <View style={{ flex: 1 }}>
-          <Button
-            label={isLast ? t('workout.keypad.complete') : t('workout.keypad.next')}
-            onPress={onNext}
-          />
+          <Button label={nextLabel} onPress={onNext} />
         </View>
       </View>
     </GlassPanel>

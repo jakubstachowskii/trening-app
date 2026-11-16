@@ -1,6 +1,7 @@
 import { Pressable, type PressableProps, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { t } from '@/i18n';
 import { useTheme } from '@/theme';
 
 import { Icon, type IconName } from './Icon';
@@ -12,16 +13,28 @@ type Props = Omit<PressableProps, 'children' | 'style'> & {
   label: string;
   variant?: Variant;
   icon?: IconName;
+  /** Druga linia pod etykietą (np. „82,5 kg × 8”); czytnik ekranu czyta obie. */
+  detail?: string;
+  /** Wysokość 56 pt (główny przycisk ekranu treningu). */
+  large?: boolean;
 };
 
 /**
  * Przyciski z docs/DESIGN.md §6: główny (kapsuła 52 pt, akcent), drugorzędny (44 pt, `fill`),
  * tekstowy i usuwający (bez tła, min. 44 pt). Naciśnięcie: skala 0,97 (bez niej przy Ogranicz ruch).
  */
-export function Button({ label, variant = 'primary', icon, disabled, ...rest }: Props) {
+export function Button({
+  label,
+  variant = 'primary',
+  icon,
+  detail,
+  large,
+  disabled,
+  ...rest
+}: Props) {
   const { colors, size, space, radius, motion, reduceMotion } = useTheme();
 
-  const height = variant === 'primary' ? size.button : size.touchMin;
+  const height = large ? size.buttonLarge : variant === 'primary' ? size.button : size.touchMin;
   const background =
     variant === 'primary' ? colors.accent : variant === 'secondary' ? colors.fill : undefined;
   const textColor =
@@ -37,7 +50,7 @@ export function Button({ label, variant = 'primary', icon, disabled, ...rest }: 
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={label}
+      accessibilityLabel={detail ? t('common.labelWithDetail', { label, detail }) : label}
       accessibilityState={{ disabled: Boolean(disabled) }}
       disabled={disabled}
       style={({ pressed }) => ({
@@ -55,9 +68,25 @@ export function Button({ label, variant = 'primary', icon, disabled, ...rest }: 
       {...rest}
     >
       {icon ? <Icon name={icon} color={iconColor} size={size.iconSmall} /> : null}
-      <Text variant="headline" color={textColor}>
-        {label}
-      </Text>
+      {detail ? (
+        <View style={{ alignItems: 'center' }}>
+          <Text variant="headline" color={textColor}>
+            {label}
+          </Text>
+          <Text
+            variant="footnote"
+            color={textColor}
+            numberOfLines={1}
+            style={{ fontWeight: '600', fontVariant: ['tabular-nums'] }}
+          >
+            {detail}
+          </Text>
+        </View>
+      ) : (
+        <Text variant="headline" color={textColor}>
+          {label}
+        </Text>
+      )}
     </Pressable>
   );
 }
@@ -85,8 +114,8 @@ export function FloatingButton(props: Props) {
 }
 
 /** Zapas pod treścią, żeby pływający przycisk nie zasłaniał ostatniego wiersza. */
-export function useFloatingButtonSpace(): number {
+export function useFloatingButtonSpace(large = false): number {
   const { size, space } = useTheme();
   const insets = useSafeAreaInsets();
-  return size.button + Math.max(insets.bottom, space.md) + space.xl;
+  return (large ? size.buttonLarge : size.button) + Math.max(insets.bottom, space.md) + space.xl;
 }
