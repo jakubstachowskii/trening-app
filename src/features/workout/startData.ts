@@ -13,6 +13,8 @@ import {
 import { computeRecords, newRecordsInWorkout } from '@/domain/records';
 import {
   clampWeeklyGoal,
+  isRestDay,
+  nextTrainingDate,
   type WeekDay,
   weekDays,
   weekDoneCount,
@@ -44,6 +46,10 @@ export type StartData = {
   done: number;
   days: WeekDay[];
   streak: number;
+  /** Plan ma wybrane dni, a dziś do nich nie należy. */
+  restDay: boolean;
+  /** Najbliższy dzień treningowy (ISO), gdy plan ma wybrane dni. */
+  nextTraining: string | null;
   /** Ostatni trening zakończony dziś (stan „Zrobione”). */
   todayFinished: { id: string; name: string | null; durationSec: number; volumeKg: number } | null;
   lastRecord: LastRecord | null;
@@ -108,7 +114,8 @@ export async function loadStartData(db: Db, now: Date = new Date()): Promise<Sta
   const nextDay = planDays.find((d) => d.id === nextId) ?? null;
 
   const starts = await listFinishedStarts(db);
-  const target = weekTarget(active ? planDays.length : null, weeklyGoal);
+  const weekdays = plan?.weekdays ?? null;
+  const target = weekTarget(active ? planDays.length : null, weeklyGoal, weekdays);
 
   const [latest] = await listWorkouts(db, { limit: 1 });
   let todayFinished: StartData['todayFinished'] = null;
@@ -133,8 +140,10 @@ export async function loadStartData(db: Db, now: Date = new Date()): Promise<Sta
     weeklyGoal,
     target,
     done: weekDoneCount(starts, now),
-    days: weekDays(starts, now),
+    days: weekDays(starts, now, weekdays),
     streak: weekStreak(starts, target, now),
+    restDay: isRestDay(weekdays, now),
+    nextTraining: nextTrainingDate(weekdays, now)?.toISOString() ?? null,
     todayFinished,
     lastRecord: await loadLastRecord(db),
   };

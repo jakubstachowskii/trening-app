@@ -23,6 +23,16 @@ export function dayName(date: Date): string {
   return date.toLocaleDateString('pl', { weekday: 'long', day: 'numeric', month: 'long' });
 }
 
+/** „jutro”, „w środę” (w ciągu tygodnia), dalej „24 listopada”. */
+export function formatNext(iso: string, now: Date): string {
+  const date = new Date(iso);
+  const days = Math.round((startOfDay(date) - startOfDay(now)) / DAY_MS);
+  if (days <= 0) return t('today.today');
+  if (days === 1) return t('today.tomorrow');
+  if (days < 7) return t('today.onWeekday').split(',')[date.getDay()] ?? '';
+  return date.toLocaleDateString('pl', { day: 'numeric', month: 'long' });
+}
+
 /** „dziś”, „wczoraj”, „w poniedziałek” (do 6 dni wstecz), dalej „12 listopada”. */
 export function formatWhen(iso: string, now: Date): string {
   const date = new Date(iso);

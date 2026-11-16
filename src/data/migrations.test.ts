@@ -28,6 +28,7 @@ describe('migrate', () => {
     expect(await db.all('SELECT version FROM schema_migration')).toEqual([
       { version: 1 },
       { version: 2 },
+      { version: 3 },
     ]);
   });
 

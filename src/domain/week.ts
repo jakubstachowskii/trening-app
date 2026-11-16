@@ -15,12 +15,37 @@ export function clampWeeklyGoal(goal: number): number {
 }
 
 /**
- * Ile treningów na tydzień: z aktywnym planem tyle, ile ma dni (plan to rotacja dni, bez dni tygodnia),
- * bez planu cel ustawiony przez użytkownika.
+ * Ile treningów na tydzień: z wybranymi dniami treningowymi tyle, ile dni; z aktywnym planem bez dni
+ * tyle, ile ma dni planu (rotacja); bez planu cel ustawiony przez użytkownika.
  */
-export function weekTarget(planDayCount: number | null, weeklyGoal: number): number {
+export function weekTarget(
+  planDayCount: number | null,
+  weeklyGoal: number,
+  weekdays: readonly number[] | null = null,
+): number {
+  if (weekdays?.length) return weekdays.length;
   if (planDayCount != null && planDayCount > 0) return Math.min(DAYS_IN_WEEK, planDayCount);
   return clampWeeklyGoal(weeklyGoal);
+}
+
+/** Dzień tygodnia od poniedziałku: 0 = poniedziałek, 6 = niedziela. */
+export function mondayIndex(date: Date): number {
+  return (date.getDay() + DAYS_IN_WEEK - 1) % DAYS_IN_WEEK;
+}
+
+/** Dziś nie ma treningu w planie (tylko gdy plan ma wybrane dni). */
+export function isRestDay(weekdays: readonly number[] | null, now: Date): boolean {
+  return Boolean(weekdays?.length) && !weekdays!.includes(mondayIndex(now));
+}
+
+/** Najbliższy dzień treningowy po dzisiejszym (null bez wybranych dni). */
+export function nextTrainingDate(weekdays: readonly number[] | null, now: Date): Date | null {
+  if (!weekdays?.length) return null;
+  for (let i = 1; i <= DAYS_IN_WEEK; i += 1) {
+    const date = addDays(new Date(now.getFullYear(), now.getMonth(), now.getDate()), i);
+    if (weekdays.includes(mondayIndex(date))) return date;
+  }
+  return null;
 }
 
 function addDays(date: Date, days: number): Date {
@@ -41,10 +66,15 @@ export function weekDoneCount(startedAt: string[], now: Date): number {
   return startedAt.filter((s) => weekIndex(new Date(s), thisWeek) === 0).length;
 }
 
-export type WeekDay = { date: Date; done: boolean; today: boolean };
+/** `planned` = dzień treningowy z planu (tylko gdy plan ma wybrane dni). */
+export type WeekDay = { date: Date; done: boolean; today: boolean; planned: boolean };
 
 /** Poniedziałek–niedziela bieżącego tygodnia: czy był trening i czy to dziś. */
-export function weekDays(startedAt: string[], now: Date): WeekDay[] {
+export function weekDays(
+  startedAt: string[],
+  now: Date,
+  weekdays: readonly number[] | null = null,
+): WeekDay[] {
   const monday = startOfWeek(now);
   const doneDays = new Set(
     startedAt.map((s) => {
@@ -55,7 +85,12 @@ export function weekDays(startedAt: string[], now: Date): WeekDay[] {
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
   return Array.from({ length: DAYS_IN_WEEK }, (_, i) => {
     const date = addDays(monday, i);
-    return { date, done: doneDays.has(date.getTime()), today: date.getTime() === today };
+    return {
+      date,
+      done: doneDays.has(date.getTime()),
+      today: date.getTime() === today,
+      planned: weekdays?.includes(i) ?? false,
+    };
   });
 }
 

@@ -19,9 +19,11 @@ import {
   getPlan,
   reorderPlanDays,
   setActivePlan,
+  setPlanWeekdays,
 } from '@/data/repositories/plans';
 import { useDbQuery } from '@/data/useDbQuery';
 import { t, tMaybe, tPlural } from '@/i18n';
+import { WeekdayPicker } from '@/features/plans/WeekdayPicker';
 import { useTheme } from '@/theme';
 
 export default function PlanScreen() {
@@ -82,6 +84,11 @@ export default function PlanScreen() {
 
   const toggleActive = async () => {
     await setActivePlan(db, plan.isActive ? null : plan.id);
+    await reload();
+  };
+
+  const changeWeekdays = async (next: number[]) => {
+    await setPlanWeekdays(db, plan.id, next);
     await reload();
   };
 
@@ -176,6 +183,17 @@ export default function PlanScreen() {
                 onPress={() => void toggleActive()}
               />
             )}
+            <Section title={t('planDetail.weekdays')}>
+              <View style={{ gap: space.xs }}>
+                <WeekdayPicker
+                  value={plan.weekdays ?? []}
+                  onChange={(next) => void changeWeekdays(next)}
+                />
+                <Text variant="footnote" color="label2" style={{ paddingHorizontal: space.xxs }}>
+                  {t('planDetail.weekdaysHint')}
+                </Text>
+              </View>
+            </Section>
             <Section
               title={t('planDetail.days')}
               action={

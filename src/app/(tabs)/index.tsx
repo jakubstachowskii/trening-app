@@ -14,7 +14,13 @@ import { useDbQuery } from '@/data/useDbQuery';
 import { clampWeeklyGoal } from '@/domain/week';
 import { formatClock } from '@/domain/workout';
 import { formatNumber, t, tPlural } from '@/i18n';
-import { dayInitial, dayName, formatTodayDate, formatWhen } from '@/features/today/format';
+import {
+  dayInitial,
+  dayName,
+  formatNext,
+  formatTodayDate,
+  formatWhen,
+} from '@/features/today/format';
 import { WeekRing } from '@/features/today/WeekRing';
 import { loadStartData, type StartData, WEEKLY_GOAL_SETTING } from '@/features/workout/startData';
 import { beginWorkout, openWorkout } from '@/features/workout/startWorkout';
@@ -114,7 +120,9 @@ export default function TodayScreen() {
   const mode = modeOf(data);
   const { target, done } = data;
   // Dziś to kolejny segment: pulsuje przed startem i w trakcie (o ile cel nie jest już zrobiony).
-  const pulseIndex = (mode === 'before' || mode === 'active') && done < target ? done : null;
+  // W dzień wolny (plan z wybranymi dniami) nic nie pulsuje — trening można zacząć, ale nie jest planowany.
+  const pulseIndex =
+    ((mode === 'before' && !data.restDay) || mode === 'active') && done < target ? done : null;
   const ringLabel =
     pulseIndex != null
       ? t('today.ringToday', { done, total: target })
@@ -242,7 +250,11 @@ export default function TodayScreen() {
     return (
       <>
         {kicker(
-          done < target ? t('today.ofWeek', { n: done + 1, total: target }) : t('today.overGoal'),
+          data.restDay && data.nextTraining
+            ? t('today.restDay', { when: formatNext(data.nextTraining, now) })
+            : done < target
+              ? t('today.ofWeek', { n: done + 1, total: target })
+              : t('today.overGoal'),
         )}
         <Text
           variant="brandXL"
@@ -304,7 +316,9 @@ export default function TodayScreen() {
               : t('today.dayToday', { day: dayName(d.date) })
             : d.done
               ? t('today.dayDone', { day: dayName(d.date) })
-              : dayName(d.date);
+              : d.planned
+                ? t('today.dayPlanned', { day: dayName(d.date) })
+                : dayName(d.date);
           return (
             <View
               key={d.date.toISOString()}
@@ -327,13 +341,14 @@ export default function TodayScreen() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   backgroundColor: d.done ? colors.accentSoft : undefined,
-                  borderWidth: d.today ? 2 : 0,
-                  borderColor: colors.accent,
+                  // Jak w makiecie: dziś — ramka akcentu, zaplanowany — cienka ramka `fill`.
+                  borderWidth: d.today ? 2 : d.planned && !d.done ? 1.5 : 0,
+                  borderColor: d.today ? colors.accent : colors.fill,
                 }}
               >
                 <Text
                   variant="subheadline"
-                  color={d.done ? 'accentText' : d.today ? 'label' : 'label2'}
+                  color={d.done ? 'accentText' : d.today || d.planned ? 'label' : 'label2'}
                   style={{ fontWeight: '600', fontVariant: ['tabular-nums'] }}
                 >
                   {d.date.getDate()}

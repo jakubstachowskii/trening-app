@@ -89,6 +89,20 @@ describe('plan i dzień', () => {
     expect((await getPlan(mockDb, planId))?.isActive).toBe(true);
   });
 
+  it('plan: wybór dni treningowych zapisuje się w planie', async () => {
+    const planId = await copyProgram(mockDb, ppl, translate);
+    mockParams = { id: planId };
+    await renderWithTheme(<PlanScreen />);
+
+    await fireEvent.press(await screen.findByRole('checkbox', { name: 'poniedziałek' }));
+    await fireEvent.press(screen.getByRole('checkbox', { name: 'środa' }));
+    await waitFor(async () => expect((await getPlan(mockDb, planId))?.weekdays).toEqual([0, 2]));
+    expect(screen.getByRole('checkbox', { name: 'środa' })).toBeChecked();
+
+    await fireEvent.press(screen.getByRole('checkbox', { name: 'poniedziałek' }));
+    await waitFor(async () => expect((await getPlan(mockDb, planId))?.weekdays).toEqual([2]));
+  });
+
   it('plan: akcja VoiceOver „Przesuń niżej” zmienia kolejność dni', async () => {
     const planId = await copyProgram(mockDb, ppl, translate);
     mockParams = { id: planId };

@@ -500,7 +500,9 @@
     "delete": "Usuń plan",
     "deleteTitle": "Usunąć plan „{name}”?",
     "deleteBody": "Dni i ćwiczenia z planu znikną. Zakończone treningi zostaną w historii.",
-    "fromProgram": "Na podstawie gotowego programu"
+    "fromProgram": "Na podstawie gotowego programu",
+    "weekdays": "Dni w tygodniu",
+    "weekdaysHint": "Opcjonalnie. Kolejność treningów się nie zmienia: po opuszczonym dniu robisz następny z kolei."
   },
   "planDay": {
     "rename": "Nazwa dnia",
@@ -1353,6 +1355,10 @@
     "dayDone": "{day}, trening zrobiony",
     "dayToday": "{day}, dziś",
     "dayTodayDone": "{day}, dziś, trening zrobiony",
-    "emptyDay": "Ten dzień planu nie ma jeszcze ćwiczeń."
+    "emptyDay": "Ten dzień planu nie ma jeszcze ćwiczeń.",
+    "restDay": "Dziś wolne · następny {when}",
+    "dayPlanned": "{day}, zaplanowany trening",
+    "weekdayNames": "poniedziałek,wtorek,środa,czwartek,piątek,sobota,niedziela",
+    "tomorrow": "jutro"
   }
 }

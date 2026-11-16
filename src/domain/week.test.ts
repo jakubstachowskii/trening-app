@@ -1,6 +1,9 @@
 import { estimateDayMinutes } from './workout/estimate';
 import {
   clampWeeklyGoal,
+  isRestDay,
+  mondayIndex,
+  nextTrainingDate,
   weekDays,
   weekDoneCount,
   weekStreak,
@@ -78,5 +81,37 @@ describe('szacowany czas dnia', () => {
       ]),
     ).toBe(15);
     expect(estimateDayMinutes([{ targetSets: 1, restSec: 0 }])).toBe(5);
+  });
+});
+
+describe('dni treningowe planu', () => {
+  const MWF = [0, 2, 4];
+
+  it('cel = liczba wybranych dni, ważniejsza niż liczba dni planu', () => {
+    expect(weekTarget(3, 3, [0, 1, 2, 3, 4, 5])).toBe(6);
+    expect(weekTarget(3, 5, [])).toBe(3);
+  });
+
+  it('dni zaplanowane w pasku tygodnia', () => {
+    expect(weekDays([], NOW, MWF).map((d) => d.planned)).toEqual([
+      true,
+      false,
+      true,
+      false,
+      true,
+      false,
+      false,
+    ]);
+    expect(weekDays([], NOW).some((d) => d.planned)).toBe(false);
+  });
+
+  it('dzień wolny i następny dzień treningowy', () => {
+    expect(mondayIndex(NOW)).toBe(3);
+    expect(isRestDay(MWF, NOW)).toBe(true);
+    expect(isRestDay(null, NOW)).toBe(false);
+    expect(nextTrainingDate(MWF, NOW)?.getDate()).toBe(20);
+    // Niedziela → poniedziałek następnego tygodnia.
+    expect(nextTrainingDate(MWF, new Date(2026, 10, 22, 9))?.getDate()).toBe(23);
+    expect(nextTrainingDate(null, NOW)).toBeNull();
   });
 });

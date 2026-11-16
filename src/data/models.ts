@@ -62,6 +62,8 @@ export type Plan = {
   level: Level | null;
   sourceProgramId: string | null;
   isActive: boolean;
+  /** Dni treningowe 0–6 (0 = poniedziałek); null = bez dni tygodnia (sama rotacja). */
+  weekdays: number[] | null;
   createdAt: string;
 };
 

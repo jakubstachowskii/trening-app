@@ -59,7 +59,8 @@ export async function loadSummary(db: Db, workoutId: string): Promise<SummaryDat
   // Tydzień liczony względem dnia treningu (podsumowanie można otworzyć później).
   const when = new Date(session.startedAt);
   const active = (await listPlans(db)).find((p) => p.isActive);
-  const planDays = active ? ((await getPlan(db, active.id))?.days.length ?? 0) : null;
+  const activePlan = active ? await getPlan(db, active.id) : null;
+  const planDays = active ? (activePlan?.days.length ?? 0) : null;
   const goal = clampWeeklyGoal(
     await getSetting<number>(db, WEEKLY_GOAL_SETTING, WEEKLY_GOAL_DEFAULT),
   );
@@ -77,7 +78,10 @@ export async function loadSummary(db: Db, workoutId: string): Promise<SummaryDat
     session,
     summary,
     records,
-    week: { done: weekDoneCount(starts, when), target: weekTarget(planDays, goal) },
+    week: {
+      done: weekDoneCount(starts, when),
+      target: weekTarget(planDays, goal, activePlan?.weekdays ?? null),
+    },
     previousVolumeKg,
   };
 }

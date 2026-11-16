@@ -112,7 +112,12 @@ ALTER TABLE workout_exercise ADD COLUMN reps_max INTEGER;
 ALTER TABLE workout_exercise ADD COLUMN target_duration_sec INTEGER;
 `;
 
-export const MIGRATIONS: readonly string[] = [V1, V2];
+// F6: opcjonalne dni treningowe planu ("0,2,4" = pn, śr, pt; NULL = sama rotacja dni).
+const V3 = `
+ALTER TABLE plan ADD COLUMN weekdays TEXT;
+`;
+
+export const MIGRATIONS: readonly string[] = [V1, V2, V3];
 export const LATEST_VERSION = MIGRATIONS.length;
 
 /** Ustawienia połączenia: przy każdym otwarciu bazy (klucze obce nie są zapisywane w pliku). */

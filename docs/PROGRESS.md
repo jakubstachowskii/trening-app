@@ -31,9 +31,10 @@ Zrobione:
 - Krój Archivo Expanded w tytułach i liczbach.
 - Trening: jeden rząd nagłówka w szkle, pasek segmentów ćwiczeń, tabela z bieżącą serią w ramce, główny przycisk w dwóch liniach, przerwa jako szklany pasek z arkuszem (duży pierścień), rekord jako plakietka w wierszu, czas ćwiczeń wpisywany jak w minutniku (m:ss), stoper jako główny przycisk.
 - „Dziś” zamiast Start: pierścień tygodnia, pasek dni, seria tygodni, ostatni rekord, cel tygodnia bez planu.
+- Opcjonalne dni treningowe planu (ekran planu → „Dni w tygodniu”): segmenty pierścienia, dni zaplanowane w pasku, dzień wolny na „Dziś”.
 - Podsumowanie: domykający się segment tygodnia, 3 liczby, rekordy, porównanie z poprzednim treningiem tego dnia planu, notatka po stuknięciu.
 
-Odstępstwa od `design/v2`: kolory z tokenów F2 (makieta ma minimalnie inne szarości); Archivo Expanded ma szerokość 125% (makieta 120%); pasek dni bez dni „zaplanowanych” (plany nie mają dni tygodnia); figurka mięśni w podsumowaniu i zębatka ustawień na „Dziś” w kolejnych etapach.
+Odstępstwa od `design/v2`: kolory z tokenów F2 (makieta ma minimalnie inne szarości); Archivo Expanded ma szerokość 125% (makieta 120%); figurka mięśni w podsumowaniu i zębatka ustawień na „Dziś” w kolejnych etapach.
 
 Do sprawdzenia na iPhonie: powiadomienie o końcu przerwy (zablokowany ekran, inna aplikacja), zamknięcie aplikacji w trakcie i wznowienie, szkło minutnika i klawiatury, gest zamykania wyłączony; krój Archivo (także przy największym tekście), pasek i arkusz przerwy, pulsowanie pierścienia i Ogranicz ruch, wpisywanie czasu m:ss.
 

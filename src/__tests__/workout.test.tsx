@@ -4,7 +4,14 @@ import StartScreen from '@/app/(tabs)/index';
 import WorkoutScreen from '@/app/trening/index';
 import WorkoutSummaryScreen from '@/app/trening/podsumowanie';
 import type { Db } from '@/data/db';
-import { addPlanDay, addPlanExercise, createPlan, setActivePlan } from '@/data/repositories/plans';
+import {
+  addPlanDay,
+  addPlanExercise,
+  createPlan,
+  setActivePlan,
+  setPlanWeekdays,
+} from '@/data/repositories/plans';
+import { mondayIndex } from '@/domain/week';
 import { getSetting } from '@/data/repositories/settings';
 import {
   completeWorkout,
@@ -120,6 +127,20 @@ describe('Dziś', () => {
     );
     await waitFor(() => expect(mockRouter.push).toHaveBeenCalledWith('/trening'));
     expect((await getUnfinishedWorkout(mockDb))?.planDayId).toBe(dayId);
+  });
+
+  it('dni treningowe: dzień wolny i dni zaplanowane w pasku', async () => {
+    const { planId } = await activePlan();
+    const today = mondayIndex(new Date());
+    const tomorrow = (today + 1) % 7;
+    await setPlanWeekdays(mockDb, planId, [tomorrow]);
+    await renderWithTheme(<StartScreen />);
+
+    expect(
+      await screen.findByText(t('today.restDay', { when: t('today.tomorrow') })),
+    ).toBeOnTheScreen();
+    // Jeden wybrany dzień = jeden segment pierścienia.
+    expect(screen.getByLabelText(t('today.ringPlanned', { done: 0, total: 1 }))).toBeOnTheScreen();
   });
 
   it('trening w toku: „Wznów”', async () => {
