@@ -1293,7 +1293,18 @@
       "noRecords": "Tym razem bez rekordów. Następnym razem!",
       "note": "Notatka do treningu",
       "notePlaceholder": "Jak poszło?",
-      "done": "Gotowe"
+      "done": "Gotowe",
+      "titleDone": "{name} zrobiony",
+      "weekLine": "Trening {n} z {total} w tym tygodniu · {date}",
+      "setsShort": "Serii",
+      "stat": "{label}: {value}",
+      "compareTitle": "Względem ostatniego: {name}",
+      "compareMore": "+{value} kg objętości",
+      "compareLess": "−{value} kg objętości",
+      "compareSame": "Ta sama objętość",
+      "compareBody": "Dziś {today} kg, poprzednio {previous} kg",
+      "addNote": "Dodaj notatkę",
+      "ring": "Tydzień: {done} z {total} treningów zrobione"
     },
     "start": {
       "nextTitle": "Następny trening",

@@ -226,12 +226,23 @@ describe('podsumowanie', () => {
 
     await renderWithTheme(<WorkoutSummaryScreen />);
     expect(
-      await screen.findByRole('header', { name: t('workout.summary.title') }),
+      await screen.findByRole('header', {
+        name: t('workout.summary.titleDone', { name: 'Push A' }),
+      }),
     ).toBeOnTheScreen();
-    expect(screen.getByLabelText(`${t('workout.summary.duration')}: 45:30`)).toBeOnTheScreen();
-    expect(screen.getByLabelText(`${t('workout.summary.volume')}: 1200 kg`)).toBeOnTheScreen();
+    expect(
+      screen.getByLabelText(
+        t('workout.summary.stat', { label: t('workout.summary.duration'), value: '45:30' }),
+      ),
+    ).toBeOnTheScreen();
+    expect(
+      screen.getByLabelText(
+        t('workout.summary.stat', { label: t('workout.summary.volume'), value: '1200 kg' }),
+      ),
+    ).toBeOnTheScreen();
     expect(screen.getByText(t('workout.summary.noRecords'))).toBeOnTheScreen();
 
+    await fireEvent.press(screen.getByRole('button', { name: t('workout.summary.addNote') }));
     await fireEvent.changeText(screen.getByLabelText(t('workout.summary.note')), 'Dobrze szło');
     await fireEvent.press(screen.getByRole('button', { name: t('workout.summary.done') }));
     await waitFor(() => expect(mockRouter.back).toHaveBeenCalled());
