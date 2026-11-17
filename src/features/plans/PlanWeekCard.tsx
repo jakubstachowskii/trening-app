@@ -36,14 +36,13 @@ export function PlanWeekCard({ plan, now, busy, onStart, onOpenPlan }: Props) {
   const renderRow = (row: PlanTabRow) => {
     if (row.kind === 'done') {
       const name = row.name ?? t('workout.emptyName');
-      const meta =
-        row.durationSec != null && row.volumeKg != null
-          ? t('planTab.doneMeta', {
-              when: weekdayName(row.date),
-              time: formatClock(row.durationSec),
-              volume: formatNumber(Math.round(row.volumeKg)),
-            })
-          : weekdayName(row.date);
+      const meta = [
+        weekdayName(row.date),
+        row.durationSec != null ? formatClock(row.durationSec) : null,
+        row.volumeKg ? t('units.kg', { value: formatNumber(Math.round(row.volumeKg)) }) : null,
+      ]
+        .filter(Boolean)
+        .join(' · ');
       return (
         <View
           key={row.key}

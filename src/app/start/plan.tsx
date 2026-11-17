@@ -22,7 +22,7 @@ export default function OnboardingProposal() {
   const db = useDb();
   const params = useLocalSearchParams<{ goal?: string; again?: string }>();
   const insets = useSafeAreaInsets();
-  const { colors, space, size, radius } = useTheme();
+  const { colors, space, size, radius, scheme } = useTheme();
   const [busy, setBusy] = useState(false);
   const goal = clampWeeklyGoal(Number(params.goal));
   const again = Boolean(params.again);
@@ -113,7 +113,8 @@ export default function OnboardingProposal() {
                     minHeight: size.touchMin,
                     paddingHorizontal: space.sm,
                     borderRadius: radius.small,
-                    backgroundColor: colors.raised,
+                    // Jak w F6: w jasnym motywie raised = surface, więc wiersz na tle bg.
+                    backgroundColor: scheme === 'dark' ? colors.raised : colors.bg,
                   }}
                 >
                   <Text variant="subheadline" style={{ fontWeight: '600' }}>

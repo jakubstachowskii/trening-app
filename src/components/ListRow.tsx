@@ -9,6 +9,8 @@ import { Text } from './Text';
 type Props = Omit<PressableProps, 'children' | 'style'> & {
   title: string;
   subtitle?: string;
+  /** Krótka wyróżniona etykieta pod tytułem (np. „Polecany…”), w kolorze akcentu. */
+  badge?: string;
   /** Miniatura 40 pt z ikoną (do czasu ilustracji w F10). */
   icon?: IconName;
   /** Coś po prawej zamiast strzałki (np. uchwyt przeciągania, znacznik). */
@@ -23,6 +25,7 @@ type Props = Omit<PressableProps, 'children' | 'style'> & {
 export function ListRow({
   title,
   subtitle,
+  badge,
   icon,
   accessory,
   showChevron = true,
@@ -43,7 +46,7 @@ export function ListRow({
   return (
     <Pressable
       accessibilityRole={onPress ? 'button' : undefined}
-      accessibilityLabel={subtitle ? `${title}, ${subtitle}` : title}
+      accessibilityLabel={[title, badge, subtitle].filter(Boolean).join(', ')}
       accessibilityState={selected === undefined ? undefined : { selected }}
       accessibilityActions={actions?.map(({ name, label }) => ({ name, label }))}
       onAccessibilityAction={onAccessibilityAction}
@@ -76,6 +79,11 @@ export function ListRow({
       ) : null}
       <View style={{ flex: 1, gap: space.xxs }}>
         <Text variant="body">{title}</Text>
+        {badge ? (
+          <Text variant="footnote" color="accentText" style={{ fontWeight: '600' }}>
+            {badge}
+          </Text>
+        ) : null}
         {subtitle ? (
           <Text variant="subheadline" color="label2">
             {subtitle}

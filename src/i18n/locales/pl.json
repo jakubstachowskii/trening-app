@@ -1387,7 +1387,6 @@
     "segmentsLabel": "{done} z {total} treningów w tym tygodniu",
     "today": "dziś",
     "next": "następny",
-    "doneMeta": "{when} · {time} · {volume} kg",
     "nextMeta": "{when} · {exercises} · ok. {min} min",
     "nextMetaShort": "{exercises}",
     "emptyTraining": "bez ćwiczeń",
@@ -1435,7 +1434,6 @@
     "calendarLabel": "Dni z treningiem w tym miesiącu: {count}",
     "prevMonth": "Poprzedni miesiąc",
     "nextMonth": "Następny miesiąc",
-    "itemMeta": "{date} · {time} · {volume} kg",
     "recordsBadge": {
       "one": "{count} rekord",
       "few": "{count} rekordy",

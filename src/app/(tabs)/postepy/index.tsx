@@ -34,12 +34,13 @@ function monthTitle(year: number, month: number): string {
 
 function itemMeta(item: MonthHistory['items'][number]): string {
   const date = new Date(item.startedAt).toLocaleDateString('pl', { day: 'numeric', month: 'long' });
-  if (item.durationSec == null || item.volumeKg == null) return date;
-  return t('progress.itemMeta', {
+  return [
     date,
-    time: formatClock(item.durationSec),
-    volume: formatNumber(Math.round(item.volumeKg)),
-  });
+    item.durationSec != null ? formatClock(item.durationSec) : null,
+    item.volumeKg ? t('units.kg', { value: formatNumber(Math.round(item.volumeKg)) }) : null,
+  ]
+    .filter(Boolean)
+    .join(' · ');
 }
 
 /** Kalendarz miesiąca: tydzień od poniedziałku, dni z treningiem zaznaczone. */
