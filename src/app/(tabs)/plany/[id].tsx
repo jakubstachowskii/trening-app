@@ -9,7 +9,8 @@ import { ListRow } from '@/components/ListRow';
 import { ReorderableRows } from '@/components/Reorderable';
 import { Section } from '@/components/Section';
 import { Skeleton } from '@/components/Skeleton';
-import { confirmDestructive, HeaderIconButton, showMenu } from '@/components/stack';
+import { HeaderMenuButton } from '@/components/MenuButtons';
+import { confirmDestructive } from '@/components/stack';
 import { Text } from '@/components/Text';
 import { useDb } from '@/data/DatabaseProvider';
 import type { PlanDay } from '@/data/models';
@@ -19,9 +20,11 @@ import {
   getPlan,
   reorderPlanDays,
   setActivePlan,
+  setPlanWeekdays,
 } from '@/data/repositories/plans';
 import { useDbQuery } from '@/data/useDbQuery';
 import { t, tMaybe, tPlural } from '@/i18n';
+import { WeekdayPicker } from '@/features/plans/WeekdayPicker';
 import { useTheme } from '@/theme';
 
 export default function PlanScreen() {
@@ -85,6 +88,11 @@ export default function PlanScreen() {
     await reload();
   };
 
+  const changeWeekdays = async (next: number[]) => {
+    await setPlanWeekdays(db, plan.id, next);
+    await reload();
+  };
+
   const remove = () =>
     confirmDestructive(
       t('planDetail.deleteTitle', { name: plan.name }),
@@ -108,23 +116,20 @@ export default function PlanScreen() {
       <Stack.Screen
         options={{
           headerRight: () => (
-            <HeaderIconButton
-              icon={{ ios: 'ellipsis', web: 'more_horiz' }}
+            <HeaderMenuButton
               label={t('common.more')}
-              onPress={() =>
-                showMenu(plan.name, [
-                  {
-                    label: t('planDetail.edit'),
-                    onPress: () =>
-                      router.push({ pathname: '/plany/nowy', params: { id: plan.id } }),
-                  },
-                  {
-                    label: plan.isActive ? t('planDetail.unsetActive') : t('planDetail.setActive'),
-                    onPress: () => void toggleActive(),
-                  },
-                  { label: t('planDetail.delete'), onPress: remove, destructive: true },
-                ])
-              }
+              title={plan.name}
+              items={[
+                {
+                  label: t('planDetail.edit'),
+                  onPress: () => router.push({ pathname: '/plany/nowy', params: { id: plan.id } }),
+                },
+                {
+                  label: plan.isActive ? t('planDetail.unsetActive') : t('planDetail.setActive'),
+                  onPress: () => void toggleActive(),
+                },
+                { label: t('planDetail.delete'), onPress: remove, destructive: true },
+              ]}
             />
           ),
         }}
@@ -176,6 +181,17 @@ export default function PlanScreen() {
                 onPress={() => void toggleActive()}
               />
             )}
+            <Section title={t('planDetail.weekdays')}>
+              <View style={{ gap: space.xs }}>
+                <WeekdayPicker
+                  value={plan.weekdays ?? []}
+                  onChange={(next) => void changeWeekdays(next)}
+                />
+                <Text variant="footnote" color="label2" style={{ paddingHorizontal: space.xxs }}>
+                  {t('planDetail.weekdaysHint')}
+                </Text>
+              </View>
+            </Section>
             <Section
               title={t('planDetail.days')}
               action={

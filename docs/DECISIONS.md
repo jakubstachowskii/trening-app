@@ -150,3 +150,31 @@ Usunięte z szablonu, bo na razie niepotrzebne: `@expo/ui`, `expo-device`, `expo
 - **Co:** poza nazwą wyszukiwarka sprawdza ukryte słowa kluczowe (`exerciseKeywords` w `pl.json`, np. „płaska ławka”, „bench”, „klata”), główne mięśnie i sprzęt. Odmiany słów: rdzeń bez 2 ostatnich liter (słowa 5–6 liter) albo 3 (7+ liter, np. „płaskiej” → „płask”).
 - **Kolejność wyników:** najpierw nazwa zaczynająca się od zapytania, potem słowa dosłownie w nazwie, potem dosłownie w słowach kluczowych, na końcu trafienia przez inną odmianę; w każdej grupie najpierw popularne ćwiczenia (`src/features/exercises/popular.ts`), potem alfabetycznie. Bez zapytania lista zostaje alfabetyczna z literami.
 - **Dlaczego:** test na iPhonie: „płaska” nie znajdowała wyciskania na ławce („poziomej”), a „wyciskanie” zaczynało się od wyciskania Arnolda.
+
+## 23. Trening w toku: nawigacja, dane i zależności (2026-11-15)
+
+- **Nawigacja:** karty przeniesione do grupy `src/app/(tabs)/` (adresy bez zmian) pod główny `Stack`. Trening (`trening/index`) i podsumowanie to `fullScreenModal` z `gestureEnabled: false` — przypadkowe przesunięcie palcem w trakcie serii nie zamyka treningu. Dokumentacja Expo nie opisuje wprost NativeTabs w grupie pod stosem; sprawdzone w podglądzie web i do potwierdzenia na iPhonie.
+- **`NativeTabs.BottomAccessory`** (pasek „trening w toku” nad kartami): pominięty w F6. Jest od SDK 55, ale renderuje dwie kopie naraz i wymaga stanu poza komponentem; karta „Wznów” na Start wystarcza. Do rozważenia w F11.
+- **Migracja 2:** `workout.name` oraz cele w `workout_exercise` (przerwa, zakres powtórzeń, czas) kopiowane z planu przy starcie — plan może się potem zmienić albo zniknąć, a ćwiczenie dodane w trakcie nie ma wiersza planu.
+- **Minutnik:** stan (`endsAt`, `totalSec`, seria, id powiadomienia) w tabeli `setting`. Pozostały czas liczony ze znacznika końca, więc przeżywa wygaszenie ekranu i zamknięcie aplikacji.
+- **Własna klawiatura** zamiast systemowej: większe klawisze, kroki −/+, „Dalej” prowadzi przez pola serii i odhacza ją na końcu. Nowy element (nie ma go w makiecie F2) zbudowany z tokenów i komponentów F2 (szkło `control`, `fill`, kapsuły); zaakceptowany w planie F6.
+- **Nowe zależności (bez kosztów, wszystkie w Expo Go):**
+  - `react-native-svg` 15.16 — pierścień minutnika (przyda się w wykresach F7). Alternatywa: obracane półkola z `View` — trudniejsze i mniej dokładne.
+  - `expo-keep-awake` — ekran nie gaśnie w trakcie treningu. Na web wersja pusta (`KeepAwake.web.tsx`).
+  - `expo-notifications` — tylko lokalne powiadomienie o końcu przerwy; plugin z `enableRemoteNotifications: false` (bez uprawnienia APNs, bez serwera). Dokumentacja: lokalne powiadomienia działają w Expo Go — do potwierdzenia na iPhonie.
+- **Rekord w trakcie treningu** (`recordsBrokenBySet`): przy odhaczeniu serii porównanie z wcześniejszymi treningami i seriami tego treningu; rekord objętości tylko w podsumowaniu (rośnie z każdą serią).
+
+## 24. Nowy wygląd z projektu `design/v2` (2026-11-16)
+
+- **Co:** właściciel zatwierdził nowy projekt całej aplikacji (`design/v2/*.dc.html`, „tydzień jako pierścień”) i zgodził się na zmianę zatwierdzonych makiet F2. Styl F2 (kolory, szkło, tokeny) zostaje; zmienia się układ ekranów i krój tytułów. Wdrożenie etapami: A (F6) trening, „Dziś”, podsumowanie; B figurka mięśni; C Postępy z Historią (4 karty); D Ustawienia.
+- **Krój Archivo Expanded** (OFL, statyczne pliki 700 i 800 w `assets/fonts`, ładowane przez `useFonts` z `expo-font`, które już było w projekcie). Statyczne pliki zamiast zmiennej czcionki, bo osie zmiennej czcionki w React Native nie są pewne; szerokość 125% zamiast 120% z makiety. Bez nowej paczki npm.
+- **Cel tygodnia:** z aktywnym planem segmentów jest tyle, ile dni ma plan; bez planu ustawienie `weeklyGoal` (2–6). Seria tygodni liczona względem dzisiejszego celu (historia celów nie jest zapisywana).
+- **Rekord w trakcie:** plakietka w wierszu i etykieta w pasku przerwy zamiast komunikatu u góry — komunikat zasłaniał nagłówek. Zapamiętane tylko w sesji ekranu (po ponownym otwarciu treningu plakietki nie ma, rekord jest w podsumowaniu).
+- **Dni treningowe planu (opcjonalne):** migracja 3 (`plan.weekdays`, np. "0,2,4" = pn, śr, pt). Wybór na ekranie planu („Dni w tygodniu”, kółka jak w pasku dni z makiety). Z wybranymi dniami pierścień ma tyle segmentów, ile dni, pasek dni pokazuje dni zaplanowane, a w dzień wolny „Dziś” mówi „Dziś wolne · następny jutro / w środę” (trening dalej można zacząć). Kolejność treningów nadal ustala rotacja dni planu — opuszczony dzień niczego nie przesuwa. Przypisywania konkretnego dnia planu do dnia tygodnia celowo nie ma (rozjeżdża się po pierwszym opuszczonym treningu).
+
+## 25. Małe menu z przycisku: `@expo/ui` (2026-11-17)
+
+- **Co:** „…” (trening, ćwiczenie w treningu, plan, dzień planu, ćwiczenie) i numer serii otwierają na iOS małe natywne menu rozwijane z przycisku (`Menu` z `@expo/ui/swift-ui`, wyzwalacz przez `RNHostView`), zamiast arkusza akcji na środku ekranu. Akcje usuwające są na dole, czerwone, oddzielone kreską. Wspólny komponent `PopupMenu` (`.ios.tsx`); na web i Androidzie zostaje dotychczasowe okno (`showMenu`).
+- **Dlaczego:** test na iPhonie — duży arkusz dla 1–3 akcji był ciężki; tak działają systemowe aplikacje iOS.
+- **Zależność:** `@expo/ui` ~58.0.28 (Expo, bez kosztów, „Included in Expo Go” według dokumentacji SDK 58). Alternatywa `Stack.Toolbar.Menu` działa tylko w nagłówku stosu, a menu potrzebne są też w treści (karta ćwiczenia, numer serii).
+- **Przeciąganie:** strefy autoprzewijania listy przesunięte nad pasek kart i pod nagłówek (wcześniej leżały pod nimi i palec ich nie sięgał), szybsze przewijanie.

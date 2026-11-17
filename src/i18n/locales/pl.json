@@ -1,6 +1,6 @@
 {
   "tabs": {
-    "start": "Start",
+    "start": "Dziś",
     "plans": "Plany",
     "exercises": "Ćwiczenia",
     "progress": "Postępy",
@@ -8,7 +8,7 @@
   },
   "screens": {
     "start": {
-      "title": "Start",
+      "title": "Dziś",
       "body": "Tu zobaczysz dzisiejszy trening, ostatnie wyniki i swój tydzień w skrócie."
     },
     "plans": {
@@ -43,7 +43,8 @@
     "errorBody": "Nie udało się wczytać danych. Spróbuj jeszcze raz.",
     "retry": "Spróbuj ponownie",
     "notFound": "Nie ma już tego elementu.",
-    "optional": "opcjonalnie"
+    "optional": "opcjonalnie",
+    "labelWithDetail": "{label}, {detail}"
   },
   "units": {
     "sets": {
@@ -73,7 +74,22 @@
     },
     "kg": "{value} kg",
     "seconds": "{value} s",
-    "minutes": "{value} min"
+    "minutes": "{value} min",
+    "reps": {
+      "one": "{count} powtórzenie",
+      "few": "{count} powtórzenia",
+      "many": "{count} powtórzeń"
+    },
+    "workoutsPerWeek": {
+      "one": "trening w tygodniu",
+      "few": "treningi w tygodniu",
+      "many": "treningów w tygodniu"
+    },
+    "weeks": {
+      "one": "{count} tydzień",
+      "few": "{count} tygodnie",
+      "many": "{count} tygodni"
+    }
   },
   "plan": {
     "repsAtLeast": "{min}+",
@@ -484,7 +500,9 @@
     "delete": "Usuń plan",
     "deleteTitle": "Usunąć plan „{name}”?",
     "deleteBody": "Dni i ćwiczenia z planu znikną. Zakończone treningi zostaną w historii.",
-    "fromProgram": "Na podstawie gotowego programu"
+    "fromProgram": "Na podstawie gotowego programu",
+    "weekdays": "Dni w tygodniu",
+    "weekdaysHint": "Opcjonalnie. Kolejność treningów się nie zmienia: po opuszczonym dniu robisz następny z kolei."
   },
   "planDay": {
     "rename": "Nazwa dnia",
@@ -1148,6 +1166,204 @@
     "machine-hip-thrust": {
       "steps": "Oprzyj plecy o oparcie maszyny, pas na biodrach.\nStopy na platformie.\nUnieś biodra do pełnego wyprostu.\nOpuść je powoli.",
       "mistakes": "Wyginanie pleców zamiast pracy bioder.\nSzarpanie.\nSkracanie ruchu."
+    }
+  },
+  "workout": {
+    "title": "Trening",
+    "emptyName": "Trening",
+    "elapsedLabel": "Czas treningu: {time}",
+    "finish": "Zakończ",
+    "collapse": "Zwiń trening",
+    "more": "Więcej opcji treningu",
+    "discard": "Porzuć trening",
+    "discardTitle": "Porzucić trening?",
+    "discardBody": "Wszystkie serie z tego treningu zostaną usunięte.",
+    "finishTitle": "Zakończyć trening?",
+    "finishBody": "Nieodhaczone serie nie zostaną zapisane.",
+    "finishConfirm": "Zakończ",
+    "hintIncrease": "Dziś spróbuj {weight} kg · ostatnio {previous}",
+    "hintSame": "Dziś {weight} kg · dojdź do {reps} powtórzeń",
+    "colSet": "Seria",
+    "colPrevious": "Poprzednio",
+    "colKg": "kg",
+    "colReps": "Powt.",
+    "colTime": "Czas",
+    "warmupShort": "R",
+    "addSet": "Dodaj serię",
+    "addExercise": "Dodaj ćwiczenie",
+    "next": "Następne",
+    "noExercisesTitle": "Pusty trening",
+    "noExercisesBody": "Dodaj pierwsze ćwiczenie i zacznij serię.",
+    "primaryComplete": "Odhacz serię {n}",
+    "primaryNextExercise": "Następne ćwiczenie",
+    "primaryFinish": "Zakończ trening",
+    "setLabel": "Seria {n}",
+    "warmupLabel": "Seria rozgrzewkowa",
+    "setA11y": "{label}: {values}, {state}",
+    "setDone": "zrobiona",
+    "setPending": "do zrobienia",
+    "checkHint": "Stuknij, żeby odhaczyć serię",
+    "uncheckHint": "Stuknij, żeby cofnąć odhaczenie",
+    "editWeight": "Ciężar, seria {n}: {value}",
+    "editReps": "Powtórzenia, seria {n}: {value}",
+    "editDuration": "Czas, seria {n}: {value}",
+    "emptyValue": "puste",
+    "setMenu": "Seria {n}",
+    "makeWarmup": "Oznacz jako rozgrzewkę",
+    "makeWorking": "Oznacz jako serię roboczą",
+    "deleteSet": "Usuń serię",
+    "exerciseMenu": "Opcje ćwiczenia",
+    "replaceExercise": "Zamień ćwiczenie",
+    "exerciseNote": "Notatka",
+    "exerciseNotePrompt": "Notatka do ćwiczenia",
+    "removeExercise": "Usuń z treningu",
+    "removeTitle": "Usunąć „{name}” z treningu?",
+    "removeBody": "Odhaczone serie tego ćwiczenia też znikną.",
+    "nextMeta": "{sets} · {target}",
+    "openExercise": "Przejdź do ćwiczenia",
+    "keypad": {
+      "weight": "Ciężar",
+      "reps": "Powtórzenia",
+      "duration": "Czas",
+      "next": "Dalej",
+      "complete": "Odhacz serię",
+      "close": "Schowaj klawiaturę",
+      "backspace": "Usuń cyfrę",
+      "decimal": "Przecinek",
+      "value": "{field}: {value}",
+      "fieldSet": "{field} · seria {n}",
+      "fieldWarmup": "{field} · rozgrzewka",
+      "nextReps": "Dalej · powtórzenia",
+      "done": "Gotowe",
+      "minusLabelWeight": "Mniej o {step} kilograma",
+      "plusLabelWeight": "Więcej o {step} kilograma",
+      "minusLabelReps": "Jedno powtórzenie mniej",
+      "plusLabelReps": "Jedno powtórzenie więcej",
+      "minusLabelDuration": "Mniej o {step} sekund",
+      "plusLabelDuration": "Więcej o {step} sekund",
+      "unitKg": "{value} kg"
+    },
+    "rest": {
+      "title": "Przerwa",
+      "remaining": "Przerwa, zostało {time}",
+      "nextSet": "Seria {n} · {values}",
+      "minus": "−15 s",
+      "plus": "+15 s",
+      "minusLabel": "Skróć przerwę o 15 sekund",
+      "plusLabel": "Wydłuż przerwę o 15 sekund",
+      "skip": "Pomiń",
+      "skipLabel": "Pomiń przerwę",
+      "notificationTitle": "Koniec przerwy",
+      "notificationBody": "Czas na kolejną serię.",
+      "finished": "Koniec przerwy",
+      "toSet": "Przerwa · do serii {n}",
+      "toWarmup": "Przerwa · do rozgrzewki",
+      "thenNewExercise": "Potem nowe ćwiczenie",
+      "expand": "Powiększ minutnik",
+      "collapse": "Zmniejsz minutnik",
+      "of": "z {time}",
+      "next": "Dalej",
+      "minusShort": "−15",
+      "plusShort": "+15",
+      "skipLong": "Pomiń przerwę"
+    },
+    "record": {
+      "title": "Nowy rekord",
+      "announce": "Nowy rekord: {kinds}"
+    },
+    "stopwatch": {
+      "start": "Start stopera",
+      "target": "cel {time}",
+      "stopSet": "Stop · zapisz serię {n}",
+      "noTarget": "bez celu"
+    },
+    "summary": {
+      "duration": "Czas",
+      "volume": "Objętość",
+      "records": "Nowe rekordy",
+      "noRecords": "Tym razem bez rekordów. Następnym razem!",
+      "note": "Notatka do treningu",
+      "notePlaceholder": "Jak poszło?",
+      "done": "Gotowe",
+      "titleDone": "{name} zrobiony",
+      "weekLine": "Trening {n} z {total} w tym tygodniu · {date}",
+      "setsShort": "Serii",
+      "stat": "{label}: {value}",
+      "compareTitle": "Względem ostatniego: {name}",
+      "compareMore": "+{value} kg objętości",
+      "compareLess": "−{value} kg objętości",
+      "compareSame": "Ta sama objętość",
+      "compareBody": "Dziś {today} kg, poprzednio {previous} kg",
+      "addNote": "Dodaj notatkę",
+      "ring": "Tydzień: {done} z {total} treningów zrobione"
+    },
+    "start": {
+      "unfinishedTitle": "Masz niedokończony trening",
+      "unfinishedBody": "Wznów go albo porzuć i zacznij nowy.",
+      "unfinishedResume": "Wznów",
+      "unfinishedDiscard": "Porzuć i zacznij nowy",
+      "startDay": "Zacznij trening"
+    },
+    "finishEmptyBody": "Nie odhaczono żadnej serii, więc trening nie zostanie zapisany.",
+    "exerciseOf": "Ćwiczenie {n} z {total}",
+    "exerciseOfDone": "Ćwiczenie {n} z {total} · zrobione",
+    "segmentsLabel": "Ćwiczenie {n} z {total}",
+    "setDetailWeight": "{weight} kg × {reps}",
+    "recordBadge": "Rekord",
+    "recordBadgeLabel": "Nowy rekord w tej serii"
+  },
+  "today": {
+    "ofWeek": "Trening {n} z {total} w tym tygodniu",
+    "overGoal": "Cel tygodnia już zrobiony",
+    "dayMeta": "{exercises} · ok. {min} min",
+    "start": "Zacznij",
+    "startLabel": "Zacznij trening {name}",
+    "active": "Trening trwa",
+    "activeBody": "Serie zapisują się na bieżąco",
+    "resume": "Wznów",
+    "resumeLabel": "Wznów trening {name}",
+    "doneWeek": "{done} z {total} w tym tygodniu",
+    "done": "Zrobione",
+    "doneMeta": "{name} · {time} · {volume} kg",
+    "summary": "Podsumowanie",
+    "goalTitle": "Twój cel na tydzień",
+    "goalLess": "Mniej treningów w tygodniu",
+    "goalMore": "Więcej treningów w tygodniu",
+    "goalValue": "Cel: {count}",
+    "startEmpty": "Zacznij trening",
+    "choosePlan": "Wybierz gotowy plan",
+    "choosePlanBody": "Góra/dół, PPL, całe ciało, siła",
+    "ownPlan": "Ułóż własny plan",
+    "ownPlanBody": "Dni, ćwiczenia i serie po swojemu",
+    "noPlanNote": "Bez planu też działa: każdy trening domyka kolejny segment pierścienia.",
+    "streak": "Seria",
+    "streakUnit": {
+      "one": "tydzień z pełnym planem",
+      "few": "tygodnie z pełnym planem",
+      "many": "tygodni z pełnym planem"
+    },
+    "lastRecord": "Ostatni rekord",
+    "noRecord": "Jeszcze bez rekordów",
+    "noRecordBody": "Pojawią się po kilku treningach",
+    "today": "dziś",
+    "yesterday": "wczoraj",
+    "onWeekday": "w niedzielę,w poniedziałek,we wtorek,w środę,w czwartek,w piątek,w sobotę",
+    "dayInitials": "N,P,W,Ś,C,P,S",
+    "withoutPlan": "Trening bez planu",
+    "ringPlanned": "Tydzień: {done} z {total} treningów zrobione",
+    "ringToday": "Tydzień: {done} z {total} treningów zrobione, dziś kolejny",
+    "dayDone": "{day}, trening zrobiony",
+    "dayToday": "{day}, dziś",
+    "dayTodayDone": "{day}, dziś, trening zrobiony",
+    "emptyDay": "Ten dzień planu nie ma jeszcze ćwiczeń.",
+    "restDay": "Dziś wolne · następny {when}",
+    "dayPlanned": "{day}, zaplanowany trening",
+    "weekdayNames": "poniedziałek,wtorek,środa,czwartek,piątek,sobota,niedziela",
+    "tomorrow": "jutro",
+    "weekCount": {
+      "one": "{count} trening w tym tygodniu",
+      "few": "{count} treningi w tym tygodniu",
+      "many": "{count} treningów w tym tygodniu"
     }
   }
 }

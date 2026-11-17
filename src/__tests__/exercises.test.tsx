@@ -1,8 +1,8 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react-native';
 
-import ExerciseScreen from '@/app/cwiczenia/[id]';
-import ExercisesScreen from '@/app/cwiczenia/index';
-import CustomExerciseSheet from '@/app/cwiczenia/nowe';
+import ExerciseScreen from '@/app/(tabs)/cwiczenia/[id]';
+import ExercisesScreen from '@/app/(tabs)/cwiczenia/index';
+import CustomExerciseSheet from '@/app/(tabs)/cwiczenia/nowe';
 import type { Db } from '@/data/db';
 import { listExercises } from '@/data/repositories/exercises';
 import { ExerciseFiltersProvider } from '@/features/exercises/FiltersContext';

@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Trening w toku</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&amp;family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+button{font:inherit;color:inherit;border:0;padding:0;margin:0;cursor:pointer;background:none;text-align:inherit}
+.scr{--bg:#000000;--s1:#101012;--s2:#19191C;--s3:#26262A;--line:rgba(255,255,255,.09);--t1:#F5F6FA;--t2:#A3A8B8;--t3:#7C8194;--acc:#4DA3FF;--accT:#7AB8FF;--onAcc:#0B0C14;--accSoft:rgba(77,163,255,.16);--ok:#5BD38A;--glass:rgba(34,35,43,.72);--glassEdge:rgba(255,255,255,.14);--shadow:0 10px 30px rgba(0,0,0,.45);position:relative;width:390px;height:844px;overflow:hidden;background:var(--bg);color:var(--t1);font-family:-apple-system,'SF Pro Text',Inter,system-ui,sans-serif;font-size:15px;line-height:20px}
+.pad{box-sizing:border-box;height:844px;padding:62px 16px 0;display:flex;flex-direction:column;overflow:hidden;transition:transform 300ms cubic-bezier(.2,.8,.2,1)}
+.pad>*{flex-shrink:0}
+.num{font-variant-numeric:tabular-nums}
+.t2{color:var(--t2)}.accT{color:var(--accT)}.ok{color:var(--ok)}
+.xl,.lg,.md,.dsp{font-family:Archivo,-apple-system,'SF Pro Display',system-ui,sans-serif;font-stretch:120%}
+.md{font-size:22px;line-height:28px;font-weight:700;letter-spacing:-.01em;margin:0}
+.hd{font-size:17px;line-height:22px;font-weight:600}
+.sm{font-size:13px;line-height:18px}
+.xs{font-size:11px;line-height:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t2)}
+.ell{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.glass{background:var(--glass);backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);border:1px solid var(--glassEdge);box-sizing:border-box}
+.circle{flex:none;width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center}
+.pill{flex:none;min-height:44px;padding:0 18px;border-radius:999px;font-size:15px;line-height:20px;font-weight:600;display:flex;align-items:center;justify-content:center;box-sizing:border-box}
+.card{background:var(--s1);border-radius:28px;padding:16px;box-sizing:border-box}
+.cta{min-height:56px;border-radius:999px;background:var(--acc);color:var(--onAcc);font-size:17px;line-height:22px;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:var(--shadow)}
+.rowi{display:flex;align-items:center;gap:12px;min-height:60px}
+.rowi + .rowi{border-top:1px solid var(--line)}
+.press{transition:transform 150ms cubic-bezier(.2,.8,.2,1)}.press:active{transform:scale(.97)}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes popin{0%{opacity:0;transform:scale(.3)}60%{opacity:1;transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes slideup{from{transform:translateY(140%)}to{transform:none}}
+.popin{animation:popin 420ms cubic-bezier(.3,1.5,.5,1) both}
+.slideup{animation:slideup 400ms cubic-bezier(.2,.9,.3,1) both}
+.fadein{animation:fade 250ms ease both}
+.segs{display:flex;gap:4px;margin-top:16px}
+.seg{flex:1;height:4px;border-radius:2px;background:var(--s3)}
+.seg.on{background:var(--acc)}
+.grid{display:grid;grid-template-columns:36px 1fr 76px 60px 44px;gap:8px;align-items:center}
+.thead{padding:0 8px 6px}
+.srow{padding:6px 8px;min-height:60px;box-sizing:border-box;border-radius:16px;transition:background-color 250ms ease,box-shadow 250ms ease}
+.srow.now{background:var(--s2);box-shadow:inset 0 0 0 1.5px var(--acc)}
+.srow.done .val,.srow.done .lbl{color:var(--t2)}
+.lbl.warm{color:var(--accT)}
+.val{font-family:Archivo,-apple-system,system-ui,sans-serif;font-stretch:120%;display:flex;align-items:center;justify-content:center;height:44px;border-radius:12px;font-size:22px;line-height:28px;font-weight:700;letter-spacing:-.01em;text-align:center;transition:box-shadow 150ms ease}
+.srow.now .val{background:var(--s3)}
+.val.edit{background:var(--s3);box-shadow:inset 0 0 0 2px var(--acc);color:var(--t1)}
+.rec{display:flex;align-items:center;gap:4px;color:var(--accT);font-size:13px;line-height:18px;font-weight:600}
+.recl{font-weight:600}
+.chk{width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;box-sizing:border-box;border:2px solid var(--t3)}
+.chk.on{background:var(--accSoft);color:var(--accT);border:0}
+.srow.now .chk{border-color:var(--acc)}
+.edge{position:absolute;left:0;right:0;bottom:0;height:130px;pointer-events:none;background:var(--bg);-webkit-mask-image:linear-gradient(transparent,#000 75%);mask-image:linear-gradient(transparent,#000 75%)}
+.float{position:absolute;left:20px;right:20px;bottom:34px}
+.bar{position:absolute;left:12px;right:12px;bottom:28px;padding:12px 12px 12px 20px;border-radius:36px;box-shadow:var(--shadow);display:flex;align-items:center;gap:8px;overflow:hidden}
+.bbtn{flex:none;width:44px;height:44px;border-radius:22px;background:var(--s3);font-size:15px;line-height:20px;font-weight:600;text-align:center}
+.bbtn.main{width:auto;padding:0 16px;background:var(--acc);color:var(--onAcc)}
+.prog{position:absolute;left:0;bottom:0;height:3px;background:var(--acc);transition:width 1s linear}
+.sheet{position:absolute;left:0;right:0;bottom:0;padding:8px 20px 34px;border-radius:36px 36px 0 0;box-shadow:0 -8px 32px rgba(0,0,0,.30);display:flex;flex-direction:column;align-items:center}
+.tbtn{width:104px;min-height:44px;border-radius:999px;background:var(--s3);font-size:15px;line-height:20px;font-weight:600;text-align:center}
+.ringarc{transition:stroke-dashoffset 1s linear}
+.kp{position:absolute;left:12px;right:12px;bottom:28px;padding:14px;border-radius:32px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
+.keys{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.key{min-height:50px;border-radius:14px;background:var(--s3);display:flex;align-items:center;justify-content:center;font-family:Archivo,-apple-system,system-ui,sans-serif;font-stretch:120%;font-size:22px;line-height:28px;font-weight:700}
+.key.step{font-size:16px;line-height:22px}
+.rm .popin,.rm .slideup{animation:fade 150ms both}.rm .srow,.rm .prog,.rm .ringarc,.rm .pad{transition:none}.rm .press:active{transform:none}
+@media (prefers-reduced-motion: reduce){.popin,.slideup{animation:fade 150ms both}.srow,.prog,.ringarc,.pad{transition:none}.press:active{transform:none}}
+</style>
+</helmet>
+<div class="{{rootCls}}" style="{{vars}}">
+<div class="pad" style="{{sShift}}">
+<div style="display: flex; align-items: center; gap: 12px">
+<button class="circle glass press" aria-label="Zwiń trening" onClick="{{close}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+<span class="hd ell">Push A</span>
+<span class="sm num t2">{{clock}}</span>
+</div>
+<button class="circle glass press" aria-label="Więcej opcji treningu"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg></button>
+<button class="pill glass press" onClick="{{finish}}">Zakończ</button>
+</div>
+<div class="segs" role="img" aria-label="Ćwiczenie 1 z 6"><div class="seg on"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div></div>
+
+<div class="card" style="margin-top: 20px; padding: 16px 12px 12px">
+<div style="display: flex; flex-direction: column; gap: 4px; padding: 0 8px 14px">
+<span class="sm t2">Ćwiczenie 1 z 6</span>
+<h2 class="md">Wyciskanie sztangi na ławce poziomej</h2>
+<span class="sm accT" style="font-weight: 600; display: flex; gap: 6px; align-items: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>Dziś spróbuj 82,5 kg · ostatnio 80 kg × 8</span>
+</div>
+<div class="grid thead xs"><span>Seria</span><span>Poprzednio</span><span style="text-align: center">kg</span><span style="text-align: center">Powt.</span><span></span></div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="4">
+<div class="{{r.cls}}">
+<span class="{{r.lblCls}}">{{r.lbl}}</span>
+<sc-if value="{{r.rec}}" hint-placeholder-val="{{false}}"><span class="rec popin"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"></path></svg>Rekord</span></sc-if>
+<sc-if value="{{r.norec}}" hint-placeholder-val="{{true}}"><span class="sm num t2">{{r.prev}}</span></sc-if>
+<button class="{{r.kgCls}}" aria-label="{{r.kgAria}}" onClick="{{r.editKg}}">{{r.kg}}</button>
+<button class="{{r.repsCls}}" aria-label="{{r.repsAria}}" onClick="{{r.editReps}}">{{r.reps}}</button>
+<button class="{{r.chkCls}}" aria-pressed="{{r.done}}" aria-label="{{r.aria}}" onClick="{{r.toggle}}">
+<sc-if value="{{r.done}}" hint-placeholder-val="{{false}}"><svg class="popin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
+</button>
+</div>
+</sc-for>
+</div>
+<button class="pill press accT" style="width: 100%; margin-top: 4px">Dodaj serię</button>
+</div>
+
+<span class="sm t2" style="padding: 0 16px; font-weight: 600; margin-top: 20px">Następne</span>
+<div class="card" style="padding: 0 16px; margin-top: 8px">
+<div class="rowi"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="hd ell">Wyciskanie hantli na skosie</span><span class="sm t2 num">3 serie · 30 kg × 10</span></div></div>
+<div class="rowi"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="hd ell">Rozpiętki na linkach</span><span class="sm t2 num">3 serie · 15 kg × 12</span></div></div>
+</div>
+</div>
+<div class="edge" aria-hidden="true"></div>
+
+<sc-if value="{{showBtn}}" hint-placeholder-val="{{true}}">
+<button class="cta float press fadein" onClick="{{primary}}"><span>{{btnTitle}}</span><span class="sm num" style="font-weight: 600">{{btnSub}}</span></button>
+</sc-if>
+
+<sc-if value="{{showBar}}" hint-placeholder-val="{{false}}">
+<div class="bar glass slideup" role="timer" aria-label="{{timerAria}}">
+<button onClick="{{expand}}" aria-label="Powiększ minutnik" style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+<span class="{{barCls}}" style="max-width: 100%" aria-live="polite">{{barLabel}}</span>
+<span class="num dsp" style="font-size: 34px; line-height: 38px; font-weight: 700; letter-spacing: -.02em">{{timeText}}</span>
+</button>
+<button class="bbtn num press" aria-label="Skróć przerwę o 15 sekund" onClick="{{minus}}">−15</button>
+<button class="bbtn num press" aria-label="Wydłuż przerwę o 15 sekund" onClick="{{plus}}">+15</button>
+<button class="bbtn main press" aria-label="Pomiń przerwę" onClick="{{skip}}">Pomiń</button>
+<div class="prog" aria-hidden="true" style="{{sProg}}"></div>
+</div>
+</sc-if>
+
+<sc-if value="{{showSheet}}" hint-placeholder-val="{{false}}">
+<div class="sheet glass slideup" role="timer" aria-label="{{timerAria}}">
+<div style="display: flex; align-items: center; justify-content: space-between; width: 100%">
+<span class="hd" style="padding-left: 4px">Przerwa</span>
+<button class="circle press" style="background: var(--s3)" aria-label="Zmniejsz minutnik" onClick="{{collapse}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+</div>
+<div style="position: relative; width: 232px; height: 232px; margin-top: 4px">
+<svg width="232" height="232" viewBox="0 0 232 232" aria-hidden="true" style="transform: rotate(-90deg)"><circle cx="116" cy="116" r="106" fill="none" stroke="var(--s3)" stroke-width="12"></circle><circle class="ringarc" cx="116" cy="116" r="106" fill="none" stroke="var(--acc)" stroke-width="12" stroke-linecap="round" stroke-dasharray="666" stroke-dashoffset="{{ringOffset}}"></circle></svg>
+<div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center">
+<span class="num dsp" style="font-size: 64px; line-height: 68px; font-weight: 700; letter-spacing: -.02em">{{timeText}}</span>
+<span class="sm num t2">{{totalText}}</span>
+</div>
+</div>
+<div style="display: flex; justify-content: center; gap: 12px; margin-top: 16px">
+<button class="tbtn num press" aria-label="Skróć przerwę o 15 sekund" onClick="{{minus}}">−15 s</button>
+<button class="tbtn num press" aria-label="Wydłuż przerwę o 15 sekund" onClick="{{plus}}">+15 s</button>
+</div>
+<div style="display: flex; flex-direction: column; width: 100%; padding: 0 4px; box-sizing: border-box; margin-top: 16px"><span class="sm t2">Dalej</span><span class="hd num ell">{{nextText}}</span></div>
+<button class="pill press" style="width: 100%; min-height: 52px; margin-top: 12px; background: var(--s3); font-size: 17px" onClick="{{skip}}">Pomiń przerwę</button>
+</div>
+</sc-if>
+
+<sc-if value="{{showPad}}" hint-placeholder-val="{{false}}">
+<div class="kp glass slideup">
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr); gap: 8px; align-items: center">
+<button class="key step num press" aria-label="{{stepDownAria}}" onClick="{{stepDown}}">{{stepDownText}}</button>
+<div aria-live="polite" style="display: flex; flex-direction: column; align-items: center"><span class="sm t2">{{padLabel}}</span><span class="num dsp" style="font-size: 28px; line-height: 34px; font-weight: 800">{{padValue}}</span></div>
+<button class="key step num press" aria-label="{{stepUpAria}}" onClick="{{stepUp}}">{{stepUpText}}</button>
+</div>
+<div class="keys">
+<sc-for list="{{keys}}" as="k" hint-placeholder-count="12">
+<button class="key num press" aria-label="{{k.aria}}" onClick="{{k.press}}">
+<sc-if value="{{k.isBack}}" hint-placeholder-val="{{false}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5h11a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H9l-6-7zM12 9.5l5 5M17 9.5l-5 5"></path></svg></sc-if>
+<sc-if value="{{k.isText}}" hint-placeholder-val="{{true}}"><span>{{k.t}}</span></sc-if>
+</button>
+</sc-for>
+</div>
+<div style="display: flex; gap: 8px; align-items: center">
+<button class="circle press" aria-label="Schowaj klawiaturę" style="color: var(--t2)" onClick="{{closePad}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+<button class="cta press" style="flex: 1; min-height: 52px; box-shadow: none" onClick="{{padNext}}">{{padMain}}</button>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"motyw":{"editor":"enum","options":["ciemny","jasny"],"default":"ciemny","section":"Podgląd"},"akcent":{"editor":"enum","options":["niebieski","indygo","pomarancz","malina","zielen"],"default":"niebieski","section":"Podgląd"},"ograniczRuch":{"editor":"boolean","default":false,"section":"Podgląd"},"onClose":{"editor":null},"onFinish":{"editor":null},"$preview":{"width":390,"height":844}}'>
+var ACC = { niebieski: { d: ['#4DA3FF', '#7AB8FF', '77,163,255'], l: ['#0A6BDB', '#0A5FC4', '10,107,219'] }, indygo: { d: ['#8B90FF', '#A9ACFF', '139,144,255'], l: ['#4F55E8', '#3F46D4', '79,85,232'] }, pomarancz: { d: ['#FF9A3D', '#FFB070', '255,154,61'], l: ['#C2500A', '#A84500', '194,80,10'] }, malina: { d: ['#FF6F9F', '#FF8FB4', '255,111,159'], l: ['#C8205C', '#B01B52', '200,32,92'] }, zielen: { d: ['#3DD68C', '#5FE0A0', '61,214,140'], l: ['#157F45', '#126E3C', '21,127,69'] } };
+function theme(m, a) {
+  var x = ACC[a] || ACC.niebieski;
+  if (m === 'jasny') { var l = x.l; return '--bg:#F2F2F7;--s1:#FFFFFF;--s2:#F2F2F7;--s3:#E2E2EA;--line:rgba(17,18,24,.09);--t1:#111218;--t2:#5C5F6B;--t3:#686B7A;--acc:' + l[0] + ';--accT:' + l[1] + ';--onAcc:#FFFFFF;--accSoft:rgba(' + l[2] + ',.12);--ok:#17753F;--glass:rgba(255,255,255,.78);--glassEdge:rgba(255,255,255,.95);--shadow:0 10px 30px rgba(17,18,24,.16)'; }
+  var d = x.d; return '--acc:' + d[0] + ';--accT:' + d[1] + ';--accSoft:rgba(' + d[2] + ',.16)';
+}
+var META = [{ lbl: 'R', prev: '40 × 10', warm: true }, { lbl: '1', prev: '80 × 8' }, { lbl: '2', prev: '80 × 8' }, { lbl: '3', prev: '80 × 8' }];
+var REST = 90;
+var KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', ',', '0', 'back'];
+function fmt(s) { var m = Math.floor(s / 60); var r = s % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
+function num(t) { var v = parseFloat(String(t).replace(',', '.')); return isNaN(v) ? 0 : v; }
+function txt(v) { return String(Math.round(v * 100) / 100).replace('.', ','); }
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      done: [true, false, false, false],
+      vals: [{ kg: '40', reps: '10' }, { kg: '82,5', reps: '8' }, { kg: '82,5', reps: '8' }, { kg: '82,5', reps: '8' }],
+      edit: null, left: 0, total: REST, toast: false, pr: false, open: false, clock: 4 * 60 + 12
+    };
+  }
+  componentDidMount() {
+    var self = this;
+    this.iv = setInterval(function () {
+      self.setState({ left: Math.max(0, self.state.left - 1), clock: self.state.clock + 1 });
+    }, 1000);
+  }
+  componentWillUnmount() { clearInterval(this.iv); clearTimeout(this.to); }
+  toggle(i) {
+    var s = this.state; var done = s.done.slice(); done[i] = !done[i];
+    var next = { done: done, edit: null };
+    if (done[i]) {
+      next.left = REST; next.total = REST;
+      if (i === 1 && !s.pr) {
+        next.pr = true; next.toast = true;
+        var self = this;
+        this.to = setTimeout(function () { self.setState({ toast: false }); }, 3200);
+      }
+    } else { next.left = 0; next.open = false; }
+    this.setState(next);
+  }
+  adjust(d) {
+    var left = Math.max(0, this.state.left + d);
+    this.setState({ left: left, total: Math.max(this.state.total, left) });
+  }
+  // Wpisana wartość przechodzi na kolejne nieodhaczone serie (ciężar wpisuje się raz).
+  setVal(i, f, v) {
+    var s = this.state;
+    var vals = s.vals.map(function (x, j) { return (j === i || (j > i && !s.done[j] && f === 'kg')) ? Object.assign({}, x, f === 'kg' ? { kg: v } : { reps: j === i ? v : x.reps }) : x; });
+    this.setState({ vals: vals, edit: { i: i, f: f, fresh: false } });
+  }
+  press(k) {
+    var e = this.state.edit; if (!e) return;
+    var cur = e.fresh ? '' : this.state.vals[e.i][e.f];
+    var v;
+    if (k === 'back') v = cur.slice(0, -1);
+    else if (k === ',') { if (e.f !== 'kg' || cur.indexOf(',') !== -1) return; v = (cur || '0') + ','; }
+    else { if (cur.replace(',', '').length >= 4) return; v = cur === '0' ? k : cur + k; }
+    this.setVal(e.i, e.f, v);
+  }
+  step(dir) {
+    var e = this.state.edit; if (!e) return;
+    var by = e.f === 'kg' ? 2.5 : 1;
+    this.setVal(e.i, e.f, txt(Math.max(0, num(this.state.vals[e.i][e.f]) + dir * by)));
+  }
+  renderVals() {
+    var self = this; var st = this.state; var p = this.props;
+    var ni = st.done.indexOf(false);
+    var e = st.edit;
+    var resting = st.left > 0;
+    var frac = st.total > 0 ? st.left / st.total : 0;
+    var shown = function (v) { return v === '' ? '—' : v; };
+    var shift = e ? Math.max(0, 296 + (e.i + 1) * 62 - 404) : 0;
+    return {
+      rootCls: 'scr' + ((p.ograniczRuch ?? false) ? ' rm' : ''),
+      vars: theme(p.motyw ?? 'ciemny', p.akcent ?? 'niebieski'),
+      sShift: shift ? 'transform:translateY(-' + shift + 'px)' : '',
+      clock: fmt(st.clock),
+      close: function () { if (self.props.onClose) self.props.onClose(); },
+      finish: function () { if (self.props.onFinish) self.props.onFinish(); },
+      rows: META.map(function (r, i) {
+        var d = st.done[i]; var rec = d && i === 1 && st.pr; var v = st.vals[i];
+        var name = r.warm ? 'seria rozgrzewkowa' : 'seria ' + r.lbl;
+        return {
+          lbl: r.lbl, prev: r.prev, kg: shown(v.kg), reps: shown(v.reps), done: d, rec: rec, norec: !rec,
+          cls: 'grid srow' + (d ? ' done' : '') + (i === ni ? ' now' : ''),
+          lblCls: 'hd num lbl' + (r.warm ? ' warm' : ''),
+          kgCls: 'val num' + (e && e.i === i && e.f === 'kg' ? ' edit' : ''),
+          repsCls: 'val num' + (e && e.i === i && e.f === 'reps' ? ' edit' : ''),
+          kgAria: 'Ciężar, ' + name + ': ' + shown(v.kg) + ' kg. Stuknij, żeby zmienić',
+          repsAria: 'Powtórzenia, ' + name + ': ' + shown(v.reps) + '. Stuknij, żeby zmienić',
+          chkCls: d ? 'chk on' : 'chk',
+          aria: (r.warm ? 'Seria rozgrzewkowa' : 'Seria ' + r.lbl) + ': ' + v.kg + ' kg, ' + v.reps + ' powtórzeń, ' + (d ? 'zrobiona' : 'do zrobienia'),
+          toggle: function () { self.toggle(i); },
+          editKg: function () { self.setState({ edit: { i: i, f: 'kg', fresh: true }, open: false }); },
+          editReps: function () { self.setState({ edit: { i: i, f: 'reps', fresh: true }, open: false }); }
+        };
+      }),
+      showBtn: !resting && !e, showBar: resting && !st.open && !e, showSheet: resting && st.open && !e, showPad: !!e,
+      btnTitle: ni === -1 ? 'Następne ćwiczenie' : 'Odhacz serię ' + META[ni].lbl,
+      btnSub: ni === -1 ? 'Wyciskanie hantli na skosie' : st.vals[ni].kg + ' kg × ' + st.vals[ni].reps,
+      primary: function () { if (ni !== -1) self.toggle(ni); },
+      barLabel: st.toast ? 'Nowy rekord' : ni === -1 ? 'Potem nowe ćwiczenie' : 'Przerwa · do serii ' + META[ni].lbl,
+      barCls: 'sm ell ' + (st.toast ? 'accT recl' : 't2'),
+      nextText: ni === -1 ? 'Wyciskanie hantli na skosie' : 'Seria ' + META[ni].lbl + ' · ' + st.vals[ni].kg + ' kg × ' + st.vals[ni].reps,
+      timeText: fmt(st.left), totalText: 'z ' + fmt(st.total), timerAria: 'Przerwa, zostało ' + fmt(st.left),
+      sProg: 'width:' + (frac * 100).toFixed(1) + '%',
+      ringOffset: (666 * (1 - frac)).toFixed(1),
+      minus: function () { self.adjust(-15); },
+      plus: function () { self.adjust(15); },
+      skip: function () { self.setState({ left: 0, open: false }); },
+      expand: function () { self.setState({ open: true }); },
+      collapse: function () { self.setState({ open: false }); },
+      padLabel: e ? (e.f === 'kg' ? 'Ciężar' : 'Powtórzenia') + ' · ' + (META[e.i].warm ? 'rozgrzewka' : 'seria ' + META[e.i].lbl) : '',
+      padValue: e ? shown(st.vals[e.i][e.f]) + (e.f === 'kg' ? ' kg' : '') : '',
+      padMain: e ? (e.f === 'kg' ? 'Dalej · powtórzenia' : (st.done[e.i] ? 'Gotowe' : 'Odhacz serię')) : '',
+      stepDownText: e && e.f === 'reps' ? '−1' : '−2,5', stepUpText: e && e.f === 'reps' ? '+1' : '+2,5',
+      stepDownAria: e && e.f === 'reps' ? 'Jedno powtórzenie mniej' : 'Mniej o 2,5 kilograma',
+      stepUpAria: e && e.f === 'reps' ? 'Jedno powtórzenie więcej' : 'Więcej o 2,5 kilograma',
+      stepDown: function () { self.step(-1); }, stepUp: function () { self.step(1); },
+      keys: KEYS.map(function (k) { return { t: k, isBack: k === 'back', isText: k !== 'back', aria: k === 'back' ? 'Usuń cyfrę' : k === ',' ? 'Przecinek' : k, press: function () { self.press(k); } }; }),
+      closePad: function () { self.setState({ edit: null }); },
+      padNext: function () {
+        var x = self.state.edit; if (!x) return;
+        if (x.f === 'kg') self.setState({ edit: { i: x.i, f: 'reps', fresh: true } });
+        else if (!self.state.done[x.i]) self.toggle(x.i);
+        else self.setState({ edit: null });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

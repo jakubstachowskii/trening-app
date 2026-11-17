@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Postępy i historia</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&amp;family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+button{font:inherit;color:inherit;border:0;padding:0;margin:0;cursor:pointer;background:none;text-align:inherit}
+.scr{--bg:#000000;--s1:#101012;--s2:#19191C;--s3:#26262A;--line:rgba(255,255,255,.09);--t1:#F5F6FA;--t2:#A3A8B8;--t3:#7C8194;--acc:#4DA3FF;--accT:#7AB8FF;--onAcc:#0B0C14;--accSoft:rgba(77,163,255,.16);--ok:#5BD38A;--glass:rgba(34,35,43,.72);--glassEdge:rgba(255,255,255,.14);--shadow:0 10px 30px rgba(0,0,0,.45);position:relative;width:390px;height:844px;overflow:hidden;background:var(--bg);color:var(--t1);font-family:-apple-system,'SF Pro Text',Inter,system-ui,sans-serif;font-size:15px;line-height:20px}
+.pad{box-sizing:border-box;height:844px;padding:62px 16px 0;display:flex;flex-direction:column;overflow:hidden}
+.pad>*{flex-shrink:0}
+.num{font-variant-numeric:tabular-nums}
+.t2{color:var(--t2)}.accT{color:var(--accT)}.ok{color:var(--ok)}
+.xl,.lg,.md,.dsp{font-family:Archivo,-apple-system,'SF Pro Display',system-ui,sans-serif;font-stretch:120%}
+.xl{font-size:34px;line-height:40px;font-weight:800;letter-spacing:-.02em;margin:0}
+.md{font-size:22px;line-height:28px;font-weight:700;letter-spacing:-.01em;margin:0}
+.hd{font-size:17px;line-height:22px;font-weight:600}
+.sm{font-size:13px;line-height:18px}
+.xs{font-size:11px;line-height:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t2)}
+.ell{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.glass{background:var(--glass);backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);border:1px solid var(--glassEdge);box-sizing:border-box}
+.circle{flex:none;width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center}
+.pill{flex:none;min-height:44px;padding:0 18px;border-radius:999px;font-size:15px;line-height:20px;font-weight:600;display:flex;align-items:center;justify-content:center;box-sizing:border-box}
+.card{background:var(--s1);border-radius:28px;padding:16px;box-sizing:border-box}
+.rowi{display:flex;align-items:center;gap:12px;min-height:60px}
+.rowi + .rowi{border-top:1px solid var(--line)}
+.tabbar{position:absolute;left:20px;right:20px;bottom:26px;height:64px;border-radius:32px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:5px;gap:2px;box-shadow:var(--shadow)}
+.tab{border-radius:27px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--t2);font-size:11px;line-height:13px;font-weight:600}
+.tab.on{color:var(--accT);background:var(--accSoft)}
+.press{transition:transform 150ms cubic-bezier(.2,.8,.2,1)}.press:active{transform:scale(.97)}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes draw{from{stroke-dashoffset:420}to{stroke-dashoffset:0}}
+.rise{animation:rise 400ms cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:80ms}.d2{animation-delay:160ms}
+.sgc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding:3px;border-radius:999px;background:var(--s1);margin-top:12px}
+.sg{min-height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:15px;line-height:20px;font-weight:600;color:var(--t2)}
+.sg.on{background:var(--s3);color:var(--t1)}
+.chip{min-height:44px;display:flex;align-items:center}
+.chipi{min-height:34px;padding:0 12px;border-radius:999px;background:var(--s3);font-size:13px;line-height:18px;font-weight:600;display:flex;align-items:center;gap:4px}
+.line{stroke-dasharray:420;animation:draw 900ms cubic-bezier(.2,.8,.2,1) 150ms both}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));row-gap:2px;margin-top:6px}
+.cd{height:36px;display:flex;align-items:center;justify-content:center}
+.cn{width:32px;height:32px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:15px;line-height:20px;box-sizing:border-box;color:var(--t2)}
+.cn.w{background:var(--accSoft);color:var(--accT);font-weight:600}
+.cn.t{box-shadow:inset 0 0 0 2px var(--acc);color:var(--t1);font-weight:600}
+.badge{flex:none;height:28px;padding:0 10px;border-radius:14px;background:var(--accSoft);color:var(--accT);display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600}
+.mbar{height:4px;border-radius:2px;background:var(--s3)}
+.mbar i{display:block;height:4px;border-radius:2px;background:var(--acc)}
+.edge{position:absolute;left:0;right:0;bottom:0;height:130px;pointer-events:none;background:var(--bg);-webkit-mask-image:linear-gradient(transparent,#000 75%);mask-image:linear-gradient(transparent,#000 75%)}
+.rm .rise{animation:fade 150ms both}.rm .line{animation:none}.rm .press:active{transform:none}
+@media (prefers-reduced-motion: reduce){.rise{animation:fade 150ms both}.line{animation:none}.press:active{transform:none}}
+</style>
+</helmet>
+<div class="{{rootCls}}" style="{{vars}}">
+<div class="pad">
+<h1 class="xl">Postępy</h1>
+<div class="sgc" role="tablist" style="{{sSeg}}">
+<button class="{{sgA}}" role="tab" aria-selected="{{isOver}}" onClick="{{goOver}}">Przegląd</button>
+<button class="{{sgB}}" role="tab" aria-selected="{{isHist}}" onClick="{{goHist}}">Historia</button>
+</div>
+
+<sc-if value="{{isOver}}" hint-placeholder-val="{{true}}">
+<div class="card rise" style="margin-top: 16px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<button class="chip press" aria-label="Zmień ćwiczenie: wyciskanie na ławce"><span class="chipi">Wyciskanie na ławce<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span></button>
+<button class="chip press" aria-label="Zmień okres: 3 miesiące"><span class="chipi">3 mies.<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span></button>
+</div>
+<div style="display: flex; align-items: baseline; gap: 6px; margin-top: 8px">
+<span class="num dsp" style="font-size: 48px; line-height: 52px; font-weight: 800; letter-spacing: -.03em">102,5</span><span class="md t2">kg</span>
+</div>
+<span class="sm t2">Szacowany maks · <span class="ok" style="font-weight: 600">+7,5 kg w 3 miesiące</span></span>
+<svg width="326" height="112" viewBox="0 0 326 112" role="img" aria-label="Wykres: szacowany maks w wyciskaniu na ławce wzrósł z 95 do 102,5 kg w 3 miesiące" style="margin-top: 12px; display: block">
+<path d="M0 15.5h326M0 60.5h326M0 105.5h326" stroke="var(--line)" stroke-width="1"></path>
+<path d="M6 90L34.5 90L63.1 75L91.6 80L120.2 65L148.7 60L177.3 60L205.8 45L234.4 40L262.9 35L291.5 25L320 15L320 105L6 105Z" fill="var(--accSoft)"></path>
+<path class="line" d="M6 90L34.5 90L63.1 75L91.6 80L120.2 65L148.7 60L177.3 60L205.8 45L234.4 40L262.9 35L291.5 25L320 15" fill="none" stroke="var(--acc)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+<circle cx="320" cy="15" r="5" fill="var(--acc)" stroke="var(--s1)" stroke-width="2.5"></circle>
+</svg>
+<div class="sm" style="display: flex; justify-content: space-between; margin-top: 4px; color: var(--t3)"><span>wrzesień</span><span>październik</span><span>listopad</span></div>
+</div>
+
+<div class="card rise d1" style="margin-top: 12px; display: flex; gap: 16px; align-items: center">
+<dc-import name="Cialo" mocne="uda,plecy" lekkie="posladki,dwuglowe,grzbiet,biceps,lydki" widok="oba" wysokosc="{{figH}}" tlo="{{no}}" hint-size="110px,130px"></dc-import>
+<div style="display: flex; flex-direction: column; flex: 1; min-width: 0; gap: 8px">
+<span class="xs">Mięśnie · ten tydzień</span>
+<sc-for list="{{muscles}}" as="m" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 4px"><div style="display: flex; justify-content: space-between"><span class="sm" style="font-weight: 600">{{m.name}}</span><span class="sm t2 num">{{m.sets}}</span></div><div class="mbar"><i style="{{m.st}}"></i></div></div>
+</sc-for>
+</div>
+</div>
+
+<div class="card rise d2" style="margin-top: 12px">
+<div style="display: flex; align-items: baseline; justify-content: space-between">
+<span class="xs">Regularność · 12 tygodni</span>
+<span class="sm accT" style="font-weight: 600">5 tygodni z rzędu</span>
+</div>
+<div role="img" aria-label="Ostatnie 12 tygodni: 8 z pełnym planem, ostatnie 5 z rzędu, bieżący w połowie" style="display: flex; justify-content: space-between; margin-top: 12px">
+<sc-for list="{{weeks}}" as="w" hint-placeholder-count="12">
+<svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="transform: rotate(-90deg)"><circle cx="11" cy="11" r="8.5" fill="none" stroke="var(--s3)" stroke-width="3"></circle><circle cx="11" cy="11" r="8.5" fill="none" stroke="{{w.stroke}}" stroke-width="3" stroke-linecap="round" stroke-dasharray="53.4" stroke-dashoffset="{{w.off}}"></circle></svg>
+</sc-for>
+</div>
+</div>
+
+</sc-if>
+
+<sc-if value="{{isHist}}" hint-placeholder-val="{{false}}">
+<div class="card rise" style="margin-top: 16px">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<span class="hd">Listopad 2026</span>
+<span class="sm t2 num">10 treningów</span>
+</div>
+<div class="cal xs" style="margin-top: 12px"><span class="cd">P</span><span class="cd">W</span><span class="cd">Ś</span><span class="cd">C</span><span class="cd">P</span><span class="cd">S</span><span class="cd">N</span></div>
+<div class="cal">
+<sc-for list="{{cells}}" as="c" hint-placeholder-count="35">
+<div class="cd"><span class="{{c.cls}}">{{c.n}}</span></div>
+</sc-for>
+</div>
+</div>
+<div class="card rise d1" style="margin-top: 12px; padding: 0 16px">
+<div class="rowi"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="hd">Pull A</span><span class="sm t2 num">17 listopada · 52 min · 5 480 kg</span></div></div>
+<div class="rowi"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="hd">Legs A</span><span class="sm t2 num">16 listopada · 62 min · 7 120 kg</span></div><span class="badge" aria-label="1 rekord"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"></path></svg>1</span></div>
+<div class="rowi"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="hd">Push B</span><span class="sm t2 num">14 listopada · 55 min · 5 920 kg</span></div></div>
+<div class="rowi"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="hd">Pull B</span><span class="sm t2 num">12 listopada · 49 min · 5 210 kg</span></div><span class="badge" aria-label="1 rekord"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"></path></svg>1</span></div>
+</div>
+</sc-if>
+<sc-if value="{{isEmpty}}" hint-placeholder-val="{{false}}">
+<div class="card rise" style="margin-top: 16px; display: flex; flex-direction: column; align-items: flex-start">
+<span class="xs">Siła</span>
+<svg width="326" height="112" viewBox="0 0 326 112" aria-hidden="true" style="margin-top: 12px; display: block"><path d="M0 15.5h326M0 60.5h326M0 105.5h326" stroke="var(--line)" stroke-width="1"></path><path d="M6 90L63 82L120 70L177 62L234 46L291 30L320 20" fill="none" stroke="var(--t3)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 10"></path></svg>
+<h2 class="md" style="margin-top: 16px">Tu zobaczysz, jak rośniesz</h2>
+<span class="t2" style="margin-top: 4px">Po pierwszym treningu pojawi się wykres siły dla każdego ćwiczenia, mapa mięśni i regularność.</span>
+<button class="pill press" style="margin-top: 16px; background: var(--acc); color: var(--onAcc)" onClick="{{start}}">Zacznij pierwszy trening</button>
+</div>
+</sc-if>
+</div>
+<div class="edge" aria-hidden="true"></div>
+
+<nav class="tabbar glass" aria-label="Karty">
+<button class="{{tc.start}}" onClick="{{tg.start}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9M15.6 3.75a9 9 0 0 1 4.65 4.65"></path></svg>Dziś</button>
+<button class="{{tc.plan}}" onClick="{{tg.plan}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3v3M17 3v3M4 9.5h16M6 5h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"></path></svg>Plan</button>
+<button class="{{tc.postepy}}" onClick="{{tg.postepy}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5h16M5.5 15l4.5-4.5 3 3L18.5 7"></path></svg>Postępy</button>
+<button class="{{tc.cwiczenia}}" onClick="{{tg.cwiczenia}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6.5v11M3.5 9v6M17.5 6.5v11M20.5 9v6M6.5 12h11"></path></svg>Ćwiczenia</button>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"motyw":{"editor":"enum","options":["ciemny","jasny"],"default":"ciemny","section":"Podgląd"},"akcent":{"editor":"enum","options":["niebieski","indygo","pomarancz","malina","zielen"],"default":"niebieski","section":"Podgląd"},"ograniczRuch":{"editor":"boolean","default":false,"section":"Podgląd"},"widok":{"editor":"enum","options":["przeglad","historia"],"default":"przeglad","section":"Podgląd"},"pusto":{"editor":"boolean","default":false,"section":"Podgląd"},"onNav":{"editor":null},"onStart":{"editor":null},"$preview":{"width":390,"height":844}}'>
+var ACC = { niebieski: { d: ['#4DA3FF', '#7AB8FF', '77,163,255'], l: ['#0A6BDB', '#0A5FC4', '10,107,219'] }, indygo: { d: ['#8B90FF', '#A9ACFF', '139,144,255'], l: ['#4F55E8', '#3F46D4', '79,85,232'] }, pomarancz: { d: ['#FF9A3D', '#FFB070', '255,154,61'], l: ['#C2500A', '#A84500', '194,80,10'] }, malina: { d: ['#FF6F9F', '#FF8FB4', '255,111,159'], l: ['#C8205C', '#B01B52', '200,32,92'] }, zielen: { d: ['#3DD68C', '#5FE0A0', '61,214,140'], l: ['#157F45', '#126E3C', '21,127,69'] } };
+function theme(m, a) {
+  var x = ACC[a] || ACC.niebieski;
+  if (m === 'jasny') { var l = x.l; return '--bg:#F2F2F7;--s1:#FFFFFF;--s2:#F2F2F7;--s3:#E2E2EA;--line:rgba(17,18,24,.09);--t1:#111218;--t2:#5C5F6B;--t3:#686B7A;--acc:' + l[0] + ';--accT:' + l[1] + ';--onAcc:#FFFFFF;--accSoft:rgba(' + l[2] + ',.12);--ok:#17753F;--glass:rgba(255,255,255,.78);--glassEdge:rgba(255,255,255,.95);--shadow:0 10px 30px rgba(17,18,24,.16)'; }
+  var d = x.d; return '--acc:' + d[0] + ';--accT:' + d[1] + ';--accSoft:rgba(' + d[2] + ',.16)';
+}
+function tabs(self, active) {
+  var tc = {}; var tg = {};
+  ['start', 'plan', 'postepy', 'cwiczenia'].forEach(function (id) {
+    tc[id] = 'tab press' + (id === active ? ' on' : '');
+    tg[id] = function () { if (self.props.onNav) self.props.onNav(id); };
+  });
+  return { tc: tc, tg: tg };
+}
+var WEEKS = [0.75, 1, 0.5, 1, 1, 0.75, 1, 1, 1, 1, 1, 0.5];
+var WORKOUT_DAYS = [2, 3, 5, 7, 9, 10, 12, 14, 16, 17];
+
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { view: null }; }
+  renderVals() {
+    var p = this.props; var self = this; var tb = tabs(this, 'postepy');
+    var view = this.state.view || (p.widok ?? 'przeglad');
+    var empty = p.pusto ?? false;
+    var cells = [];
+    for (var i = 0; i < 6; i++) cells.push({ n: '', cls: 'cn' });
+    for (var d = 1; d <= 30; d++) cells.push({ n: d, cls: 'cn num' + (WORKOUT_DAYS.indexOf(d) !== -1 ? ' w' : '') + (d === 19 ? ' t' : '') });
+    return {
+      rootCls: 'scr' + ((p.ograniczRuch ?? false) ? ' rm' : ''),
+      vars: theme(p.motyw ?? 'ciemny', p.akcent ?? 'niebieski'),
+      isOver: view === 'przeglad' && !empty, isHist: view === 'historia' && !empty, isEmpty: empty,
+      sSeg: empty ? 'display:none' : '',
+      start: function () { if (self.props.onStart) self.props.onStart(); },
+      sgA: 'sg' + (view === 'przeglad' ? ' on' : ''), sgB: 'sg' + (view === 'historia' ? ' on' : ''),
+      goOver: function () { self.setState({ view: 'przeglad' }); },
+      goHist: function () { self.setState({ view: 'historia' }); },
+      weeks: WEEKS.map(function (f, i) { return { off: (53.4 * (1 - f)).toFixed(1), stroke: i === WEEKS.length - 1 ? 'var(--accT)' : 'var(--acc)' }; }),
+      cells: cells,
+      figH: 132, no: false,
+      muscles: [['Nogi', '16 serii', 100], ['Plecy', '12 serii', 75], ['Biceps', '6 serii', 38], ['Klatka', 'dziś', 0]].map(function (m) { return { name: m[0], sets: m[1], st: 'width:' + m[2] + '%' }; }),
+      tc: tb.tc, tg: tb.tg
+    };
+  }
+}
+</script>
+</body>
+</html>

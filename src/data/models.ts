@@ -62,6 +62,8 @@ export type Plan = {
   level: Level | null;
   sourceProgramId: string | null;
   isActive: boolean;
+  /** Dni treningowe 0–6 (0 = poniedziałek); null = bez dni tygodnia (sama rotacja). */
+  weekdays: number[] | null;
   createdAt: string;
 };
 
@@ -98,12 +100,19 @@ export type WorkoutExercise = {
   exerciseId: string;
   position: number;
   note: string | null;
+  /** Cele skopiowane z planu przy starcie (null = brak celu, np. ćwiczenie dodane w trakcie). */
+  restSec: number | null;
+  repsMin: number | null;
+  repsMax: number | null;
+  targetDurationSec: number | null;
   sets: WorkoutSet[];
 };
 
 export type Workout = {
   id: string;
   planDayId: string | null;
+  /** Nazwa dnia planu w chwili startu; null = pusty trening. */
+  name: string | null;
   startedAt: string;
   finishedAt: string | null;
   note: string | null;

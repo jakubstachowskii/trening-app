@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Mapa mięśni — figurka</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#101012}
+.cialo{position:relative;flex:none}
+.cialo i{position:absolute;display:block}
+</style>
+</helmet>
+<div class="cialo" role="img" aria-label="{{aria}}" style="{{sRoot}}">
+<sc-for list="{{shapes}}" as="s" hint-placeholder-count="20"><i style="{{s.st}}"></i></sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"mocne":{"editor":"text","default":"klatka","section":"Mięśnie"},"lekkie":{"editor":"text","default":"barki,triceps","section":"Mięśnie"},"widok":{"editor":"enum","options":["przod","tyl","oba"],"default":"oba","section":"Mięśnie"},"wysokosc":{"editor":"int","default":320,"min":24,"max":600,"section":"Mięśnie"},"kadr":{"editor":"enum","options":["cale","gora","srodek","dol"],"default":"cale","section":"Mięśnie"},"tlo":{"editor":"boolean","default":true,"section":"Mięśnie"},"$preview":{"width":420,"height":400}}'>
+// Figurka z prostych zaokrąglonych brył. Każda bryła należy do grupy mięśni;
+// grupy „mocne” dostają kolor akcentu, „lekkie” jego stonowaną wersję, reszta jest neutralna.
+// Układ w siatce 100 × 200, skalowany do zadanej wysokości.
+var COMMON = [
+  [39, 4, 22, 24, 11, ''], [45, 29, 10, 7, 3, ''],
+  [20, 37, 16, 17, 8, 'barki'], [64, 37, 16, 17, 8, 'barki'],
+  [14.5, 88, 11, 30, 5.5, 'przedramiona'], [74.5, 88, 11, 30, 5.5, 'przedramiona'],
+  [36.5, 153, 11.5, 38, 5.75, 'lydki'], [52, 153, 11.5, 38, 5.75, 'lydki']
+];
+var FRONT = COMMON.concat([
+  [37, 38, 12.5, 19, 5, 'klatka'], [50.5, 38, 12.5, 19, 5, 'klatka'],
+  [39, 59, 22, 31, 7, 'brzuch'],
+  [18.5, 56, 12, 30, 6, 'biceps'], [69.5, 56, 12, 30, 6, 'biceps'],
+  [37, 92, 26, 11, 5.5, ''],
+  [35, 105, 14, 45, 7, 'uda'], [51, 105, 14, 45, 7, 'uda']
+]);
+var BACK = COMMON.concat([
+  [38, 37, 24, 11, 5, 'plecy'],
+  [37, 50, 12.5, 25, 5, 'plecy'], [50.5, 50, 12.5, 25, 5, 'plecy'],
+  [41, 77, 18, 13, 5, 'grzbiet'],
+  [18.5, 56, 12, 30, 6, 'triceps'], [69.5, 56, 12, 30, 6, 'triceps'],
+  [36, 92, 13.5, 15, 6.5, 'posladki'], [50.5, 92, 13.5, 15, 6.5, 'posladki'],
+  [35, 109, 14, 41, 7, 'dwuglowe'], [51, 109, 14, 41, 7, 'dwuglowe']
+]);
+function list(v) { return String(v || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean); }
+
+class Component extends DCLogic {
+  renderVals() {
+    var p = this.props;
+    var hi = list(p.mocne); var lo = list(p.lekkie);
+    var view = p.widok ?? 'oba';
+    var kadr = p.kadr ?? 'cale';
+    var h = Number(p.wysokosc ?? 320); var k = h / 200 * (kadr === 'dol' ? 0.72 : 1);
+    var gap = 14;
+    var figs = view === 'oba' ? [FRONT, BACK] : [view === 'tyl' ? BACK : FRONT];
+    var shapes = [];
+    figs.forEach(function (fig, fi) {
+      fig.forEach(function (s) {
+        var fill = hi.indexOf(s[5]) !== -1 ? 'var(--acc,#4DA3FF)' : lo.indexOf(s[5]) !== -1 ? 'color-mix(in srgb,var(--acc,#4DA3FF) 40%,var(--s3,#26262A))' : 'var(--s3,#26262A)';
+        shapes.push({ st: 'left:' + ((s[0] - 12 + fi * (76 + gap)) * k).toFixed(2) + 'px;top:' + (s[1] * k).toFixed(2) + 'px;width:' + (s[2] * k).toFixed(2) + 'px;height:' + (s[3] * k).toFixed(2) + 'px;border-radius:' + (s[4] * k).toFixed(2) + 'px;background:' + fill });
+      });
+    });
+    var w = (76 * figs.length + gap * (figs.length - 1)) * k;
+    var off = kadr === 'dol' ? 60 : kadr === 'srodek' ? 48 : 0;
+    var bg = (p.tlo ?? true) ? 'margin:40px auto;' : (off ? 'margin-top:' + (-off * k).toFixed(1) + 'px;' : '');
+    return {
+      shapes: shapes,
+      aria: 'Mapa mięśni. Główne: ' + (hi.join(', ') || 'brak') + (lo.length ? '. Pomocnicze: ' + lo.join(', ') : ''),
+      sRoot: bg + 'width:' + w.toFixed(1) + 'px;height:' + (196 * k).toFixed(1) + 'px'
+    };
+  }
+}
+</script>
+</body>
+</html>

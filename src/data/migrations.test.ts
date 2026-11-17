@@ -1,5 +1,5 @@
 import { createDb } from './db';
-import { LATEST_VERSION, migrate } from './migrations';
+import { configureConnection, LATEST_VERSION, migrate, MIGRATIONS } from './migrations';
 import { createTestDb } from './testing/nodeDb';
 
 const TABLES = [
@@ -25,7 +25,33 @@ describe('migrate', () => {
     );
     expect(tables.map((t) => t.name)).toEqual(TABLES);
     expect(await db.first('PRAGMA user_version')).toEqual({ user_version: LATEST_VERSION });
-    expect(await db.all('SELECT version FROM schema_migration')).toEqual([{ version: 1 }]);
+    expect(await db.all('SELECT version FROM schema_migration')).toEqual([
+      { version: 1 },
+      { version: 2 },
+      { version: 3 },
+    ]);
+  });
+
+  it('migracja 1 → 2 zachowuje dane i dodaje puste cele', async () => {
+    const db = createTestDb();
+    await configureConnection(db);
+    await db.exec(MIGRATIONS[0]);
+    await db.exec('PRAGMA user_version = 1');
+    await db.run(
+      "INSERT INTO exercise (id, source, type, equipment, created_at) VALUES ('e', 'builtin', 'weight_reps', 'barbell', 'x')",
+    );
+    await db.run("INSERT INTO workout (id, started_at, finished_at) VALUES ('w', 'a', 'b')");
+    await db.run(
+      "INSERT INTO workout_exercise (id, workout_id, exercise_id, position) VALUES ('we', 'w', 'e', 0)",
+    );
+
+    expect(await migrate(db)).toEqual({ from: 1, to: LATEST_VERSION });
+    expect(await db.first('SELECT name FROM workout')).toEqual({ name: null });
+    expect(
+      await db.first(
+        'SELECT rest_sec, reps_min, reps_max, target_duration_sec FROM workout_exercise',
+      ),
+    ).toEqual({ rest_sec: null, reps_min: null, reps_max: null, target_duration_sec: null });
   });
 
   it('ponowne uruchomienie niczego nie zmienia', async () => {

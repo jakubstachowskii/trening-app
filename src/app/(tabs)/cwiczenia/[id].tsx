@@ -10,7 +10,8 @@ import { MetricTile } from '@/components/MetricTile';
 import { Pill } from '@/components/Pill';
 import { SegmentedControl } from '@/components/SegmentedControl';
 import { Skeleton } from '@/components/Skeleton';
-import { confirmDestructive, HeaderIconButton, type MenuItem, showMenu } from '@/components/stack';
+import { HeaderMenuButton } from '@/components/MenuButtons';
+import { confirmDestructive, type MenuItem } from '@/components/stack';
 import { Text } from '@/components/Text';
 import { useDb } from '@/data/DatabaseProvider';
 import type { Exercise } from '@/data/models';
@@ -268,11 +269,7 @@ export default function ExerciseScreen() {
       <Stack.Screen
         options={{
           headerRight: () => (
-            <HeaderIconButton
-              icon={{ ios: 'ellipsis', web: 'more_horiz' }}
-              label={t('common.more')}
-              onPress={() => showMenu(name, menu)}
-            />
+            <HeaderMenuButton label={t('common.more')} title={name} items={menu} />
           ),
         }}
       />

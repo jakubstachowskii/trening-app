@@ -10,6 +10,7 @@ type PlanRow = {
   level: Level | null;
   source_program_id: string | null;
   is_active: number;
+  weekdays: string | null;
   created_at: string;
 };
 type DayRow = { id: string; name: string; position: number };
@@ -27,7 +28,17 @@ type ExerciseRow = {
   note: string | null;
 };
 
-const PLAN_COLUMNS = 'id, name, description, level, source_program_id, is_active, created_at';
+const PLAN_COLUMNS =
+  'id, name, description, level, source_program_id, is_active, weekdays, created_at';
+
+/** "0,2,4" → [0, 2, 4]; puste albo uszkodzone = null. */
+export function parseWeekdays(text: string | null): number[] | null {
+  if (!text) return null;
+  const days = [...new Set(text.split(',').map(Number))]
+    .filter((d) => Number.isInteger(d) && d >= 0 && d <= 6)
+    .sort((a, b) => a - b);
+  return days.length ? days : null;
+}
 
 function toPlan(row: PlanRow): Plan {
   return {
@@ -37,6 +48,7 @@ function toPlan(row: PlanRow): Plan {
     level: row.level,
     sourceProgramId: row.source_program_id,
     isActive: fromFlag(row.is_active),
+    weekdays: parseWeekdays(row.weekdays),
     createdAt: row.created_at,
   };
 }
@@ -375,4 +387,13 @@ export async function deletePlanExercise(db: Db, id: string): Promise<void> {
       [row.plan_day_id, row.position],
     );
   });
+}
+
+/** Dni treningowe planu (0 = poniedziałek). Pusta lista = bez dni tygodnia. */
+export async function setPlanWeekdays(db: Db, planId: string, weekdays: number[]): Promise<void> {
+  const value = parseWeekdays(weekdays.join(','));
+  await db.run('UPDATE plan SET weekdays = ? WHERE id = ?', [
+    value ? value.join(',') : null,
+    planId,
+  ]);
 }

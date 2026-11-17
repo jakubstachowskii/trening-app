@@ -26,7 +26,7 @@ Dla kogo: dla dowolnej osoby z App Store. Autor jest jednym z użytkowników, ni
 
 ## 3. Ekrany
 
-Nawigacja: dolny pasek z 5 kartami: **Start, Plany, Ćwiczenia, Postępy, Historia**. Ustawienia otwierane z ikony na ekranie Start. Trening w toku otwiera się na pełnym ekranie.
+Nawigacja: dolny pasek z 5 kartami: **Dziś (Start), Plany, Ćwiczenia, Postępy, Historia**. Ustawienia otwierane z ikony na ekranie Start. Trening w toku otwiera się na pełnym ekranie.
 
 ### 3.1 Pierwsze uruchomienie (onboarding, 3–4 kroki, każdy z „Pomiń”)
 
@@ -35,13 +35,14 @@ Nawigacja: dolny pasek z 5 kartami: **Start, Plany, Ćwiczenia, Postępy, Histor
 3. **Masa ciała** (opcjonalnie): jedno pole, z wyjaśnieniem, po co (wykres, ćwiczenia z masą ciała). Można pominąć.
 4. **Plan na start**: wybór gotowego programu albo „Zbuduję własny plan”.
 
-### 3.2 Start
+### 3.2 Start („Dziś”, od F6 według `design/v2/Start`)
 
-- Następny trening z aktywnego planu i przycisk „Zacznij”.
-- „Pusty trening”: start bez planu, ćwiczenia dodawane na bieżąco.
-- Skrót tygodnia: liczba treningów i ostatni trening.
-- Ostatnio pobite rekordy.
-- Wejście do ustawień.
+- **Pierścień tygodnia:** segment = trening. Z aktywnym planem tyle segmentów, ile dni ma plan (plan to rotacja dni, bez dni tygodnia); bez planu cel tygodnia 2–6 (ustawienie `weeklyGoal`, domyślnie 3) zmieniany na ekranie.
+- W środku pierścienia: następny dzień planu z „Zacznij” (liczba ćwiczeń, szacowany czas), „Trening trwa · Wznów”, „Zrobione · Podsumowanie” po dzisiejszym treningu albo cel tygodnia bez planu.
+- Pasek dni tygodnia (zrobione, dziś), kafle „Seria” (tygodnie z pełnym planem) i „Ostatni rekord”.
+- „Trening bez planu”: start pustego treningu, ćwiczenia dodawane na bieżąco.
+- Bez planu: „Wybierz gotowy plan” i „Ułóż własny plan”.
+- Wejście do ustawień: w F8.
 
 ### 3.3 Plany
 
@@ -52,6 +53,9 @@ Nawigacja: dolny pasek z 5 kartami: **Start, Plany, Ćwiczenia, Postępy, Histor
 
 ### 3.4 Trening w toku
 
+- **Prowadzony trening (F6):** start jednym przyciskiem („Zacznij trening” na Start albo na dniu planu), pełny ekran bez zamykania gestem, „Zwiń” wraca do kart (karta „Trening w toku · Wznów” na Start). Bieżące ćwiczenie w karcie z tabelą serii, pozostałe w liście „Następne”, pływający przycisk „Odhacz serię N” → „Następne ćwiczenie” → „Zakończ trening”.
+- **Szybkie wpisywanie:** własna duża klawiatura w dolnym panelu (cyfry, przecinek, −/+ o krok, „Dalej”: kg → powtórzenia → odhaczenie). Wpisana wartość przechodzi na kolejne nieodhaczone serie z tą samą starą wartością.
+- Serie wypełnione przy starcie: liczba z planu; ciężar z tej samej serii ostatnio (po dojściu do górnego zakresu + krok), potem cel planu; powtórzenia = górny zakres.
 - Lista ćwiczeń dnia. Każde ćwiczenie rozwijane do tabeli serii: poprzedni wynik, ciężar, powtórzenia, odhaczenie.
 - Typ serii: rozgrzewkowa / robocza (inne typy później).
 - **Podpowiedź ciężaru** z poprzedniego treningu (włączana w ustawieniach, domyślnie włączona w trybie prowadzonym).
@@ -60,6 +64,9 @@ Nawigacja: dolny pasek z 5 kartami: **Start, Plany, Ćwiczenia, Postępy, Histor
 - Ćwiczenia na czas (np. plank) i z masą ciała (np. podciąganie, także z obciążnikiem lub z gumą).
 - Trening przetrwa zamknięcie aplikacji: stan zapisywany na bieżąco.
 - **Podsumowanie po zakończeniu**: czas, objętość, liczba serii, nowe rekordy.
+- Ekran nie gaśnie w trakcie treningu; po końcu przerwy wibracja, a gdy aplikacja jest w tle — powiadomienie lokalne (zgoda przy pierwszej przerwie; bez zgody działa wszystko poza powiadomieniem).
+- Zakończenie: nieodhaczone serie i ćwiczenia bez serii są usuwane; trening bez żadnej odhaczonej serii nie trafia do historii.
+- Później: RIR i inne typy serii, tempo, odliczanie przed serią, minutnik na ekranie blokady (wymaga konta Apple).
 
 ### 3.5 Ćwiczenia (baza)
 
@@ -107,8 +114,8 @@ Ciężar zawsze w kg (liczba dziesiętna), czas w sekundach, daty jako ISO 8601 
 | `plan`             | id, name, description, level, source (`builtin` / `user`), isActive, createdAt                                                                                                                                |
 | `plan_day`         | id, planId, name, position                                                                                                                                                                                    |
 | `plan_exercise`    | id, planDayId, exerciseId, position, targetSets, repsMin, repsMax, targetWeightKg?, targetDurationSec?, restSec?, note?                                                                                       |
-| `workout`          | id, planDayId?, startedAt, finishedAt?, note?, bodyweightKg?                                                                                                                                                  |
-| `workout_exercise` | id, workoutId, exerciseId, position, note?                                                                                                                                                                    |
+| `workout`          | id, planDayId?, name? (nazwa dnia przy starcie), startedAt, finishedAt?, note?, bodyweightKg?                                                                                                                 |
+| `workout_exercise` | id, workoutId, exerciseId, position, note?, restSec?, repsMin?, repsMax?, targetDurationSec? (cele skopiowane z planu przy starcie, migracja 2)                                                               |
 | `workout_set`      | id, workoutExerciseId, position, kind (`warmup` / `working`), reps?, weightKg?, durationSec?, rpe? (pole na później), completedAt?                                                                            |
 | `bodyweight_entry` | id, date, weightKg                                                                                                                                                                                            |
 | `setting`          | key, value (JSON)                                                                                                                                                                                             |

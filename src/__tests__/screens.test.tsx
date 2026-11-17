@@ -1,17 +1,15 @@
 import { render, screen } from '@testing-library/react-native';
 import type { ComponentType } from 'react';
 
-import HistoriaScreen from '@/app/historia';
-import StartScreen from '@/app/index';
-import PostepyScreen from '@/app/postepy';
+import HistoriaScreen from '@/app/(tabs)/historia';
+import PostepyScreen from '@/app/(tabs)/postepy';
 import { t } from '@/i18n';
 import { ThemeProvider } from '@/theme';
 
-// Karty, które w F5 są jeszcze puste. Ćwiczenia i Plany: src/__tests__/exercises.test.tsx, plans.test.tsx.
-type ScreenKey = 'start' | 'progress' | 'history';
+// Karty, które są jeszcze puste. Start i trening: workout.test.tsx; Ćwiczenia i Plany: osobne pliki.
+type ScreenKey = 'progress' | 'history';
 
 const SCREENS: [ScreenKey, ComponentType][] = [
-  ['start', StartScreen],
   ['progress', PostepyScreen],
   ['history', HistoriaScreen],
 ];

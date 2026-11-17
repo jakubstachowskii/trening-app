@@ -8,7 +8,8 @@ import { ListRow } from '@/components/ListRow';
 import { ReorderableRows } from '@/components/Reorderable';
 import { Section } from '@/components/Section';
 import { Skeleton } from '@/components/Skeleton';
-import { confirmDestructive, HeaderIconButton, showMenu } from '@/components/stack';
+import { HeaderMenuButton } from '@/components/MenuButtons';
+import { confirmDestructive } from '@/components/stack';
 import { Text } from '@/components/Text';
 import { TextField } from '@/components/TextField';
 import { useDb } from '@/data/DatabaseProvider';
@@ -25,6 +26,7 @@ import { useDbQuery } from '@/data/useDbQuery';
 import { exerciseIcon } from '@/features/exercises/icons';
 import { exerciseName } from '@/features/exercises/search';
 import { formatPlanExercise } from '@/features/plans/format';
+import { beginWorkout } from '@/features/workout/startWorkout';
 import { t } from '@/i18n';
 import { useTheme } from '@/theme';
 
@@ -134,14 +136,10 @@ export default function PlanDayScreen() {
         options={{
           title: day.name,
           headerRight: () => (
-            <HeaderIconButton
-              icon={{ ios: 'ellipsis', web: 'more_horiz' }}
+            <HeaderMenuButton
               label={t('common.more')}
-              onPress={() =>
-                showMenu(day.name, [
-                  { label: t('planDay.delete'), onPress: removeDay, destructive: true },
-                ])
-              }
+              title={day.name}
+              items={[{ label: t('planDay.delete'), onPress: removeDay, destructive: true }]}
             />
           ),
         }}
@@ -170,6 +168,14 @@ export default function PlanDayScreen() {
               <Text variant="footnote" color="label2" style={{ paddingHorizontal: space.xxs }}>
                 {t('reorder.hint')}
               </Text>
+            ) : null}
+            {items.length ? (
+              <Button
+                variant="secondary"
+                label={t('planDay.addExercise')}
+                icon={{ ios: 'plus', web: 'add' }}
+                onPress={addExercise}
+              />
             ) : null}
             <Button variant="destructive" label={t('planDay.delete')} onPress={removeDay} />
           </View>
@@ -207,9 +213,9 @@ export default function PlanDayScreen() {
       />
       {items.length ? (
         <FloatingButton
-          label={t('planDay.addExercise')}
-          icon={{ ios: 'plus', web: 'add' }}
-          onPress={addExercise}
+          label={t('workout.start.startDay')}
+          icon={{ ios: 'play.fill', web: 'play_arrow' }}
+          onPress={() => void beginWorkout(db, day.id)}
         />
       ) : null}
     </View>

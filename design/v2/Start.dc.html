@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Dziś — ekran startowy</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&amp;family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+button{font:inherit;color:inherit;border:0;padding:0;margin:0;cursor:pointer;background:none;text-align:inherit}
+.scr{--bg:#000000;--s1:#101012;--s2:#19191C;--s3:#26262A;--line:rgba(255,255,255,.09);--t1:#F5F6FA;--t2:#A3A8B8;--t3:#7C8194;--acc:#4DA3FF;--accT:#7AB8FF;--onAcc:#0B0C14;--accSoft:rgba(77,163,255,.16);--ok:#5BD38A;--glass:rgba(34,35,43,.72);--glassEdge:rgba(255,255,255,.14);--shadow:0 10px 30px rgba(0,0,0,.45);position:relative;width:390px;height:844px;overflow:hidden;background:var(--bg);color:var(--t1);font-family:-apple-system,'SF Pro Text',Inter,system-ui,sans-serif;font-size:15px;line-height:20px}
+.pad{box-sizing:border-box;height:844px;padding:62px 16px 0;display:flex;flex-direction:column;overflow:hidden}
+.pad>*{flex-shrink:0}
+.num{font-variant-numeric:tabular-nums}
+.t2{color:var(--t2)}.accT{color:var(--accT)}.ok{color:var(--ok)}
+.xl,.lg,.md,.dsp{font-family:Archivo,-apple-system,'SF Pro Display',system-ui,sans-serif;font-stretch:120%}
+.xl{font-size:34px;line-height:40px;font-weight:800;letter-spacing:-.02em;margin:0}
+.lg{font-size:28px;line-height:34px;font-weight:800;letter-spacing:-.02em;margin:0}
+.md{font-size:22px;line-height:28px;font-weight:700;letter-spacing:-.01em;margin:0}
+.hd{font-size:17px;line-height:22px;font-weight:600}
+.sm{font-size:13px;line-height:18px}
+.xs{font-size:11px;line-height:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t2)}
+.ell{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.glass{background:var(--glass);backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);border:1px solid var(--glassEdge);box-sizing:border-box}
+.circle{flex:none;width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center}
+.pill{flex:none;min-height:44px;padding:0 18px;border-radius:999px;font-size:15px;line-height:20px;font-weight:600;display:flex;align-items:center;justify-content:center;box-sizing:border-box}
+.card{background:var(--s1);border-radius:28px;padding:16px;box-sizing:border-box}
+.cta{min-height:56px;border-radius:999px;background:var(--acc);color:var(--onAcc);font-size:17px;line-height:22px;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:var(--shadow)}
+.rowi{display:flex;align-items:center;gap:12px;min-height:60px;width:100%}
+.rowi + .rowi{border-top:1px solid var(--line)}
+.tabbar{position:absolute;left:20px;right:20px;bottom:26px;height:64px;border-radius:32px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:5px;gap:2px;box-shadow:var(--shadow)}
+.tab{border-radius:27px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--t2);font-size:11px;line-height:13px;font-weight:600}
+.tab.on{color:var(--accT);background:var(--accSoft)}
+.press{transition:transform 150ms cubic-bezier(.2,.8,.2,1)}.press:active{transform:scale(.97)}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:.85}}
+.rise{animation:rise 400ms cubic-bezier(.2,.8,.2,1) both}
+.st-ring{position:relative;width:300px;height:300px;margin:4px auto 0}
+.st-mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.st-seg{transition:stroke-dasharray 400ms cubic-bezier(.2,.8,.2,1),stroke-dashoffset 400ms cubic-bezier(.2,.8,.2,1)}
+.st-pulse{animation:pulse 2.4s ease-in-out infinite}
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));margin-top:12px}
+.day{display:flex;flex-direction:column;align-items:center;gap:6px}
+.dn{width:36px;height:36px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:15px;line-height:20px;font-weight:600;box-sizing:border-box;color:var(--t3)}
+.dn.plan{color:var(--t1);box-shadow:inset 0 0 0 1.5px var(--s3)}
+.dn.done{background:var(--accSoft);color:var(--accT)}
+.dn.today{box-shadow:inset 0 0 0 2px var(--acc);color:var(--t1)}
+.dn.done.today{color:var(--accT)}
+.tile{background:var(--s1);border-radius:28px;padding:16px;display:flex;flex-direction:column;gap:2px;min-height:128px;box-sizing:border-box}
+.rm .rise{animation:fade 150ms both}.rm .st-pulse{animation:none;opacity:.5}.rm .st-seg{transition:none}.rm .press:active{transform:none}
+@media (prefers-reduced-motion: reduce){.rise{animation:fade 150ms both}.st-pulse{animation:none;opacity:.5}.st-seg{transition:none}.press:active{transform:none}}
+</style>
+</helmet>
+<div class="{{rootCls}}" style="{{vars}}">
+<div class="pad">
+<div class="rise" style="display: flex; align-items: flex-end; justify-content: space-between">
+<div style="display: flex; flex-direction: column">
+<span class="sm t2">Czwartek, 19 listopada</span>
+<h1 class="xl">Dziś</h1>
+</div>
+<button class="circle glass press" aria-label="Ustawienia" onClick="{{settings}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"></path><circle cx="16" cy="7" r="2"></circle><circle cx="8" cy="17" r="2"></circle></svg></button>
+</div>
+
+<div class="st-ring rise">
+<svg width="300" height="300" viewBox="0 0 300 300" role="img" aria-label="{{ringAria}}" style="transform: rotate(-85.37deg)">
+<circle class="st-seg" cx="150" cy="150" r="136" fill="none" stroke="var(--s3)" stroke-width="14" stroke-linecap="round" stroke-dasharray="{{track}}"></circle>
+<sc-for list="{{segs}}" as="s" hint-placeholder-count="3">
+<circle class="{{s.cls}}" cx="150" cy="150" r="136" fill="none" stroke="var(--acc)" stroke-width="14" stroke-linecap="round" stroke-dasharray="{{s.dash}}" stroke-dashoffset="{{s.off}}"></circle>
+</sc-for>
+</svg>
+<sc-if value="{{isBefore}}" hint-placeholder-val="{{true}}">
+<div class="st-mid">
+<span class="xs">Trening 3 z 4 w tym tygodniu</span>
+<h2 class="xl" style="margin-top: 6px">Push A</h2>
+<span class="sm t2" style="margin-top: 2px">6 ćwiczeń · ok. 55 min</span>
+<button class="cta press" style="width: 168px; min-height: 52px; margin-top: 14px" onClick="{{start}}">Zacznij</button>
+</div>
+</sc-if>
+<sc-if value="{{isActive}}" hint-placeholder-val="{{false}}">
+<div class="st-mid">
+<span class="xs" style="color: var(--accT)">Trening trwa</span>
+<h2 class="xl" style="margin-top: 6px">Push A</h2>
+<span class="sm t2" style="margin-top: 2px">Serie zapisują się na bieżąco</span>
+<button class="cta press" style="width: 168px; min-height: 52px; margin-top: 14px" onClick="{{start}}">Wznów</button>
+</div>
+</sc-if>
+<sc-if value="{{isAfter}}" hint-placeholder-val="{{false}}">
+<div class="st-mid">
+<span class="xs" style="color: var(--accT)">3 z 4 w tym tygodniu</span>
+<h2 class="xl" style="margin-top: 6px">Zrobione</h2>
+<span class="sm t2 num" style="margin-top: 2px">Push A · 58 min · 6 240 kg</span>
+<button class="pill press" style="width: 168px; min-height: 52px; margin-top: 14px; background: var(--s3)" onClick="{{summary}}">Podsumowanie</button>
+</div>
+</sc-if>
+<sc-if value="{{isEmpty}}" hint-placeholder-val="{{false}}">
+<div class="st-mid">
+<span class="xs">Twój cel na tydzień</span>
+<div style="display: flex; align-items: center; gap: 16px; margin-top: 4px">
+<button class="circle press" style="background: var(--s3)" aria-label="Mniej treningów w tygodniu" onClick="{{less}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"></path></svg></button>
+<span class="dsp num" aria-live="polite" style="font-size: 56px; line-height: 60px; font-weight: 800; min-width: 44px; text-align: center">{{goal}}</span>
+<button class="circle press" style="background: var(--s3)" aria-label="Więcej treningów w tygodniu" onClick="{{more}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+<span class="sm t2">{{goalLabel}}</span>
+<button class="cta press" style="width: 188px; min-height: 52px; margin-top: 12px" onClick="{{start}}">Zacznij trening</button>
+</div>
+</sc-if>
+</div>
+
+<div class="week rise">
+<sc-for list="{{days}}" as="d" hint-placeholder-count="7">
+<div class="day"><span class="xs">{{d.l}}</span><span class="{{d.cls}}" aria-label="{{d.aria}}">{{d.n}}</span></div>
+</sc-for>
+</div>
+
+<sc-if value="{{hasPlan}}" hint-placeholder-val="{{true}}">
+<div class="rise" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 16px">
+<div class="tile">
+<span class="xs">Seria</span>
+<span class="dsp num" style="font-size: 44px; line-height: 48px; font-weight: 800; letter-spacing: -.02em; margin-top: 6px">5</span>
+<span class="sm t2">tygodni z pełnym planem</span>
+</div>
+<div class="tile">
+<span class="xs">Ostatni rekord</span>
+<span class="md num" style="margin-top: 6px">120 kg × 5</span>
+<span class="sm t2">Przysiad ze sztangą</span>
+<span class="sm t2">w poniedziałek</span>
+</div>
+</div>
+<button class="pill press" style="align-self: center; margin-top: 8px; color: var(--accT)">Trening bez planu</button>
+</sc-if>
+<sc-if value="{{isEmpty}}" hint-placeholder-val="{{false}}">
+<div class="card rise" style="padding: 0 16px; margin-top: 16px">
+<button class="rowi" onClick="{{toPlan}}"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="hd">Wybierz gotowy plan</span><span class="sm t2">Góra/dół, PPL, całe ciało, siła</span></div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+<button class="rowi" onClick="{{toPlan}}"><div style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span class="hd">Ułóż własny plan</span><span class="sm t2">Dni, ćwiczenia i serie po swojemu</span></div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+</div>
+<span class="sm t2 rise" style="text-align: center; margin-top: 12px; padding: 0 24px">Bez planu też działa: każdy trening domyka kolejny segment pierścienia.</span>
+</sc-if>
+</div>
+
+<nav class="tabbar glass" aria-label="Karty">
+<button class="{{tc.start}}" onClick="{{tg.start}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9M15.6 3.75a9 9 0 0 1 4.65 4.65"></path></svg>Dziś</button>
+<button class="{{tc.plan}}" onClick="{{tg.plan}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3v3M17 3v3M4 9.5h16M6 5h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"></path></svg>Plan</button>
+<button class="{{tc.postepy}}" onClick="{{tg.postepy}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5h16M5.5 15l4.5-4.5 3 3L18.5 7"></path></svg>Postępy</button>
+<button class="{{tc.cwiczenia}}" onClick="{{tg.cwiczenia}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6.5v11M3.5 9v6M17.5 6.5v11M20.5 9v6M6.5 12h11"></path></svg>Ćwiczenia</button>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"motyw":{"editor":"enum","options":["ciemny","jasny"],"default":"ciemny","section":"Podgląd"},"akcent":{"editor":"enum","options":["niebieski","indygo","pomarancz","malina","zielen"],"default":"niebieski","section":"Podgląd"},"ograniczRuch":{"editor":"boolean","default":false,"section":"Podgląd"},"stan":{"editor":"enum","options":["przed","trwa","po","brak"],"default":"przed","section":"Podgląd"},"onStart":{"editor":null},"onNav":{"editor":null},"onSummary":{"editor":null},"onSettings":{"editor":null},"$preview":{"width":390,"height":844}}'>
+var ACC = { niebieski: { d: ['#4DA3FF', '#7AB8FF', '77,163,255'], l: ['#0A6BDB', '#0A5FC4', '10,107,219'] }, indygo: { d: ['#8B90FF', '#A9ACFF', '139,144,255'], l: ['#4F55E8', '#3F46D4', '79,85,232'] }, pomarancz: { d: ['#FF9A3D', '#FFB070', '255,154,61'], l: ['#C2500A', '#A84500', '194,80,10'] }, malina: { d: ['#FF6F9F', '#FF8FB4', '255,111,159'], l: ['#C8205C', '#B01B52', '200,32,92'] }, zielen: { d: ['#3DD68C', '#5FE0A0', '61,214,140'], l: ['#157F45', '#126E3C', '21,127,69'] } };
+function theme(m, a) {
+  var x = ACC[a] || ACC.niebieski;
+  if (m === 'jasny') { var l = x.l; return '--bg:#F2F2F7;--s1:#FFFFFF;--s2:#F2F2F7;--s3:#E2E2EA;--line:rgba(17,18,24,.09);--t1:#111218;--t2:#5C5F6B;--t3:#686B7A;--acc:' + l[0] + ';--accT:' + l[1] + ';--onAcc:#FFFFFF;--accSoft:rgba(' + l[2] + ',.12);--ok:#17753F;--glass:rgba(255,255,255,.78);--glassEdge:rgba(255,255,255,.95);--shadow:0 10px 30px rgba(17,18,24,.16)'; }
+  var d = x.d; return '--acc:' + d[0] + ';--accT:' + d[1] + ';--accSoft:rgba(' + d[2] + ',.16)';
+}
+function tabs(self, active) {
+  var tc = {}; var tg = {};
+  ['start', 'plan', 'postepy', 'cwiczenia'].forEach(function (id) {
+    tc[id] = 'tab press' + (id === active ? ' on' : '');
+    tg[id] = function () { if (self.props.onNav) self.props.onNav(id); };
+  });
+  return { tc: tc, tg: tg };
+}
+var DAYS = [['P', 16, 'done', 'poniedziałek, trening zrobiony'], ['W', 17, 'done', 'wtorek, trening zrobiony'], ['Ś', 18, '', 'środa, wolne'], ['C', 19, 'today', 'czwartek, dziś'], ['P', 20, '', 'piątek, wolne'], ['S', 21, 'plan', 'sobota, zaplanowany trening'], ['N', 22, '', 'niedziela, wolne']];
+var C = 854.5; var GAP = 22;
+
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { goal: 3 }; }
+  renderVals() {
+    var p = this.props; var self = this;
+    var stan = p.stan ?? 'przed';
+    var empty = stan === 'brak'; var after = stan === 'po';
+    var tb = tabs(this, 'start');
+    var n = empty ? this.state.goal : 4;
+    var done = empty ? 0 : (after ? 3 : 2);
+    var seg = C / n; var dash = seg - GAP;
+    var segs = [];
+    for (var i = 0; i < done; i++) segs.push({ cls: 'st-seg', dash: dash.toFixed(1) + ' ' + (C - dash).toFixed(1), off: (-i * seg).toFixed(1) });
+    if (!after && !empty) segs.push({ cls: 'st-seg st-pulse', dash: dash.toFixed(1) + ' ' + (C - dash).toFixed(1), off: (-done * seg).toFixed(1) });
+    var g = this.state.goal;
+    return {
+      rootCls: 'scr' + ((p.ograniczRuch ?? false) ? ' rm' : ''),
+      vars: theme(p.motyw ?? 'ciemny', p.akcent ?? 'niebieski'),
+      track: dash.toFixed(1) + ' ' + GAP,
+      segs: segs,
+      ringAria: empty ? 'Cel: ' + g + ' treningi w tygodniu, jeszcze żaden nie jest zrobiony' : after ? 'Tydzień: 3 z 4 treningów zrobione' : 'Tydzień: 2 z 4 treningów zrobione, dziś trzeci',
+      isBefore: stan === 'przed', isActive: stan === 'trwa', isAfter: after, isEmpty: empty, hasPlan: !empty,
+      goal: g, goalLabel: g < 5 ? 'treningi w tygodniu' : 'treningów w tygodniu',
+      less: function () { self.setState({ goal: Math.max(2, self.state.goal - 1) }); },
+      more: function () { self.setState({ goal: Math.min(6, self.state.goal + 1) }); },
+      start: function () { if (self.props.onStart) self.props.onStart(); },
+      summary: function () { if (self.props.onSummary) self.props.onSummary(); },
+      settings: function () { if (self.props.onSettings) self.props.onSettings(); },
+      toPlan: function () { if (self.props.onNav) self.props.onNav('plan'); },
+      days: DAYS.map(function (d) {
+        var st = empty ? (d[2] === 'today' ? 'today' : '') : (d[2] === 'today' && after ? 'done today' : d[2]);
+        return { l: d[0], n: d[1], cls: 'dn num' + (st ? ' ' + st : ''), aria: empty ? String(d[1]) + ' listopada' : d[3] };
+      }),
+      tc: tb.tc, tg: tb.tg
+    };
+  }
+}
+</script>
+</body>
+</html>

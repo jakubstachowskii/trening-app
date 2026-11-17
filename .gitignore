@@ -41,3 +41,6 @@ example
 # generated native folders
 /ios
 /android
+
+# Robocze skrypty do zrzutów makiet (lokalne narzędzia)
+design/v2/narzedzia/
