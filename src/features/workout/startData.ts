@@ -2,7 +2,6 @@
 import type { Db } from '@/data/db';
 import type { PlanDay, Workout } from '@/data/models';
 import { getPlan, listPlans } from '@/data/repositories/plans';
-import { getSetting } from '@/data/repositories/settings';
 import {
   exerciseHistory,
   getUnfinishedWorkout,
@@ -12,7 +11,6 @@ import {
 } from '@/data/repositories/workouts';
 import { computeRecords, newRecordsInWorkout } from '@/domain/records';
 import {
-  clampWeeklyGoal,
   isRestDay,
   nextTrainingDate,
   type WeekDay,
@@ -23,12 +21,11 @@ import {
   WEEKLY_GOAL_DEFAULT,
 } from '@/domain/week';
 import { estimateDayMinutes, formatClock, nextPlanDayId } from '@/domain/workout';
+import { loadTrainingSettings } from '@/features/settings/keys';
 import { formatNumber, t } from '@/i18n';
 
 import { loadSession } from './session';
-import { summarizeSession, WEEKLY_GOAL_SETTING } from './summaryData';
-
-export { WEEKLY_GOAL_SETTING };
+import { summarizeSession } from './summaryData';
 /** Ile ostatnich treningów przeszukujemy, szukając ostatniego rekordu. */
 const RECORD_LOOKBACK = 20;
 
@@ -99,9 +96,7 @@ async function loadLastRecord(db: Db): Promise<LastRecord | null> {
 
 export async function loadStartData(db: Db, now: Date = new Date()): Promise<StartData> {
   const unfinished = await getUnfinishedWorkout(db);
-  const weeklyGoal = clampWeeklyGoal(
-    await getSetting<number>(db, WEEKLY_GOAL_SETTING, WEEKLY_GOAL_DEFAULT),
-  );
+  const savedGoal = (await loadTrainingSettings(db)).weeklyGoal;
   const active = (await listPlans(db)).find((p) => p.isActive);
   const plan = active ? await getPlan(db, active.id) : null;
   const planDays = plan?.days ?? [];
@@ -115,7 +110,9 @@ export async function loadStartData(db: Db, now: Date = new Date()): Promise<Sta
 
   const starts = await listFinishedStarts(db);
   const weekdays = plan?.weekdays ?? null;
-  const target = weekTarget(active ? planDays.length : null, weeklyGoal, weekdays);
+  const target = weekTarget(active ? planDays.length : null, savedGoal, weekdays);
+  // Wartość pokazywana przy −/+ na „Dziś” (bez planu) i punkt wyjścia w Ustawieniach.
+  const weeklyGoal = savedGoal ?? (active ? target : WEEKLY_GOAL_DEFAULT);
 
   const [latest] = await listWorkouts(db, { limit: 1 });
   let todayFinished: StartData['todayFinished'] = null;

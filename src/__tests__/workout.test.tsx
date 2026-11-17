@@ -22,7 +22,7 @@ import {
   updateSet,
 } from '@/data/repositories/workouts';
 import { REST_SETTING } from '@/features/workout/restStore';
-import { WEEKLY_GOAL_SETTING } from '@/features/workout/startData';
+import { SETTING } from '@/features/settings/keys';
 import { t } from '@/i18n';
 
 import { renderWithTheme, seededDb } from './helpers/screen';
@@ -106,7 +106,7 @@ describe('Dziś', () => {
     expect(screen.getByLabelText(t('today.goalValue', { count: 3 }))).toBeOnTheScreen();
 
     await fireEvent.press(screen.getByRole('button', { name: t('today.goalMore') }));
-    await waitFor(async () => expect(await getSetting(mockDb, WEEKLY_GOAL_SETTING, 0)).toBe(4));
+    await waitFor(async () => expect(await getSetting(mockDb, SETTING.weeklyGoal, 0)).toBe(4));
     expect(await screen.findByLabelText(t('today.goalValue', { count: 4 }))).toBeOnTheScreen();
 
     await fireEvent.press(screen.getByRole('button', { name: t('today.startEmpty') }));

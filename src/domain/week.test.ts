@@ -17,12 +17,22 @@ const at = (month: number, day: number, hour = 10) =>
   new Date(2026, month, day, hour).toISOString();
 
 describe('cel tygodnia', () => {
-  it('z planem: liczba dni planu (najwyżej 7), bez planu: cel 2–6', () => {
-    expect(weekTarget(4, 3)).toBe(4);
-    expect(weekTarget(9, 3)).toBe(7);
+  it('zapisany cel wygrywa z liczbą treningów planu (plan to tylko kolejność)', () => {
+    expect(weekTarget(4, 3)).toBe(3);
+    expect(weekTarget(3, 5)).toBe(5);
     expect(weekTarget(null, 5)).toBe(5);
     expect(weekTarget(0, 5)).toBe(5);
     expect(weekTarget(null, 9)).toBe(6);
+  });
+
+  it('cel nigdy niezapisany: liczba treningów planu (najwyżej 7), bez planu 3', () => {
+    expect(weekTarget(4, null)).toBe(4);
+    expect(weekTarget(9, null)).toBe(7);
+    expect(weekTarget(null, null)).toBe(WEEKLY_GOAL_DEFAULT);
+    expect(weekTarget(0, null)).toBe(WEEKLY_GOAL_DEFAULT);
+  });
+
+  it('pomocnicze: cel przycięty do 2–6', () => {
     expect(clampWeeklyGoal(1)).toBe(2);
     expect(clampWeeklyGoal(Number.NaN)).toBe(WEEKLY_GOAL_DEFAULT);
   });
@@ -89,7 +99,7 @@ describe('dni treningowe planu', () => {
 
   it('cel = liczba wybranych dni, ważniejsza niż liczba dni planu', () => {
     expect(weekTarget(3, 3, [0, 1, 2, 3, 4, 5])).toBe(6);
-    expect(weekTarget(3, 5, [])).toBe(3);
+    expect(weekTarget(3, null, [])).toBe(3);
   });
 
   it('dni zaplanowane w pasku tygodnia', () => {

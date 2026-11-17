@@ -1,20 +1,18 @@
 // Dane podsumowania zakończonego treningu: liczby, nowe rekordy, tydzień i porównanie z poprzednim.
 import type { Db } from '@/data/db';
 import { listPlans, getPlan } from '@/data/repositories/plans';
-import { getSetting } from '@/data/repositories/settings';
 import {
   exerciseHistory,
   listFinishedStarts,
   previousFinishedForDay,
 } from '@/data/repositories/workouts';
 import { newRecordsInWorkout, type RecordKind } from '@/domain/records';
-import { clampWeeklyGoal, weekDoneCount, weekTarget, WEEKLY_GOAL_DEFAULT } from '@/domain/week';
+import { weekDoneCount, weekTarget } from '@/domain/week';
 import { summarizeWorkout, type WorkoutSummary } from '@/domain/workout';
 
-import { loadSession, type Session } from './session';
+import { loadTrainingSettings } from '@/features/settings/keys';
 
-/** Klucz ustawienia: cel treningów na tydzień, gdy nie ma aktywnego planu. */
-export const WEEKLY_GOAL_SETTING = 'weeklyGoal';
+import { loadSession, type Session } from './session';
 
 export type SummaryRecord = { exerciseName: string; kinds: RecordKind[] };
 export type SummaryData = {
@@ -61,9 +59,7 @@ export async function loadSummary(db: Db, workoutId: string): Promise<SummaryDat
   const active = (await listPlans(db)).find((p) => p.isActive);
   const activePlan = active ? await getPlan(db, active.id) : null;
   const planDays = active ? (activePlan?.days.length ?? 0) : null;
-  const goal = clampWeeklyGoal(
-    await getSetting<number>(db, WEEKLY_GOAL_SETTING, WEEKLY_GOAL_DEFAULT),
-  );
+  const goal = (await loadTrainingSettings(db)).weeklyGoal;
   const until = Date.parse(session.startedAt);
   const starts = (await listFinishedStarts(db)).filter((s) => Date.parse(s) <= until);
 

@@ -15,17 +15,22 @@ export function clampWeeklyGoal(goal: number): number {
 }
 
 /**
- * Ile treningów na tydzień: z wybranymi dniami treningowymi tyle, ile dni; z aktywnym planem bez dni
- * tyle, ile ma dni planu (rotacja); bez planu cel ustawiony przez użytkownika.
+ * Ile treningów na tydzień (segmenty pierścienia). Kolejność:
+ * 1. wybrane dni treningowe planu → tyle, ile dni;
+ * 2. cel tygodnia zapisany przez użytkownika (wprowadzenie, Ustawienia, „Dziś”) → niezależnie od planu,
+ *    bo plan to tylko kolejność treningów (rotacja);
+ * 3. cel nigdy niezapisany (`null`) i aktywny plan → liczba treningów planu (tak było przed celem tygodnia);
+ * 4. domyślnie 3.
  */
 export function weekTarget(
   planDayCount: number | null,
-  weeklyGoal: number,
+  weeklyGoal: number | null,
   weekdays: readonly number[] | null = null,
 ): number {
   if (weekdays?.length) return weekdays.length;
+  if (weeklyGoal != null) return clampWeeklyGoal(weeklyGoal);
   if (planDayCount != null && planDayCount > 0) return Math.min(DAYS_IN_WEEK, planDayCount);
-  return clampWeeklyGoal(weeklyGoal);
+  return WEEKLY_GOAL_DEFAULT;
 }
 
 /** Dzień tygodnia od poniedziałku: 0 = poniedziałek, 6 = niedziela. */
@@ -91,6 +96,24 @@ export function weekDays(
       today: date.getTime() === today,
       planned: weekdays?.includes(i) ?? false,
     };
+  });
+}
+
+export type WeekCount = { weekStart: Date; done: number };
+
+/**
+ * Regularność: liczba zakończonych treningów w ostatnich `weeks` tygodniach (od najstarszego do bieżącego).
+ */
+export function weeklyHistory(startedAt: string[], now: Date, weeks = 12): WeekCount[] {
+  const thisWeek = startOfWeek(now);
+  const counts = new Map<number, number>();
+  for (const s of startedAt) {
+    const i = weekIndex(new Date(s), thisWeek);
+    if (i <= 0 && i > -weeks) counts.set(i, (counts.get(i) ?? 0) + 1);
+  }
+  return Array.from({ length: weeks }, (_, k) => {
+    const i = k - weeks + 1;
+    return { weekStart: addDays(thisWeek, i * DAYS_IN_WEEK), done: counts.get(i) ?? 0 };
   });
 }
 

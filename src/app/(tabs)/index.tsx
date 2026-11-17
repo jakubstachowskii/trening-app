@@ -9,7 +9,6 @@ import { ListGroup, ListRow } from '@/components/ListRow';
 import { Skeleton } from '@/components/Skeleton';
 import { Text } from '@/components/Text';
 import { useDb } from '@/data/DatabaseProvider';
-import { setSetting } from '@/data/repositories/settings';
 import { useDbQuery } from '@/data/useDbQuery';
 import { clampWeeklyGoal } from '@/domain/week';
 import { formatClock } from '@/domain/workout';
@@ -22,7 +21,8 @@ import {
   formatWhen,
 } from '@/features/today/format';
 import { WeekRing } from '@/features/today/WeekRing';
-import { loadStartData, type StartData, WEEKLY_GOAL_SETTING } from '@/features/workout/startData';
+import { saveWeeklyGoal } from '@/features/settings/keys';
+import { loadStartData, type StartData } from '@/features/workout/startData';
 import { beginWorkout, openWorkout } from '@/features/workout/startWorkout';
 import { useTheme } from '@/theme';
 
@@ -89,7 +89,7 @@ export default function TodayScreen() {
   };
 
   const changeGoal = async (goal: number, delta: number) => {
-    await setSetting(db, WEEKLY_GOAL_SETTING, clampWeeklyGoal(goal + delta));
+    await saveWeeklyGoal(db, goal + delta);
     await reload();
   };
 
