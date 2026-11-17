@@ -1,31 +1,66 @@
 import { Stack, useRouter } from 'expo-router';
-import { ScrollView } from 'react-native';
+import { useState } from 'react';
+import { ScrollView, View } from 'react-native';
 
+import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
 import { ListGroup, ListRow } from '@/components/ListRow';
 import { Section } from '@/components/Section';
 import { Skeleton } from '@/components/Skeleton';
 import { HeaderIconButton } from '@/components/stack';
 import { Text } from '@/components/Text';
-import { listPlanSummaries, type PlanSummary } from '@/data/repositories/plans';
-import { BUILTIN_PROGRAMS } from '@/data/seed/programs';
+import { useDb } from '@/data/DatabaseProvider';
+import type { PlanSummary } from '@/data/repositories/plans';
 import { useDbQuery } from '@/data/useDbQuery';
-import { t, tMaybe, tPlural } from '@/i18n';
+import { loadPlanTab } from '@/features/plans/planTab';
+import { PlanWeekCard } from '@/features/plans/PlanWeekCard';
+import { ProgramRows } from '@/features/plans/ProgramRows';
+import { beginWorkout } from '@/features/workout/startWorkout';
+import { t, tPlural } from '@/i18n';
 import { useTheme } from '@/theme';
 
-function planSubtitle(plan: PlanSummary): string {
-  return `${tPlural('units.days', plan.dayCount)} · ${tPlural('units.exercises', plan.exerciseCount)}`;
+function planMeta(plan: PlanSummary): string {
+  const trainings = tPlural('units.trainings', plan.dayCount);
+  return plan.sourceProgramId
+    ? t('planTab.programMeta', { trainings })
+    : t('planTab.ownMeta', { trainings });
 }
 
+/** Karta „Plan” (design/v2/Plan): aktywny plan z tygodniem, pozostałe plany, gotowe programy. */
 export default function PlansScreen() {
   const router = useRouter();
+  const db = useDb();
   const { colors, space } = useTheme();
-  const { data, loading, error, reload } = useDbQuery(listPlanSummaries, 'plans');
+  const { data, loading, error, reload } = useDbQuery((d) => loadPlanTab(d), 'plans');
+  const [busy, setBusy] = useState(false);
+  const now = new Date();
 
-  const plans = data ?? [];
-  const active = plans.find((plan) => plan.isActive);
-  const others = plans.filter((plan) => !plan.isActive);
   const openPlan = (id: string) => router.push({ pathname: '/plany/[id]', params: { id } });
+  const start = async (dayId: string | null) => {
+    if (busy) return;
+    setBusy(true);
+    try {
+      await beginWorkout(db, dayId ?? undefined);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const others = data?.others ?? [];
+  const otherPlans = others.length ? (
+    <Section title={t('planTab.others')}>
+      <ListGroup>
+        {others.map((plan) => (
+          <ListRow
+            key={plan.id}
+            title={plan.name}
+            subtitle={planMeta(plan)}
+            onPress={() => openPlan(plan.id)}
+          />
+        ))}
+      </ListGroup>
+    </Section>
+  ) : null;
 
   return (
     <>
@@ -34,7 +69,7 @@ export default function PlansScreen() {
           headerRight: () => (
             <HeaderIconButton
               icon={{ ios: 'plus', web: 'add' }}
-              label={t('plans.add')}
+              label={t('planTab.ownPlan')}
               onPress={() => router.push('/plany/nowy')}
             />
           ),
@@ -50,7 +85,7 @@ export default function PlansScreen() {
           gap: space.section,
         }}
       >
-        {loading ? <Skeleton rows={3} /> : null}
+        {loading && !data ? <Skeleton rows={3} /> : null}
         {error ? (
           <EmptyState
             title={t('common.errorTitle')}
@@ -59,66 +94,42 @@ export default function PlansScreen() {
           />
         ) : null}
 
-        {active ? (
-          <Section title={t('plans.active')}>
+        {data?.active ? (
+          <>
+            <PlanWeekCard
+              plan={data.active}
+              now={now}
+              busy={busy}
+              onStart={(dayId) => void start(dayId)}
+              onOpenPlan={() => openPlan(data.active!.id)}
+            />
+            {otherPlans}
             <ListGroup>
               <ListRow
-                title={active.name}
-                subtitle={planSubtitle(active)}
-                icon={{ ios: 'star.fill', web: 'star' }}
-                onPress={() => openPlan(active.id)}
+                title={t('planTab.browse')}
+                subtitle={t('planTab.browseBody')}
+                onPress={() => router.push('/plany/programy')}
               />
             </ListGroup>
-          </Section>
+          </>
         ) : null}
 
-        {!loading && !error && !plans.length ? (
-          <EmptyState
-            title={t('plans.emptyTitle')}
-            body={t('plans.emptyBody')}
-            action={{ label: t('plans.emptyAction'), onPress: () => router.push('/plany/nowy') }}
-          />
-        ) : null}
-
-        {others.length ? (
-          <Section title={t('plans.mine')}>
-            <ListGroup>
-              {others.map((plan) => (
-                <ListRow
-                  key={plan.id}
-                  title={plan.name}
-                  subtitle={planSubtitle(plan)}
-                  onPress={() => openPlan(plan.id)}
-                />
-              ))}
-            </ListGroup>
-          </Section>
-        ) : null}
-
-        <Section title={t('plans.programs')}>
-          <ListGroup>
-            {BUILTIN_PROGRAMS.map((program) => (
-              <ListRow
-                key={program.id}
-                title={tMaybe(`programs.${program.id}.name`) ?? program.id}
-                subtitle={t('plans.programMeta', {
-                  level: tMaybe(`levels.${program.level}`) ?? program.level,
-                  days: tPlural('units.daysPerWeek', program.daysPerWeek),
-                })}
-                icon={{ ios: 'list.bullet.clipboard', web: 'assignment' }}
-                onPress={() =>
-                  router.push({
-                    pathname: '/plany/program/[programId]',
-                    params: { programId: program.id },
-                  })
-                }
+        {data && !data.active ? (
+          <>
+            <Text variant="body" color="label2">
+              {t('planTab.emptyBody')}
+            </Text>
+            <ProgramRows recommended={data.recommended} weeklyGoal={data.weeklyGoal} />
+            <View>
+              <Button
+                variant="secondary"
+                label={t('planTab.ownPlan')}
+                onPress={() => router.push('/plany/nowy')}
               />
-            ))}
-          </ListGroup>
-          <Text variant="footnote" color="label2" style={{ paddingHorizontal: space.xxs }}>
-            {t('program.copyHint')}
-          </Text>
-        </Section>
+            </View>
+            {otherPlans}
+          </>
+        ) : null}
       </ScrollView>
     </>
   );

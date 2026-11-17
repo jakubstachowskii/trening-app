@@ -23,6 +23,11 @@ export function dayName(date: Date): string {
   return date.toLocaleDateString('pl', { weekday: 'long', day: 'numeric', month: 'long' });
 }
 
+/** „poniedziałek”, „wtorek”… (karta „Plan”: dzień zrobionego albo zaplanowanego treningu). */
+export function weekdayName(date: Date): string {
+  return t('today.weekdayNames').split(',')[(date.getDay() + 6) % 7] ?? '';
+}
+
 /** „jutro”, „w środę” (w ciągu tygodnia), dalej „24 listopada”. */
 export function formatNext(iso: string, now: Date): string {
   const date = new Date(iso);

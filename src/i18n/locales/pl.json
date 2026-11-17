@@ -89,6 +89,16 @@
       "one": "{count} tydzień",
       "few": "{count} tygodnie",
       "many": "{count} tygodni"
+    },
+    "trainings": {
+      "one": "{count} trening",
+      "few": "{count} treningi",
+      "many": "{count} treningów"
+    },
+    "trainingsPerWeek": {
+      "one": "{count} trening w tygodniu",
+      "few": "{count} treningi w tygodniu",
+      "many": "{count} treningów w tygodniu"
     }
   },
   "plan": {
@@ -1369,5 +1379,29 @@
       "few": "{count} treningi w tym tygodniu",
       "many": "{count} treningów w tym tygodniu"
     }
+  },
+  "planTab": {
+    "activeKicker": "Aktywny plan · tydzień {week}",
+    "doneOf": "{done} z {total} zrobione",
+    "segmentsLabel": "{done} z {total} treningów w tym tygodniu",
+    "today": "dziś",
+    "next": "następny",
+    "doneMeta": "{when} · {time} · {volume} kg",
+    "nextMeta": "{when} · {exercises} · ok. {min} min",
+    "nextMetaShort": "{exercises}",
+    "emptyTraining": "bez ćwiczeń",
+    "start": "Zacznij",
+    "startLabel": "Zacznij trening {name}",
+    "doneLabel": "{name}, zrobiony",
+    "others": "Pozostałe plany",
+    "ownMeta": "{trainings} · własny",
+    "programMeta": "{trainings} · gotowy program",
+    "browse": "Przeglądaj gotowe programy",
+    "browseBody": "Góra/dół, PPL, całe ciało, siła",
+    "emptyBody": "Wybierz gotowy program albo ułóż własny. Potem możesz wszystko zmienić.",
+    "ownPlan": "Ułóż własny plan",
+    "programsTitle": "Gotowe programy",
+    "recommended": "Polecany przy {count} treningach w tygodniu",
+    "openPlanHint": "Otwiera szczegóły planu"
   }
 }

@@ -106,7 +106,7 @@ export default function PlanScreen() {
 
   const meta = [
     plan.level ? (tMaybe(`levels.${plan.level}`) ?? plan.level) : null,
-    tPlural('units.days', days.length),
+    tPlural('units.trainings', days.length),
   ]
     .filter(Boolean)
     .join(' · ');

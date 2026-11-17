@@ -13,6 +13,7 @@ export default function PlansLayout() {
       />
       <Stack.Screen name="[id]" options={{ title: '' }} />
       <Stack.Screen name="dzien/[dayId]" options={{ title: '' }} />
+      <Stack.Screen name="programy" options={{ title: t('planTab.programsTitle') }} />
       <Stack.Screen name="program/[programId]" options={{ title: '' }} />
       <Stack.Screen name="nowy" options={sheetOptions(t('planForm.titleNew'))} />
       <Stack.Screen name="cwiczenie/[id]" options={sheetOptions(t('planExercise.title'))} />

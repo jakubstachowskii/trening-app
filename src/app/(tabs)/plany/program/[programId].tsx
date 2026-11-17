@@ -8,14 +8,14 @@ import { ListGroup, ListRow } from '@/components/ListRow';
 import { Section } from '@/components/Section';
 import { Text } from '@/components/Text';
 import { useDb } from '@/data/DatabaseProvider';
-import { copyProgram } from '@/data/repositories/plans';
+import { chooseProgram } from '@/data/repositories/plans';
 import { BUILTIN_PROGRAMS } from '@/data/seed/programs';
 import { exerciseName } from '@/features/exercises/search';
 import { formatPlanExercise } from '@/features/plans/format';
 import { t, tMaybe, tPlural } from '@/i18n';
 import { useTheme } from '@/theme';
 
-/** Podgląd gotowego programu (tylko do odczytu) i kopiowanie do „moich planów”. */
+/** Podgląd gotowego programu i „Wybieram ten plan” (kopia staje się aktywnym planem, bez duplikatów). */
 export default function ProgramScreen() {
   const { programId } = useLocalSearchParams<{ programId: string }>();
   const router = useRouter();
@@ -37,8 +37,8 @@ export default function ProgramScreen() {
     if (copying) return;
     setCopying(true);
     try {
-      const planId = await copyProgram(db, program, (key) => tMaybe(key) ?? key);
-      router.replace({ pathname: '/plany/[id]', params: { id: planId } });
+      await chooseProgram(db, program, (key) => tMaybe(key) ?? key);
+      router.dismissTo('/plany');
     } finally {
       setCopying(false);
     }
@@ -57,7 +57,7 @@ export default function ProgramScreen() {
             {tMaybe(`programs.${program.id}.name`) ?? program.id}
           </Text>
           <Text variant="subheadline" color="label2">
-            {`${level} · ${tPlural('units.daysPerWeek', program.daysPerWeek)}`}
+            {`${level} · ${tPlural('units.trainings', program.days.length)}`}
           </Text>
           <Text variant="body">{tMaybe(`programs.${program.id}.description`) ?? ''}</Text>
         </View>
@@ -90,7 +90,7 @@ export default function ProgramScreen() {
       </ScrollView>
       <FloatingButton
         label={t('program.copy')}
-        icon={{ ios: 'doc.on.doc', web: 'content_copy' }}
+        icon={{ ios: 'checkmark', web: 'check' }}
         disabled={copying}
         onPress={() => void copy()}
       />

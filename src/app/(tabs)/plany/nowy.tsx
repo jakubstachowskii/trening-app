@@ -9,7 +9,7 @@ import { Skeleton } from '@/components/Skeleton';
 import { TextField } from '@/components/TextField';
 import { useDb } from '@/data/DatabaseProvider';
 import type { Level, Plan } from '@/data/models';
-import { createPlan, getPlan, updatePlan } from '@/data/repositories/plans';
+import { createOwnPlan, getPlan, updatePlan } from '@/data/repositories/plans';
 import { useDbQuery } from '@/data/useDbQuery';
 import { t, tMaybe } from '@/i18n';
 import { useTheme } from '@/theme';
@@ -36,8 +36,9 @@ function Form({ initial }: { initial: Plan | null }) {
         await updatePlan(db, initial.id, input);
         router.back();
       } else {
-        const id = await createPlan(db, { ...input, description: description.trim() || null });
-        router.replace({ pathname: '/plany/[id]', params: { id } });
+        // Własny plan w dwóch krokach: nazwa → od razu aktywny plan z pierwszym treningiem do uzupełnienia.
+        const { dayId } = await createOwnPlan(db, name, t('planDetail.newDayName', { count: 1 }));
+        router.replace({ pathname: '/plany/dzien/[dayId]', params: { dayId } });
       }
     } finally {
       setSaving(false);
@@ -68,37 +69,41 @@ function Form({ initial }: { initial: Plan | null }) {
           autoFocus={!initial}
           returnKeyType="done"
         />
-        <TextField
-          label={`${t('planForm.description')} (${t('common.optional')})`}
-          placeholder={t('planForm.descriptionPlaceholder')}
-          value={description}
-          onChangeText={setDescription}
-          multiline
-        />
-        <Section title={t('planForm.level')}>
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.xs }}>
-            <Pill
-              label={t('planForm.noLevel')}
-              selected={level === null}
-              onPress={() => setLevel(null)}
+        {initial ? (
+          <>
+            <TextField
+              label={`${t('planForm.description')} (${t('common.optional')})`}
+              placeholder={t('planForm.descriptionPlaceholder')}
+              value={description}
+              onChangeText={setDescription}
+              multiline
             />
-            {LEVELS.map((value) => (
-              <Pill
-                key={value}
-                label={tMaybe(`levels.${value}`) ?? value}
-                selected={level === value}
-                onPress={() => setLevel(value)}
-              />
-            ))}
-          </View>
-        </Section>
+            <Section title={t('planForm.level')}>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.xs }}>
+                <Pill
+                  label={t('planForm.noLevel')}
+                  selected={level === null}
+                  onPress={() => setLevel(null)}
+                />
+                {LEVELS.map((value) => (
+                  <Pill
+                    key={value}
+                    label={tMaybe(`levels.${value}`) ?? value}
+                    selected={level === value}
+                    onPress={() => setLevel(value)}
+                  />
+                ))}
+              </View>
+            </Section>
+          </>
+        ) : null}
         <Button label={t('common.save')} onPress={() => void save()} disabled={saving} />
       </ScrollView>
     </View>
   );
 }
 
-/** Nowy plan albo edycja (`?id=`): nazwa, opis, poziom. */
+/** Nowy plan (sama nazwa) albo edycja (`?id=`): nazwa, opis, poziom. */
 export default function PlanFormSheet() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const { colors, space } = useTheme();

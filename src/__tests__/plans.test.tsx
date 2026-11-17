@@ -12,7 +12,7 @@ import { t, tMaybe } from '@/i18n';
 
 import { renderWithTheme, seededDb } from './helpers/screen';
 
-const mockRouter = { push: jest.fn(), back: jest.fn(), replace: jest.fn() };
+const mockRouter = { push: jest.fn(), back: jest.fn(), replace: jest.fn(), dismissTo: jest.fn() };
 let mockParams: Record<string, string> = {};
 let mockDb: Db;
 
@@ -40,40 +40,61 @@ beforeEach(async () => {
 });
 
 describe('lista planów', () => {
-  it('bez planów: pusty stan z działaniem i gotowe programy', async () => {
+  it('bez aktywnego planu: programy z polecanym na górze i „Ułóż własny plan”', async () => {
     await renderWithTheme(<PlansScreen />);
-    expect(await screen.findByText(t('plans.emptyTitle'))).toBeOnTheScreen();
-    expect(screen.getByRole('button', { name: /^Push \/ Pull \/ Nogi,/ })).toBeOnTheScreen();
+    expect(await screen.findByText(t('planTab.emptyBody'))).toBeOnTheScreen();
+    const programs = screen.getAllByRole('button', { name: /treningach w tygodniu|Przy |Gdy / });
+    // Cel domyślny 3 → polecane „Całe ciało” jako pierwsze, z plakietką.
+    expect(programs[0]).toHaveProp(
+      'accessibilityLabel',
+      expect.stringMatching(/^Całe ciało, Polecany przy 3 treningach w tygodniu/),
+    );
 
-    await fireEvent.press(screen.getByRole('button', { name: t('plans.emptyAction') }));
+    await fireEvent.press(screen.getByRole('button', { name: t('planTab.ownPlan') }));
     expect(mockRouter.push).toHaveBeenCalledWith('/plany/nowy');
   });
 
-  it('aktywny plan jest w osobnej sekcji na górze', async () => {
+  it('aktywny plan: tydzień w kolejności planu z „Zacznij” przy pierwszym, pozostałe plany niżej', async () => {
     const planId = await copyProgram(mockDb, ppl, translate);
     await setActivePlan(mockDb, planId);
+    const other = await copyProgram(mockDb, BUILTIN_PROGRAMS[0], translate);
     await renderWithTheme(<PlansScreen />);
 
-    expect(await screen.findByRole('header', { name: t('plans.active') })).toBeOnTheScreen();
+    expect(await screen.findByRole('header', { name: 'Push / Pull / Nogi' })).toBeOnTheScreen();
+    expect(screen.getByText(/^3 treningi w tygodniu · 0 z 3 zrobione$/)).toBeOnTheScreen();
     expect(
-      screen.getByRole('button', { name: /^Push \/ Pull \/ Nogi, 3 dni · 17 ćwiczeń/ }),
+      screen.getByRole('button', { name: t('planTab.startLabel', { name: 'Push' }) }),
     ).toBeOnTheScreen();
+    expect(screen.getByLabelText(/^Pull, 6 ćwiczeń$/)).toBeOnTheScreen();
+    expect(screen.getByRole('header', { name: t('planTab.others') })).toBeOnTheScreen();
+
+    await fireEvent.press(
+      screen.getByRole('button', { name: /^Całe ciało, 3 treningi · gotowy program/ }),
+    );
+    expect(mockRouter.push).toHaveBeenCalledWith({
+      pathname: '/plany/[id]',
+      params: { id: other },
+    });
   });
 });
 
 describe('gotowy program', () => {
-  it('kopiuje program do moich planów i otwiera kopię', async () => {
+  it('„Wybieram ten plan”: program staje się aktywnym planem, drugi wybór nie robi kopii', async () => {
     mockParams = { programId: 'push-pull-legs' };
     await renderWithTheme(<ProgramScreen />);
     await fireEvent.press(screen.getByRole('button', { name: t('program.copy') }));
 
-    await waitFor(() => expect(mockRouter.replace).toHaveBeenCalled());
+    await waitFor(() => expect(mockRouter.dismissTo).toHaveBeenCalledWith('/plany'));
     const [plan] = await listPlans(mockDb);
-    expect(plan).toMatchObject({ name: 'Push / Pull / Nogi', sourceProgramId: 'push-pull-legs' });
-    expect(mockRouter.replace).toHaveBeenCalledWith({
-      pathname: '/plany/[id]',
-      params: { id: plan.id },
+    expect(plan).toMatchObject({
+      name: 'Push / Pull / Nogi',
+      sourceProgramId: 'push-pull-legs',
+      isActive: true,
     });
+
+    await fireEvent.press(screen.getByRole('button', { name: t('program.copy') }));
+    await waitFor(() => expect(mockRouter.dismissTo).toHaveBeenCalledTimes(2));
+    expect(await listPlans(mockDb)).toHaveLength(1);
   });
 });
 
