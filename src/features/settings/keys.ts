@@ -16,9 +16,10 @@ export const SETTING = {
 
 /** Kroki ciężaru do wyboru w Ustawieniach. */
 export const WEIGHT_STEPS_KG = [1, 1.25, 2.5, 5] as const;
-export const REST_STEP_SEC = 15;
 export const REST_MIN_SEC = 30;
 export const REST_MAX_SEC = 5 * 60;
+/** Domyślna przerwa do wyboru w Ustawieniach. */
+export const REST_OPTIONS_SEC = [45, 60, 90, 120, 150, 180, 240, 300] as const;
 
 export type TrainingSettings = {
   weeklyGoal: number | null;

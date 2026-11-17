@@ -60,6 +60,8 @@ import {
 } from './session';
 import { useNow } from './useNow';
 
+import { loadTrainingSettings } from '@/features/settings/keys';
+
 import { REST_SETTING } from './restStore';
 type StoredRest = RestTimerState & { notificationId?: string | null };
 
@@ -69,6 +71,8 @@ const RECORD_FLASH_MS = 3200;
 type NextUp = { text: string; label: string };
 
 const STEP: Record<KeypadField, number> = { weight: DEFAULT_WEIGHT_STEP_KG, reps: 1, duration: 5 };
+
+const SETTINGS_KEY = 'settings';
 
 function fieldsFor(item: SessionExercise): KeypadField[] {
   const type = item.exercise.type;
@@ -95,6 +99,10 @@ export function useWorkoutSession() {
   const query = useDbQuery((d) => loadSession(d), 'active-workout');
   const session: Session | null | undefined = query.data;
   const reload = query.reload;
+  // Ustawienia „Trening”: krok ciężaru na klawiaturze i przerwa, gdy ćwiczenie nie ma własnej.
+  const settings = useDbQuery((d) => loadTrainingSettings(d), SETTINGS_KEY).data;
+  const restDefaultSec = settings?.restDefaultSec ?? DEFAULT_REST_SEC;
+  const weightStepKg = settings?.weightStepKg ?? DEFAULT_WEIGHT_STEP_KG;
 
   const [current, setCurrent] = useState(0);
   const initialized = useRef<string | null>(null);
@@ -300,7 +308,7 @@ export function useWorkoutSession() {
         sets: e.sets.map((x) => (x.id === set.id ? done : x)),
       }));
       if (hasPendingSets(after)) {
-        const total = owner.restSec ?? DEFAULT_REST_SEC;
+        const total = owner.restSec ?? restDefaultSec;
         const nextText = nextUpText(s, set.id);
         if (rest) await cancelRestEnd(rest.notificationId);
         // Każda przerwa zaczyna się jako pasek.
@@ -316,7 +324,7 @@ export function useWorkoutSession() {
         await clearRest();
       }
     },
-    [db, rest, saveRest, clearRest, nextUpText],
+    [db, rest, saveRest, clearRest, nextUpText, restDefaultSec],
   );
 
   const toggleSet = useCallback(
@@ -624,6 +632,7 @@ export function useWorkoutSession() {
   })();
 
   return {
+    keepAwake: settings?.keepAwake ?? true,
     query,
     session,
     index,
@@ -635,7 +644,7 @@ export function useWorkoutSession() {
     editing,
     keypadNext,
     keypadSetNumber,
-    keypadStep: editing ? STEP[editing.field] : 1,
+    keypadStep: editing ? (editing.field === 'weight' ? weightStepKg : STEP[editing.field]) : 1,
     openEditor,
     onKey,
     onStep,

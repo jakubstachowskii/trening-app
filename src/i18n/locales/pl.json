@@ -1403,5 +1403,15 @@
     "programsTitle": "Gotowe programy",
     "recommended": "Polecany przy {count} treningach w tygodniu",
     "openPlanHint": "Otwiera szczegóły planu"
+  },
+  "settings": {
+    "title": "Ustawienia",
+    "training": "Trening",
+    "weeklyGoal": "Cel tygodnia",
+    "restDefault": "Domyślna przerwa",
+    "weightStep": "Krok ciężaru",
+    "keepAwake": "Nie wygaszaj ekranu w trakcie",
+    "keepAwakeLabel": "Nie wygaszaj ekranu w trakcie treningu",
+    "trainingHint": "Przerwa i krok ciężaru działają od następnego treningu. Ćwiczenie w planie może mieć własną przerwę."
   }
 }

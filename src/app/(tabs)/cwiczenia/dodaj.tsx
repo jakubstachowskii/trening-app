@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/Skeleton';
 import { notify } from '@/components/stack';
 import { Text } from '@/components/Text';
 import { useDb } from '@/data/DatabaseProvider';
+import { loadTrainingSettings } from '@/features/settings/keys';
 import { getExercise } from '@/data/repositories/exercises';
 import { addPlanExercise, getPlan, listPlans } from '@/data/repositories/plans';
 import { useDbQuery } from '@/data/useDbQuery';
@@ -30,7 +31,15 @@ export default function AddToPlanSheet() {
   const add = async (planName: string, dayId: string, dayName: string) => {
     const exercise = await getExercise(db, exerciseId);
     if (!exercise) return;
-    await addPlanExercise(db, dayId, defaultPlanExercise(exercise.id, exercise.type));
+    await addPlanExercise(
+      db,
+      dayId,
+      defaultPlanExercise(
+        exercise.id,
+        exercise.type,
+        (await loadTrainingSettings(db)).restDefaultSec,
+      ),
+    );
     router.back();
     notify(t('addToPlan.added', { plan: planName, day: dayName }));
   };

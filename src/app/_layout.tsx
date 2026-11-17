@@ -33,6 +33,7 @@ function Root() {
           options={{ presentation: 'fullScreenModal', gestureEnabled: false, headerShown: false }}
         />
         <Stack.Screen name="trening/dodaj" options={sheetOptions(t('workout.addExercise'))} />
+        <Stack.Screen name="ustawienia" options={{ title: t('settings.title') }} />
         <Stack.Screen
           name="trening/podsumowanie"
           options={{ presentation: 'fullScreenModal', gestureEnabled: false, headerShown: false }}

@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { EmptyState } from '@/components/EmptyState';
 import { Skeleton } from '@/components/Skeleton';
 import { useDb } from '@/data/DatabaseProvider';
+import { loadTrainingSettings } from '@/features/settings/keys';
 import { listExercises } from '@/data/repositories/exercises';
 import {
   addExerciseToWorkout,
@@ -58,10 +59,15 @@ export default function WorkoutExercisePicker() {
           setBusy(true);
           try {
             if (replace) {
-              await replaceWorkoutExercise(db, replace, exercise.id);
+              await replaceWorkoutExercise(db, replace, exercise.id, {
+                stepKg: (await loadTrainingSettings(db)).weightStepKg,
+              });
             } else {
               const workout = await getUnfinishedWorkout(db);
-              if (workout) await addExerciseToWorkout(db, workout.id, exercise.id);
+              if (workout)
+                await addExerciseToWorkout(db, workout.id, exercise.id, {
+                  stepKg: (await loadTrainingSettings(db)).weightStepKg,
+                });
             }
             router.back();
           } finally {

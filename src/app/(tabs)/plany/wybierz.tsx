@@ -5,6 +5,7 @@ import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
 import { Skeleton } from '@/components/Skeleton';
 import { useDb } from '@/data/DatabaseProvider';
+import { loadTrainingSettings } from '@/features/settings/keys';
 import { listExercises } from '@/data/repositories/exercises';
 import { addPlanExercise } from '@/data/repositories/plans';
 import { useDbQuery } from '@/data/useDbQuery';
@@ -57,7 +58,15 @@ export default function ExercisePicker() {
           if (adding) return;
           setAdding(true);
           try {
-            await addPlanExercise(db, dayId, defaultPlanExercise(exercise.id, exercise.type));
+            await addPlanExercise(
+              db,
+              dayId,
+              defaultPlanExercise(
+                exercise.id,
+                exercise.type,
+                (await loadTrainingSettings(db)).restDefaultSec,
+              ),
+            );
             router.back();
           } finally {
             setAdding(false);

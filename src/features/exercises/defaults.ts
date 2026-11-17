@@ -7,7 +7,11 @@ export const DEFAULT_REPS: [number, number] = [8, 12];
 export const DEFAULT_DURATION_SEC = 30;
 export const DEFAULT_REST_SEC = 90;
 
-export function defaultPlanExercise(exerciseId: string, type: ExerciseType): PlanExerciseInput {
+export function defaultPlanExercise(
+  exerciseId: string,
+  type: ExerciseType,
+  restSec: number = DEFAULT_REST_SEC,
+): PlanExerciseInput {
   const timed = type === 'time';
   return {
     exerciseId,
@@ -16,7 +20,7 @@ export function defaultPlanExercise(exerciseId: string, type: ExerciseType): Pla
     repsMax: timed ? null : DEFAULT_REPS[1],
     targetWeightKg: null,
     targetDurationSec: timed ? DEFAULT_DURATION_SEC : null,
-    restSec: DEFAULT_REST_SEC,
+    restSec,
     note: null,
   };
 }

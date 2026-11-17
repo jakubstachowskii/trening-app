@@ -64,7 +64,7 @@ export default function WorkoutScreen() {
   const now = useNow(1000);
   const floatingSpace = useFloatingButtonSpace(true);
 
-  const { session, query } = w;
+  const { session, query, keepAwake } = w;
   const scroll = useRef<ScrollViewInstance>(null);
   const cardY = useRef(0);
   const editingSetId = w.editing?.setId;
@@ -150,7 +150,7 @@ export default function WorkoutScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
-      <KeepAwake />
+      {keepAwake ? <KeepAwake /> : null}
       <ScrollView
         ref={scroll}
         style={{ flex: 1 }}

@@ -1,6 +1,7 @@
 // Start treningu z dowolnego miejsca (Start, dzień planu). Najpierw pyta o niedokończony trening.
 import { router } from 'expo-router';
 import { Alert, Platform } from 'react-native';
+import { loadTrainingSettings } from '@/features/settings/keys';
 
 import type { Db } from '@/data/db';
 import { latestBodyweight } from '@/data/repositories/bodyweight';
@@ -46,7 +47,8 @@ function askResumeOrDiscard(onResume: () => void, onDiscard: () => void): void {
 export async function beginWorkout(db: Db, dayId?: string): Promise<void> {
   const start = async () => {
     const bodyweightKg = (await latestBodyweight(db))?.weightKg ?? null;
-    if (dayId) await startWorkoutFromDay(db, dayId, { bodyweightKg });
+    const { weightStepKg } = await loadTrainingSettings(db);
+    if (dayId) await startWorkoutFromDay(db, dayId, { bodyweightKg, stepKg: weightStepKg });
     else await startEmptyWorkout(db, { bodyweightKg });
     openWorkout();
   };

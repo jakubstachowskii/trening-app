@@ -4,6 +4,7 @@ import { Pressable, ScrollView, View } from 'react-native';
 
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
+import { GlassSurface } from '@/components/GlassControl';
 import { Icon } from '@/components/Icon';
 import { ListGroup, ListRow } from '@/components/ListRow';
 import { Skeleton } from '@/components/Skeleton';
@@ -94,13 +95,33 @@ export default function TodayScreen() {
   };
 
   const header = (
-    <View>
-      <Text variant="footnote" color="label2">
-        {formatTodayDate(now)}
-      </Text>
-      <Text variant="brandXL" accessibilityRole="header">
-        {t('screens.start.title')}
-      </Text>
+    <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: space.sm }}>
+      <View style={{ flex: 1 }}>
+        <Text variant="footnote" color="label2">
+          {formatTodayDate(now)}
+        </Text>
+        <Text variant="brandXL" accessibilityRole="header">
+          {t('screens.start.title')}
+        </Text>
+      </View>
+      {/* Zębatka jak w design/v2/Start: szklane kółko w prawym górnym rogu. */}
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={t('settings.title')}
+        onPress={() => router.push('/ustawienia')}
+      >
+        <GlassSurface
+          style={{
+            width: size.touchMin,
+            height: size.touchMin,
+            borderRadius: size.touchMin / 2,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Icon name={{ ios: 'gearshape', web: 'settings' }} size={size.iconSmall} />
+        </GlassSurface>
+      </Pressable>
     </View>
   );
 
