@@ -1413,5 +1413,41 @@
     "keepAwake": "Nie wygaszaj ekranu w trakcie",
     "keepAwakeLabel": "Nie wygaszaj ekranu w trakcie treningu",
     "trainingHint": "Przerwa i krok ciężaru działają od następnego treningu. Ćwiczenie w planie może mieć własną przerwę."
+  },
+  "progress": {
+    "viewLabel": "Widok postępów",
+    "overview": "Przegląd",
+    "history": "Historia",
+    "regularity": "Regularność · 12 tygodni",
+    "streak": {
+      "one": "{count} tydzień z rzędu",
+      "few": "{count} tygodnie z rzędu",
+      "many": "{count} tygodni z rzędu"
+    },
+    "regularityLabel": "Ostatnie {total} tygodni: {full} z pełnym celem, {streak} z rzędu",
+    "regularityHint": "Pełny pierścień to tydzień, w którym zrobiłeś cel ({count} na tydzień).",
+    "emptyKicker": "Postępy",
+    "emptyTitle": "Tu zobaczysz, jak rośniesz",
+    "emptyBody": "Po pierwszym treningu pojawi się tu regularność i historia treningów. Wykres siły i mapa mięśni dojdą w kolejnej wersji.",
+    "emptyAction": "Zacznij pierwszy trening",
+    "weekInitials": "P,W,Ś,C,P,S,N",
+    "calendarLabel": "Dni z treningiem w tym miesiącu: {count}",
+    "prevMonth": "Poprzedni miesiąc",
+    "nextMonth": "Następny miesiąc",
+    "itemMeta": "{date} · {time} · {volume} kg",
+    "recordsBadge": {
+      "one": "{count} rekord",
+      "few": "{count} rekordy",
+      "many": "{count} rekordów"
+    },
+    "monthEmpty": "W tym miesiącu nie ma zakończonych treningów.",
+    "time": "Czas",
+    "volume": "Objętość",
+    "sets": "Serie",
+    "setTitle": "Seria {n}",
+    "note": "Notatka",
+    "delete": "Usuń trening",
+    "deleteTitle": "Usunąć trening „{name}”?",
+    "deleteBody": "Serie z tego treningu znikną z historii i z rekordów. Tego nie da się cofnąć."
   }
 }

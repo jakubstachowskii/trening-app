@@ -44,14 +44,7 @@ export function AppTabs() {
         name="plany"
         options={{
           title: t('tabs.plans'),
-          tabBarIcon: icon({ ios: 'list.bullet.rectangle.portrait', web: 'list_alt' }),
-        }}
-      />
-      <Tabs.Screen
-        name="cwiczenia"
-        options={{
-          title: t('tabs.exercises'),
-          tabBarIcon: icon({ ios: 'dumbbell.fill', web: 'fitness_center' }),
+          tabBarIcon: icon({ ios: 'calendar', web: 'calendar_month' }),
         }}
       />
       <Tabs.Screen
@@ -62,10 +55,10 @@ export function AppTabs() {
         }}
       />
       <Tabs.Screen
-        name="historia"
+        name="cwiczenia"
         options={{
-          title: t('tabs.history'),
-          tabBarIcon: icon({ ios: 'clock.arrow.circlepath', web: 'history' }),
+          title: t('tabs.exercises'),
+          tabBarIcon: icon({ ios: 'dumbbell.fill', web: 'fitness_center' }),
         }}
       />
     </Tabs>
