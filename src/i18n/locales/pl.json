@@ -1,7 +1,7 @@
 {
   "tabs": {
     "start": "Dziś",
-    "plans": "Plany",
+    "plans": "Plan",
     "exercises": "Ćwiczenia",
     "progress": "Postępy",
     "history": "Historia"
@@ -12,7 +12,7 @@
       "body": "Tu zobaczysz dzisiejszy trening, ostatnie wyniki i swój tydzień w skrócie."
     },
     "plans": {
-      "title": "Plany",
+      "title": "Plan",
       "body": "Tu ułożysz plany treningowe: dni, ćwiczenia i liczbę serii."
     },
     "exercises": {
@@ -345,17 +345,19 @@
   },
   "programs": {
     "full-body-3": {
-      "name": "Całe ciało, 3 dni",
-      "description": "Na start: trzy treningi w tygodniu, za każdym razem całe ciało. Dni A, B i C robisz na zmianę.",
+      "name": "Całe ciało",
+      "description": "Na start: trzy treningi w tygodniu, za każdym razem całe ciało. Treningi A, B i C robisz na zmianę.",
+      "forWhom": "Na start i przy 2–3 treningach w tygodniu: każda partia pracuje kilka razy w tygodniu.",
       "days": {
-        "a": "Dzień A",
-        "b": "Dzień B",
-        "c": "Dzień C"
+        "a": "Trening A",
+        "b": "Trening B",
+        "c": "Trening C"
       }
     },
     "upper-lower-4": {
-      "name": "Góra / dół, 4 dni",
+      "name": "Góra / dół",
       "description": "Cztery treningi w tygodniu: dwa na górę ciała, dwa na nogi i pośladki.",
+      "forWhom": "Przy 4 treningach w tygodniu: góra i dół ciała po dwa razy.",
       "days": {
         "upper-a": "Góra A",
         "lower-a": "Dół A",
@@ -366,6 +368,7 @@
     "push-pull-legs": {
       "name": "Push / Pull / Nogi",
       "description": "Trzy dni: wypychanie (klatka, barki, triceps), przyciąganie (plecy, biceps) i nogi. Można robić 3 albo 6 razy w tygodniu.",
+      "forWhom": "Przy 5–6 treningach w tygodniu: krótsze treningi, każda partia około dwa razy.",
       "days": {
         "push": "Push",
         "pull": "Pull",
@@ -373,11 +376,12 @@
       }
     },
     "strength-5x5": {
-      "name": "Siła 5×5, 3 dni",
-      "description": "Podstawowe boje: 5 serii po 5 powtórzeń. Gdy wszystkie serie wejdą, następnym razem dokładasz ciężar. Dni A i B na zmianę.",
+      "name": "Siła 5×5",
+      "description": "Podstawowe boje: 5 serii po 5 powtórzeń. Gdy wszystkie serie wejdą, następnym razem dokładasz ciężar. Treningi A i B na zmianę.",
+      "forWhom": "Gdy zależy Ci głównie na sile: mało ćwiczeń, ciężkie serie po 5 powtórzeń.",
       "days": {
-        "a": "Dzień A",
-        "b": "Dzień B"
+        "a": "Trening A",
+        "b": "Trening B"
       }
     }
   },
@@ -470,10 +474,10 @@
   },
   "addToPlan": {
     "title": "Dodaj do planu",
-    "chooseDay": "Wybierz dzień",
+    "chooseDay": "Który trening?",
     "noPlansTitle": "Nie masz jeszcze planu",
-    "noPlansBody": "Ułóż plan albo skopiuj gotowy program w karcie Plany.",
-    "noDays": "Ten plan nie ma jeszcze dni.",
+    "noPlansBody": "Wybierz gotowy plan albo ułóż własny w karcie Plan.",
+    "noDays": "Ten plan nie ma jeszcze treningów.",
     "added": "Dodano do: {plan} · {day}"
   },
   "plans": {
@@ -488,34 +492,34 @@
     "programMeta": "{level} · {days}"
   },
   "planDetail": {
-    "setActive": "Ustaw jako aktywny",
+    "setActive": "Wybieram ten plan",
     "isActive": "To jest Twój aktywny plan",
-    "unsetActive": "Przestań używać",
-    "days": "Dni treningowe",
-    "addDay": "Dodaj dzień",
-    "newDayName": "Dzień {count}",
-    "noDaysTitle": "Brak dni",
-    "noDaysBody": "Dodaj pierwszy dzień treningowy, np. „Push” albo „Dzień A”.",
+    "unsetActive": "Trenuj bez planu",
+    "days": "Treningi",
+    "addDay": "Dodaj trening",
+    "newDayName": "Trening {count}",
+    "noDaysTitle": "Brak treningów",
+    "noDaysBody": "Dodaj pierwszy trening, np. „Push” albo „Trening A”.",
     "edit": "Edytuj plan",
     "delete": "Usuń plan",
     "deleteTitle": "Usunąć plan „{name}”?",
     "deleteBody": "Dni i ćwiczenia z planu znikną. Zakończone treningi zostaną w historii.",
     "fromProgram": "Na podstawie gotowego programu",
-    "weekdays": "Dni w tygodniu",
+    "weekdays": "Kiedy trenujesz",
     "weekdaysHint": "Opcjonalnie. Kolejność treningów się nie zmienia: po opuszczonym dniu robisz następny z kolei."
   },
   "planDay": {
-    "rename": "Nazwa dnia",
+    "rename": "Nazwa treningu",
     "exercises": "Ćwiczenia",
     "addExercise": "Dodaj ćwiczenie",
     "emptyTitle": "Brak ćwiczeń",
-    "emptyBody": "Dodaj pierwsze ćwiczenie do tego dnia.",
-    "delete": "Usuń dzień",
+    "emptyBody": "Dodaj pierwsze ćwiczenie do tego treningu.",
+    "delete": "Usuń trening",
     "deleteTitle": "Usunąć dzień „{name}”?",
-    "deleteBody": "Ćwiczenia z tego dnia znikną z planu.",
-    "removeExercise": "Usuń z dnia",
-    "removeTitle": "Usunąć „{name}” z dnia?",
-    "nameRequired": "Wpisz nazwę dnia."
+    "deleteBody": "Ćwiczenia z tego treningu znikną z planu.",
+    "removeExercise": "Usuń z treningu",
+    "removeTitle": "Usunąć „{name}” z treningu?",
+    "nameRequired": "Wpisz nazwę treningu."
   },
   "planForm": {
     "titleNew": "Nowy plan",
@@ -543,8 +547,8 @@
     "unitKg": "kg"
   },
   "program": {
-    "copy": "Kopiuj do moich planów",
-    "copyHint": "Kopię możesz dowolnie zmieniać. Program zostaje bez zmian.",
+    "copy": "Wybieram ten plan",
+    "copyHint": "Plan od razu staje się Twoim aktywnym planem. Możesz go dowolnie zmieniać, a program zostaje bez zmian.",
     "days": "Dni"
   },
   "picker": {
@@ -1355,7 +1359,7 @@
     "dayDone": "{day}, trening zrobiony",
     "dayToday": "{day}, dziś",
     "dayTodayDone": "{day}, dziś, trening zrobiony",
-    "emptyDay": "Ten dzień planu nie ma jeszcze ćwiczeń.",
+    "emptyDay": "Ten trening nie ma jeszcze ćwiczeń.",
     "restDay": "Dziś wolne · następny {when}",
     "dayPlanned": "{day}, zaplanowany trening",
     "weekdayNames": "poniedziałek,wtorek,środa,czwartek,piątek,sobota,niedziela",
