@@ -479,6 +479,24 @@ export async function listFinishedStarts(db: Db): Promise<string[]> {
   return rows.map((r) => r.started_at);
 }
 
+/**
+ * Zakończone treningi rozpoczęte w [from, to), od najstarszego (tydzień planu, kalendarz historii).
+ * Daty jako ISO, porównywane tekstowo jak `started_at`.
+ */
+export async function listFinishedBetween(
+  db: Db,
+  fromIso: string,
+  toIso: string,
+): Promise<Workout[]> {
+  const rows = await db.all<WorkoutRow>(
+    `SELECT ${WORKOUT_COLUMNS} FROM workout
+     WHERE finished_at IS NOT NULL AND started_at >= ? AND started_at < ?
+     ORDER BY started_at`,
+    [fromIso, toIso],
+  );
+  return rows.map(toWorkout);
+}
+
 /** Poprzedni zakończony trening tego samego dnia planu (porównanie w podsumowaniu). */
 export async function previousFinishedForDay(
   db: Db,

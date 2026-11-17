@@ -229,6 +229,36 @@ export async function copyProgram(
   });
 }
 
+/**
+ * „Wybieram ten plan”: program staje się aktywnym planem jednym ruchem.
+ * Jeśli jest już kopia tego programu (także zmieniona przez użytkownika), wybieramy ją zamiast robić drugą.
+ */
+export async function chooseProgram(
+  db: Db,
+  program: BuiltinProgram,
+  translate: (key: string) => string,
+): Promise<string> {
+  const existing = await db.first<{ id: string }>(
+    'SELECT id FROM plan WHERE source_program_id = ? ORDER BY created_at DESC LIMIT 1',
+    [program.id],
+  );
+  const planId = existing?.id ?? (await copyProgram(db, program, translate));
+  await setActivePlan(db, planId);
+  return planId;
+}
+
+/** „Ułóż własny plan”: plan od razu aktywny, z pierwszym treningiem gotowym na ćwiczenia. */
+export async function createOwnPlan(
+  db: Db,
+  name: string,
+  firstTrainingName: string,
+): Promise<{ planId: string; dayId: string }> {
+  const planId = await createPlan(db, { name });
+  const dayId = await addPlanDay(db, planId, firstTrainingName);
+  await setActivePlan(db, planId);
+  return { planId, dayId };
+}
+
 export async function updatePlan(db: Db, planId: string, input: PlanInput): Promise<void> {
   const name = input.name.trim();
   if (!name) throw new Error('Nazwa planu nie może być pusta.');
