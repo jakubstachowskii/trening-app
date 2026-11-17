@@ -1,5 +1,7 @@
+import { useRouter } from 'expo-router';
 import { ScrollView } from 'react-native';
 
+import { ListGroup, ListRow } from '@/components/ListRow';
 import { Skeleton } from '@/components/Skeleton';
 import { Text } from '@/components/Text';
 import { useDbQuery } from '@/data/useDbQuery';
@@ -10,6 +12,7 @@ import { useTheme } from '@/theme';
 
 /** Gotowe programy z plakietką „Polecany” (z celu tygodnia). */
 export default function ProgramsScreen() {
+  const router = useRouter();
   const { colors, space } = useTheme();
   const { data } = useDbQuery((d) => loadPlanTab(d), 'plans');
 
@@ -26,6 +29,14 @@ export default function ProgramsScreen() {
     >
       {data ? (
         <>
+          <ListGroup>
+            <ListRow
+              title={t('onboarding.help')}
+              subtitle={t('onboarding.helpBody')}
+              icon={{ ios: 'questionmark.circle', web: 'help' }}
+              onPress={() => router.push({ pathname: '/start', params: { again: '1' } })}
+            />
+          </ListGroup>
           <ProgramRows recommended={data.recommended} weeklyGoal={data.weeklyGoal} />
           <Text variant="footnote" color="label2">
             {t('program.copyHint')}

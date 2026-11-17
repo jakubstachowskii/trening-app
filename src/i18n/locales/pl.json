@@ -1378,7 +1378,8 @@
       "one": "{count} trening w tym tygodniu",
       "few": "{count} treningi w tym tygodniu",
       "many": "{count} treningów w tym tygodniu"
-    }
+    },
+    "firstHint": "Pierwszy trening? Ciężar wpiszesz w trakcie, stukając w liczbę. Po serii stuknij „Odhacz”, a przerwa policzy się sama."
   },
   "planTab": {
     "activeKicker": "Aktywny plan · tydzień {week}",
@@ -1449,5 +1450,29 @@
     "delete": "Usuń trening",
     "deleteTitle": "Usunąć trening „{name}”?",
     "deleteBody": "Serie z tego treningu znikną z historii i z rekordów. Tego nie da się cofnąć."
+  },
+  "onboarding": {
+    "skip": "Pomiń",
+    "cancel": "Anuluj",
+    "question": "Ile razy w tygodniu chcesz trenować?",
+    "questionBody": "Na tej liczbie ułożę Ci tydzień i dobiorę plan. Zmienisz ją w każdej chwili w Ustawieniach.",
+    "dontKnow": "Nie wiesz? Zacznij od 3.",
+    "goalOption": "{count} razy w tygodniu",
+    "showPlan": "Pokaż mój plan",
+    "back": "{count} razy w tygodniu",
+    "backLabel": "Wróć do pytania, teraz {count} razy w tygodniu",
+    "proposalKicker": "Proponuję Ci",
+    "why": {
+      "full-body-3": "Przy {count} treningach w tygodniu każda partia pracuje co najmniej dwa razy. Prosty i sprawdzony start.",
+      "upper-lower-4": "Przy {count} treningach w tygodniu góra i dół ciała pracują po dwa razy, a treningi są krótsze.",
+      "push-pull-legs": "Przy {count} treningach w tygodniu treningi są krótkie, a każda partia pracuje około dwa razy."
+    },
+    "trainingMeta": "{exercises} · ok. {min} min",
+    "rotation": "Treningi idą po kolei. Opuścisz jeden, to następnym razem robisz ten sam.",
+    "choose": "Zaczynam z tym planem",
+    "other": "Inne plany albo własny",
+    "noPlan": "Na razie bez planu",
+    "help": "Pomóż mi wybrać",
+    "helpBody": "Jedno pytanie i propozycja planu"
   }
 }

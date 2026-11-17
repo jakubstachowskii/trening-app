@@ -21,7 +21,7 @@ import {
   WEEKLY_GOAL_DEFAULT,
 } from '@/domain/week';
 import { estimateDayMinutes, formatClock, nextPlanDayId } from '@/domain/workout';
-import { loadTrainingSettings } from '@/features/settings/keys';
+import { isOnboardingDone, loadTrainingSettings } from '@/features/settings/keys';
 import { formatNumber, t } from '@/i18n';
 
 import { loadSession } from './session';
@@ -50,6 +50,10 @@ export type StartData = {
   /** Ostatni trening zakończony dziś (stan „Zrobione”). */
   todayFinished: { id: string; name: string | null; durationSec: number; volumeKg: number } | null;
   lastRecord: LastRecord | null;
+  /** Wprowadzenie przejdzione albo pominięte (pokazujemy je tylko raz). */
+  onboardingDone: boolean;
+  /** Jeszcze żadnego zakończonego treningu — podpowiedź pod pierścieniem. */
+  firstWorkout: boolean;
 };
 
 function sameDay(a: Date, b: Date): boolean {
@@ -143,5 +147,7 @@ export async function loadStartData(db: Db, now: Date = new Date()): Promise<Sta
     nextTraining: nextTrainingDate(weekdays, now)?.toISOString() ?? null,
     todayFinished,
     lastRecord: await loadLastRecord(db),
+    onboardingDone: await isOnboardingDone(db),
+    firstWorkout: starts.length === 0,
   };
 }

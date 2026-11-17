@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
 import { Button } from '@/components/Button';
@@ -22,7 +22,7 @@ import {
   formatWhen,
 } from '@/features/today/format';
 import { WeekRing } from '@/features/today/WeekRing';
-import { saveWeeklyGoal } from '@/features/settings/keys';
+import { markOnboardingDone, saveWeeklyGoal } from '@/features/settings/keys';
 import { loadStartData, type StartData } from '@/features/workout/startData';
 import { beginWorkout, openWorkout } from '@/features/workout/startWorkout';
 import { useTheme } from '@/theme';
@@ -88,6 +88,16 @@ export default function TodayScreen() {
       setBusy(false);
     }
   };
+
+  // Pierwsze uruchomienie: bez aktywnego planu i bez przejścia wprowadzenia → jedno pytanie i propozycja planu.
+  // Kto ma już plan, nie zobaczy wprowadzenia (także później, po „Trenuj bez planu”).
+  const needsOnboarding = data ? !data.onboardingDone : false;
+  const hasPlan = Boolean(data?.plan);
+  useEffect(() => {
+    if (!needsOnboarding) return;
+    if (hasPlan) void markOnboardingDone(db);
+    else router.push('/start');
+  }, [needsOnboarding, hasPlan, db]);
 
   const changeGoal = async (goal: number, delta: number) => {
     await saveWeeklyGoal(db, goal + delta);
@@ -335,6 +345,19 @@ export default function TodayScreen() {
           <View style={{ alignItems: 'center', paddingHorizontal: space.xl }}>{center}</View>
         </WeekRing>
       </View>
+
+      {mode === 'before' && data.plan && data.firstWorkout ? (
+        <View
+          style={{
+            marginTop: space.sm,
+            padding: space.sm,
+            borderRadius: radius.inner,
+            backgroundColor: colors.accentSoft,
+          }}
+        >
+          <Text variant="footnote">{t('today.firstHint')}</Text>
+        </View>
+      ) : null}
 
       <View style={{ flexDirection: 'row', marginTop: space.sm }}>
         {data.days.map((d) => {
