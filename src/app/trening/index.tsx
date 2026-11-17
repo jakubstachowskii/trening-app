@@ -7,7 +7,7 @@ import { BottomFade } from '@/components/BottomFade';
 import { FloatingButton, useFloatingButtonSpace } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
 import { GlassIconButton, GlassPillButton } from '@/components/GlassControl';
-import { showMenu } from '@/components/stack';
+import { GlassMenuButton } from '@/components/MenuButtons';
 import { Text } from '@/components/Text';
 import { elapsedSec, formatClock, nextPendingSetIndex } from '@/domain/workout';
 import { t } from '@/i18n';
@@ -74,6 +74,11 @@ export default function WorkoutScreen() {
     if (editingSetId)
       scroll.current?.scrollTo({ y: Math.max(0, cardY.current - insets.top - space.xs) });
   }, [editingSetId, insets.top, space.xs]);
+  // Nowe ćwiczenie zaczyna się od góry ekranu (nazwa i tabela widoczne, nie przewinięte z poprzedniego).
+  const exerciseIndex = w.index;
+  useEffect(() => {
+    scroll.current?.scrollTo({ y: 0, animated: false });
+  }, [exerciseIndex]);
   useEffect(() => {
     if (!query.loading && session === null && router.canGoBack()) router.back();
   }, [query.loading, session]);
@@ -178,14 +183,9 @@ export default function WorkoutScreen() {
                 {time}
               </Text>
             </View>
-            <GlassIconButton
-              icon={{ ios: 'ellipsis', web: 'more_horiz' }}
+            <GlassMenuButton
               label={t('workout.more')}
-              onPress={() =>
-                showMenu(undefined, [
-                  { label: t('workout.discard'), destructive: true, onPress: w.discard },
-                ])
-              }
+              items={[{ label: t('workout.discard'), destructive: true, onPress: w.discard }]}
             />
             <GlassPillButton label={t('workout.finish')} onPress={() => void w.finish()} />
           </View>
@@ -203,9 +203,9 @@ export default function WorkoutScreen() {
               stopwatchSec={w.stopwatchSec}
               onEdit={(setId, field) => void w.openEditor(setId, field)}
               onToggle={(setId) => void w.toggleSet(setId)}
-              onSetMenu={w.setMenu}
+              setMenuItems={w.setMenuItems}
               onAddSet={() => void w.addSetToCurrent()}
-              onMenu={w.exerciseMenu}
+              menuItems={w.exerciseMenuItems}
             />
           </View>
         ) : (

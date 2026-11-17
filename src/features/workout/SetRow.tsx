@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Animated, Pressable, View } from 'react-native';
 
 import { Icon } from '@/components/Icon';
+import { PopupMenu } from '@/components/PopupMenu';
+import type { MenuItem } from '@/components/stack';
 import { Text } from '@/components/Text';
 import type { WorkoutSet } from '@/data/models';
 import type { ExerciseType } from '@/domain/types';
@@ -40,7 +42,8 @@ type Props = {
   editing: { field: KeypadField; text: string } | null;
   onEdit: (field: KeypadField) => void;
   onToggle: () => void;
-  onMenu: () => void;
+  /** Akcje serii (rozgrzewka / robocza, usuń). */
+  menuItems: MenuItem[];
 };
 
 export function SetRow({
@@ -54,7 +57,7 @@ export function SetRow({
   editing,
   onEdit,
   onToggle,
-  onMenu,
+  menuItems,
 }: Props) {
   const { colors, space, radius, size, font, motion, reduceMotion, scheme } = useTheme();
   const done = Boolean(set.completedAt);
@@ -139,21 +142,17 @@ export function SetRow({
         borderColor: current ? colors.accent : 'transparent',
       }}
     >
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={t('workout.setMenu', { n: label })}
-        accessibilityHint={setName}
-        onPress={onMenu}
-        style={{ width: COLUMNS.set, minHeight: size.touchMin, justifyContent: 'center' }}
-      >
-        <Text
-          variant="headline"
-          color={warmup ? 'accentText' : done ? 'label2' : 'label'}
-          style={{ fontVariant: ['tabular-nums'] }}
-        >
-          {label}
-        </Text>
-      </Pressable>
+      <PopupMenu label={t('workout.setMenu', { n: label })} title={setName} items={menuItems}>
+        <View style={{ width: COLUMNS.set, minHeight: size.touchMin, justifyContent: 'center' }}>
+          <Text
+            variant="headline"
+            color={warmup ? 'accentText' : done ? 'label2' : 'label'}
+            style={{ fontVariant: ['tabular-nums'] }}
+          >
+            {label}
+          </Text>
+        </View>
+      </PopupMenu>
       {record ? (
         <View
           accessible

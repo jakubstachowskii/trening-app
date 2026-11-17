@@ -171,3 +171,10 @@ Usunięte z szablonu, bo na razie niepotrzebne: `@expo/ui`, `expo-device`, `expo
 - **Cel tygodnia:** z aktywnym planem segmentów jest tyle, ile dni ma plan; bez planu ustawienie `weeklyGoal` (2–6). Seria tygodni liczona względem dzisiejszego celu (historia celów nie jest zapisywana).
 - **Rekord w trakcie:** plakietka w wierszu i etykieta w pasku przerwy zamiast komunikatu u góry — komunikat zasłaniał nagłówek. Zapamiętane tylko w sesji ekranu (po ponownym otwarciu treningu plakietki nie ma, rekord jest w podsumowaniu).
 - **Dni treningowe planu (opcjonalne):** migracja 3 (`plan.weekdays`, np. "0,2,4" = pn, śr, pt). Wybór na ekranie planu („Dni w tygodniu”, kółka jak w pasku dni z makiety). Z wybranymi dniami pierścień ma tyle segmentów, ile dni, pasek dni pokazuje dni zaplanowane, a w dzień wolny „Dziś” mówi „Dziś wolne · następny jutro / w środę” (trening dalej można zacząć). Kolejność treningów nadal ustala rotacja dni planu — opuszczony dzień niczego nie przesuwa. Przypisywania konkretnego dnia planu do dnia tygodnia celowo nie ma (rozjeżdża się po pierwszym opuszczonym treningu).
+
+## 25. Małe menu z przycisku: `@expo/ui` (2026-11-17)
+
+- **Co:** „…” (trening, ćwiczenie w treningu, plan, dzień planu, ćwiczenie) i numer serii otwierają na iOS małe natywne menu rozwijane z przycisku (`Menu` z `@expo/ui/swift-ui`, wyzwalacz przez `RNHostView`), zamiast arkusza akcji na środku ekranu. Akcje usuwające są na dole, czerwone, oddzielone kreską. Wspólny komponent `PopupMenu` (`.ios.tsx`); na web i Androidzie zostaje dotychczasowe okno (`showMenu`).
+- **Dlaczego:** test na iPhonie — duży arkusz dla 1–3 akcji był ciężki; tak działają systemowe aplikacje iOS.
+- **Zależność:** `@expo/ui` ~58.0.28 (Expo, bez kosztów, „Included in Expo Go” według dokumentacji SDK 58). Alternatywa `Stack.Toolbar.Menu` działa tylko w nagłówku stosu, a menu potrzebne są też w treści (karta ćwiczenia, numer serii).
+- **Przeciąganie:** strefy autoprzewijania listy przesunięte nad pasek kart i pod nagłówek (wcześniej leżały pod nimi i palec ich nie sięgał), szybsze przewijanie.

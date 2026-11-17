@@ -173,7 +173,12 @@ export default function TodayScreen() {
       const f = data.todayFinished;
       return (
         <>
-          {kicker(t('today.doneWeek', { done, total: target }), true)}
+          {kicker(
+            done > target
+              ? tPlural('today.weekCount', done)
+              : t('today.doneWeek', { done, total: target }),
+            true,
+          )}
           <Text
             variant="brandXL"
             accessibilityRole="header"
@@ -254,7 +259,9 @@ export default function TodayScreen() {
             ? t('today.restDay', { when: formatNext(data.nextTraining, now) })
             : done < target
               ? t('today.ofWeek', { n: done + 1, total: target })
-              : t('today.overGoal'),
+              : done > target
+                ? tPlural('today.weekCount', done)
+                : t('today.overGoal'),
         )}
         <Text
           variant="brandXL"

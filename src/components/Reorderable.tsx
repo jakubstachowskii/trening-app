@@ -3,6 +3,7 @@ import { isLiquidGlassAvailable } from 'expo-glass-effect';
 import { HeaderHeightContext } from 'expo-router/react-navigation';
 import { type ReactElement, type ReactNode, use, useCallback, useMemo } from 'react';
 import { Platform, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Gesture } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
 import ReorderableList, {
@@ -105,7 +106,8 @@ export function ReorderableRows<T>({
   empty,
   bottomSpace,
 }: Props<T>) {
-  const { colors, space, motion, reduceMotion } = useTheme();
+  const { colors, space, size, motion, reduceMotion } = useTheme();
+  const insets = useSafeAreaInsets();
   // Treść wchodzi pod nagłówek tylko na iOS 26+ (systemowy, przezroczysty pasek; ten sam warunek
   // co w nawigacji). Gdzie indziej nagłówek stoi nad listą. Poza ekranem stosu (testy) nagłówka nie ma.
   const stackHeaderHeight = use(HeaderHeightContext) ?? 0;
@@ -144,6 +146,11 @@ export function ReorderableRows<T>({
       // Typ gestu z biblioteki jest starszy niż Gesture Handler 3 (ta sama klasa w działaniu, DECISIONS #18).
       panGesture={panGesture as never}
       onReorder={handleReorder}
+      // Przewijanie przy przeciąganiu: strefy przy krawędziach zaczynają się nad paskiem kart i pod
+      // nagłówkiem (tam, gdzie sięga palec), a lista przewija się szybciej niż domyślnie.
+      autoscrollThreshold={0.15}
+      autoscrollThresholdOffset={{ start: headerHeight, end: size.tabBar + insets.bottom }}
+      autoscrollSpeedScale={1.5}
       onDragEnd={onDragEnd}
       animationDuration={reduceMotion ? 0 : motion.duration.fast}
       ItemSeparatorComponent={() => <View style={{ height: space.xs }} />}

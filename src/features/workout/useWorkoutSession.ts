@@ -3,7 +3,7 @@ import { router } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AccessibilityInfo } from 'react-native';
 
-import { confirmDestructive, showMenu } from '@/components/stack';
+import { confirmDestructive, type MenuItem } from '@/components/stack';
 import { useDb } from '@/data/DatabaseProvider';
 import type { WorkoutSet } from '@/data/models';
 import { getSetting, setSetting } from '@/data/repositories/settings';
@@ -392,16 +392,13 @@ export function useWorkoutSession() {
     await reload();
   }, [item, commit, db, reload]);
 
-  const setMenu = useCallback(
-    (setId: string) => {
+  /** Akcje serii (małe menu z numeru serii). */
+  const setMenuItems = useCallback(
+    (setId: string): MenuItem[] => {
       const found = findSet(setId);
-      if (!found) return;
+      if (!found) return [];
       const { set } = found;
-      const n =
-        set.kind === 'warmup'
-          ? t('workout.warmupShort')
-          : String(workingNumbers(found.exercise.sets)[found.exercise.sets.indexOf(set)]);
-      showMenu(t('workout.setMenu', { n }), [
+      return [
         {
           label: set.kind === 'warmup' ? t('workout.makeWorking') : t('workout.makeWarmup'),
           onPress: () =>
@@ -422,14 +419,15 @@ export function useWorkoutSession() {
             })();
           },
         },
-      ]);
+      ];
     },
     [findSet, db, reload, rest, clearRest],
   );
 
-  const exerciseMenu = useCallback(() => {
-    if (!item) return;
-    showMenu(item.name, [
+  /** Akcje bieżącego ćwiczenia (małe menu z „…” w karcie). */
+  const exerciseMenuItems = useMemo((): MenuItem[] => {
+    if (!item) return [];
+    return [
       {
         label: t('workout.replaceExercise'),
         onPress: () => router.push({ pathname: '/trening/dodaj', params: { replace: item.id } }),
@@ -462,7 +460,7 @@ export function useWorkoutSession() {
           }
         },
       },
-    ]);
+    ];
   }, [item, db, reload]);
 
   const onStopwatch = useCallback(async () => {
@@ -645,8 +643,8 @@ export function useWorkoutSession() {
     closeEditor,
     toggleSet,
     addSetToCurrent,
-    setMenu,
-    exerciseMenu,
+    setMenuItems,
+    exerciseMenuItems,
     rest: rest
       ? {
           left: restLeft,

@@ -2,7 +2,8 @@ import { View } from 'react-native';
 
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
-import { HeaderIconButton } from '@/components/stack';
+import { HeaderMenuButton } from '@/components/MenuButtons';
+import type { MenuItem } from '@/components/stack';
 import { Icon } from '@/components/Icon';
 import { Text } from '@/components/Text';
 import {
@@ -32,9 +33,9 @@ type Props = {
   stopwatchSec: number | null;
   onEdit: (setId: string, field: KeypadField) => void;
   onToggle: (setId: string) => void;
-  onSetMenu: (setId: string) => void;
+  setMenuItems: (setId: string) => MenuItem[];
   onAddSet: () => void;
-  onMenu: () => void;
+  menuItems: MenuItem[];
 };
 
 /** Karta bieżącego ćwiczenia (makieta design/v2/Trening): nagłówek, podpowiedź i tabela serii. */
@@ -47,9 +48,9 @@ export function CurrentExercise({
   stopwatchSec,
   onEdit,
   onToggle,
-  onSetMenu,
+  setMenuItems,
   onAddSet,
-  onMenu,
+  menuItems,
 }: Props) {
   const { colors, space, size, font } = useTheme();
   const type = item.exercise.type;
@@ -123,11 +124,7 @@ export function CurrentExercise({
           ) : null}
         </View>
         <View style={{ marginTop: -space.xs, marginRight: -space.xs }}>
-          <HeaderIconButton
-            icon={{ ios: 'ellipsis', web: 'more_horiz' }}
-            label={t('workout.exerciseMenu')}
-            onPress={onMenu}
-          />
+          <HeaderMenuButton label={t('workout.exerciseMenu')} title={item.name} items={menuItems} />
         </View>
       </View>
 
@@ -167,7 +164,7 @@ export function CurrentExercise({
               editing={editing?.setId === set.id ? editing : null}
               onEdit={(field) => onEdit(set.id, field)}
               onToggle={() => onToggle(set.id)}
-              onMenu={() => onSetMenu(set.id)}
+              menuItems={setMenuItems(set.id)}
             />
           );
         })}

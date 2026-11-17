@@ -8,7 +8,8 @@ import { ListRow } from '@/components/ListRow';
 import { ReorderableRows } from '@/components/Reorderable';
 import { Section } from '@/components/Section';
 import { Skeleton } from '@/components/Skeleton';
-import { confirmDestructive, HeaderIconButton, showMenu } from '@/components/stack';
+import { HeaderMenuButton } from '@/components/MenuButtons';
+import { confirmDestructive } from '@/components/stack';
 import { Text } from '@/components/Text';
 import { TextField } from '@/components/TextField';
 import { useDb } from '@/data/DatabaseProvider';
@@ -135,14 +136,10 @@ export default function PlanDayScreen() {
         options={{
           title: day.name,
           headerRight: () => (
-            <HeaderIconButton
-              icon={{ ios: 'ellipsis', web: 'more_horiz' }}
+            <HeaderMenuButton
               label={t('common.more')}
-              onPress={() =>
-                showMenu(day.name, [
-                  { label: t('planDay.delete'), onPress: removeDay, destructive: true },
-                ])
-              }
+              title={day.name}
+              items={[{ label: t('planDay.delete'), onPress: removeDay, destructive: true }]}
             />
           ),
         }}

@@ -8,7 +8,7 @@ import { Icon, type IconName } from './Icon';
 import { Text } from './Text';
 
 /** Tło kontrolki w szkle: Liquid Glass na iOS 26+, inaczej półprzezroczyste `glassControl` z krawędzią. */
-function GlassSurface({ style, children }: { style: ViewStyle; children: ReactNode }) {
+export function GlassSurface({ style, children }: { style: ViewStyle; children: ReactNode }) {
   const { colors, reduceTransparency, scheme } = useTheme();
   const glass = useMemo(() => Platform.OS === 'ios' && isLiquidGlassAvailable(), []);
   if (glass && !reduceTransparency) {

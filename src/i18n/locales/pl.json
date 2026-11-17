@@ -1359,6 +1359,11 @@
     "restDay": "Dziś wolne · następny {when}",
     "dayPlanned": "{day}, zaplanowany trening",
     "weekdayNames": "poniedziałek,wtorek,środa,czwartek,piątek,sobota,niedziela",
-    "tomorrow": "jutro"
+    "tomorrow": "jutro",
+    "weekCount": {
+      "one": "{count} trening w tym tygodniu",
+      "few": "{count} treningi w tym tygodniu",
+      "many": "{count} treningów w tym tygodniu"
+    }
   }
 }
