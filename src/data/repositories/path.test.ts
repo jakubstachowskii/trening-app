@@ -7,7 +7,7 @@ import { BUILTIN_PROGRAMS } from '../seed/programs';
 import { seedBuiltinData } from '../seed/seed';
 import { createTestDb } from '../testing/nodeDb';
 import { chooseProgram, createOwnPlan, getPlan, listPlans, updatePlan } from './plans';
-import { finishWorkout, listFinishedBetween, startWorkout } from './workouts';
+import { finishWorkout, firstFinishedForPlan, listFinishedBetween, startWorkout } from './workouts';
 
 const tr = (key: string) => translate(pl, key) ?? key;
 const fullBody = BUILTIN_PROGRAMS.find((p) => p.id === 'full-body-3')!;
@@ -79,5 +79,26 @@ describe('treningi z zakresu dat', () => {
     );
     expect(rows.map((w) => w.id)).toEqual([a, b]);
     expect([before, after]).not.toContain(rows[0].id);
+  });
+});
+
+describe('pierwszy trening z planem', () => {
+  it('najstarszy zakończony trening z dni planu; bez treningów null', async () => {
+    const db = await freshDb();
+    const planId = await chooseProgram(db, fullBody, tr);
+    expect(await firstFinishedForPlan(db, planId)).toBeNull();
+    const [dayA, dayB] = (await getPlan(db, planId))!.days;
+    const later = await startWorkout(db, {
+      planDayId: dayB.id,
+      startedAt: '2026-11-18T10:00:00.000Z',
+    });
+    await finishWorkout(db, later, '2026-11-18T11:00:00.000Z');
+    const earlier = await startWorkout(db, {
+      planDayId: dayA.id,
+      startedAt: '2026-11-10T10:00:00.000Z',
+    });
+    await finishWorkout(db, earlier, '2026-11-10T11:00:00.000Z');
+    await startWorkout(db, { planDayId: dayA.id, startedAt: '2026-11-01T10:00:00.000Z' });
+    expect(await firstFinishedForPlan(db, planId)).toBe('2026-11-10T10:00:00.000Z');
   });
 });

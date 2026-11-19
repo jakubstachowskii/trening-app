@@ -1,7 +1,11 @@
 // Dane karty „Plan” (design/v2/Plan): aktywny plan z tygodniem, pozostałe plany i polecany program.
 import type { Db } from '@/data/db';
 import { getPlan, listPlanSummaries, type PlanSummary } from '@/data/repositories/plans';
-import { lastFinishedDayForPlan, listFinishedBetween } from '@/data/repositories/workouts';
+import {
+  firstFinishedForPlan,
+  lastFinishedDayForPlan,
+  listFinishedBetween,
+} from '@/data/repositories/workouts';
 import { planWeek } from '@/domain/planWeek';
 import { recommendProgram, type RecommendedProgramId } from '@/domain/recommend';
 import { startOfWeek } from '@/domain/stats';
@@ -111,12 +115,14 @@ export async function loadPlanTab(db: Db, now: Date = new Date()): Promise<PlanT
     }
   }
 
-  const created = startOfWeek(new Date(plan.createdAt)).getTime();
+  // Tydzień z planem liczony od pierwszego treningu z nim (kopia planu mogła powstać dawno temu).
+  const first = await firstFinishedForPlan(db, plan.id);
+  const since = first ? startOfWeek(new Date(first)).getTime() : monday.getTime();
   return {
     active: {
       id: plan.id,
       name: plan.name,
-      week: Math.max(1, Math.round((monday.getTime() - created) / WEEK_MS) + 1),
+      week: Math.max(1, Math.round((monday.getTime() - since) / WEEK_MS) + 1),
       target,
       done: thisWeek.length,
       trainedToday: thisWeek.some((w) => sameDay(new Date(w.startedAt), now)),

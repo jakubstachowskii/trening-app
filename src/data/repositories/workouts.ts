@@ -433,6 +433,17 @@ export async function lastFinishedDayForPlan(db: Db, planId: string): Promise<st
   return row?.plan_day_id ?? null;
 }
 
+/** Data pierwszego zakończonego treningu z danego planu (licznik „tydzień N” na karcie Plan). */
+export async function firstFinishedForPlan(db: Db, planId: string): Promise<string | null> {
+  const row = await db.first<{ started_at: string }>(
+    `SELECT w.started_at FROM workout w JOIN plan_day d ON d.id = w.plan_day_id
+     WHERE d.plan_id = ? AND w.finished_at IS NOT NULL
+     ORDER BY w.started_at LIMIT 1`,
+    [planId],
+  );
+  return row?.started_at ?? null;
+}
+
 /** Wszystkie serie ćwiczenia z zakończonych treningów — wejście dla rekordów i wykresów. */
 export async function exerciseHistory(db: Db, exerciseId: string): Promise<HistorySet[]> {
   const rows = await db.all<
