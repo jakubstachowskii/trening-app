@@ -8,10 +8,11 @@ import { Skeleton } from '@/components/Skeleton';
 import { Text } from '@/components/Text';
 import { useDb } from '@/data/DatabaseProvider';
 import { useDbQuery } from '@/data/useDbQuery';
-import { WEEKLY_GOAL_DEFAULT, WEEKLY_GOAL_MAX, WEEKLY_GOAL_MIN } from '@/domain/week';
+import { WEEKLY_GOAL_MAX, WEEKLY_GOAL_MIN } from '@/domain/week';
 import { formatClock } from '@/domain/workout';
 import {
   loadTrainingSettings,
+  loadWeeklyGoal,
   REST_OPTIONS_SEC,
   saveKeepAwake,
   saveRestDefault,
@@ -28,7 +29,10 @@ type Choice = { value: number; label: string };
 export default function SettingsScreen() {
   const db = useDb();
   const { colors, space, size } = useTheme();
-  const { data, reload } = useDbQuery((d) => loadTrainingSettings(d), 'settings');
+  const { data, reload } = useDbQuery(
+    async (d) => ({ ...(await loadTrainingSettings(d)), goal: await loadWeeklyGoal(d) }),
+    'settings-screen',
+  );
 
   const rowStyle = {
     minHeight: size.touchMin + space.lg,
@@ -78,7 +82,7 @@ export default function SettingsScreen() {
     );
   }
 
-  const goal = data.weeklyGoal ?? WEEKLY_GOAL_DEFAULT;
+  const goal = data.goal;
   const goals: Choice[] = [];
   for (let g = WEEKLY_GOAL_MIN; g <= WEEKLY_GOAL_MAX; g += 1) {
     goals.push({ value: g, label: tPlural('units.trainings', g) });

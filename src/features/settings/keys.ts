@@ -1,8 +1,9 @@
 // Ustawienia aplikacji w tabeli `setting` (klucz → JSON). Jedno miejsce na klucze i wartości domyślne.
 import type { Db } from '@/data/db';
+import { getPlan, listPlans } from '@/data/repositories/plans';
 import { getSetting, setSetting } from '@/data/repositories/settings';
 import { DEFAULT_WEIGHT_STEP_KG } from '@/domain/suggestion';
-import { clampWeeklyGoal } from '@/domain/week';
+import { clampWeeklyGoal, effectiveWeeklyGoal } from '@/domain/week';
 import { DEFAULT_REST_SEC, MAX_REST_SEC } from '@/domain/workout/restTimer';
 
 export const SETTING = {
@@ -46,6 +47,15 @@ export async function loadTrainingSettings(db: Db): Promise<TrainingSettings> {
     weightStepKg: validStep(await getSetting(db, SETTING.weightStepKg, DEFAULT_WEIGHT_STEP_KG)),
     keepAwake: (await getSetting(db, SETTING.keepAwake, true)) !== false,
   };
+}
+
+/** Cel tygodnia do pokazania: zapisany albo liczba treningów aktywnego planu (jak pierścień). */
+export async function loadWeeklyGoal(db: Db): Promise<number> {
+  const saved = (await loadTrainingSettings(db)).weeklyGoal;
+  if (saved != null) return saved;
+  const active = (await listPlans(db)).find((p) => p.isActive);
+  const plan = active ? await getPlan(db, active.id) : null;
+  return effectiveWeeklyGoal(null, plan ? plan.days.length : null);
 }
 
 export function saveWeeklyGoal(db: Db, goal: number): Promise<void> {

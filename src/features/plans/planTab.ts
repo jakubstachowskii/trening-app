@@ -5,7 +5,7 @@ import { lastFinishedDayForPlan, listFinishedBetween } from '@/data/repositories
 import { planWeek } from '@/domain/planWeek';
 import { recommendProgram, type RecommendedProgramId } from '@/domain/recommend';
 import { startOfWeek } from '@/domain/stats';
-import { weekTarget, WEEKLY_GOAL_DEFAULT } from '@/domain/week';
+import { effectiveWeeklyGoal, weekTarget } from '@/domain/week';
 import { estimateDayMinutes } from '@/domain/workout';
 import { loadTrainingSettings } from '@/features/settings/keys';
 import { loadSession } from '@/features/workout/session';
@@ -60,7 +60,7 @@ export async function loadPlanTab(db: Db, now: Date = new Date()): Promise<PlanT
   const activeSummary = summaries.find((p) => p.isActive) ?? null;
   const others = summaries.filter((p) => !p.isActive);
   const plan = activeSummary ? await getPlan(db, activeSummary.id) : null;
-  const weeklyGoal = settings.weeklyGoal ?? WEEKLY_GOAL_DEFAULT;
+  const weeklyGoal = effectiveWeeklyGoal(settings.weeklyGoal, plan ? plan.days.length : null);
 
   if (!plan) {
     return { active: null, others, weeklyGoal, recommended: recommendProgram(weeklyGoal) };

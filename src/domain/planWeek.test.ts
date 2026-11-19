@@ -1,6 +1,6 @@
 import { planWeek } from './planWeek';
 import { recommendProgram } from './recommend';
-import { weeklyHistory } from './week';
+import { effectiveWeeklyGoal, weeklyHistory } from './week';
 
 // Czwartek 19.11.2026, tydzień od poniedziałku 16.11. Daty lokalne, jak w aplikacji.
 const NOW = new Date(2026, 10, 19, 18, 0);
@@ -149,5 +149,15 @@ describe('regularność', () => {
       4,
     );
     expect(weeks.map((w) => w.done)).toEqual([0, 0, 0, 0]);
+  });
+});
+
+describe('cel tygodnia do pokazania', () => {
+  it('zapisany; bez zapisu liczba treningów planu (2–6); bez planu 3', () => {
+    expect(effectiveWeeklyGoal(5, 3)).toBe(5);
+    expect(effectiveWeeklyGoal(null, 4)).toBe(4);
+    expect(effectiveWeeklyGoal(null, 9)).toBe(6);
+    expect(effectiveWeeklyGoal(null, null)).toBe(3);
+    expect(effectiveWeeklyGoal(null, 0)).toBe(3);
   });
 });

@@ -33,6 +33,16 @@ export function weekTarget(
   return WEEKLY_GOAL_DEFAULT;
 }
 
+/**
+ * Cel tygodnia do pokazania (Ustawienia, plakietka „Polecany”): zapisany, a gdy nigdy nie był zapisany —
+ * liczba treningów aktywnego planu (tak liczy wtedy pierścień), inaczej domyślne 3.
+ */
+export function effectiveWeeklyGoal(saved: number | null, planDayCount: number | null): number {
+  if (saved != null) return clampWeeklyGoal(saved);
+  if (planDayCount != null && planDayCount > 0) return clampWeeklyGoal(planDayCount);
+  return WEEKLY_GOAL_DEFAULT;
+}
+
 /** Dzień tygodnia od poniedziałku: 0 = poniedziałek, 6 = niedziela. */
 export function mondayIndex(date: Date): number {
   return (date.getDay() + DAYS_IN_WEEK - 1) % DAYS_IN_WEEK;
