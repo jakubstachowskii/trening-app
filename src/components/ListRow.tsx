@@ -11,6 +11,8 @@ type Props = Omit<PressableProps, 'children' | 'style'> & {
   subtitle?: string;
   /** Krótka wyróżniona etykieta pod tytułem (np. „Polecany…”), w kolorze akcentu. */
   badge?: string;
+  /** Tytuł w kolorze akcentu (wiersz-akcja, np. „Przeglądaj gotowe programy” w design/v2). */
+  accentTitle?: boolean;
   /** Miniatura 40 pt z ikoną (do czasu ilustracji w F10). */
   icon?: IconName;
   /** Coś po prawej zamiast strzałki (np. uchwyt przeciągania, znacznik). */
@@ -26,6 +28,7 @@ export function ListRow({
   title,
   subtitle,
   badge,
+  accentTitle,
   icon,
   accessory,
   showChevron = true,
@@ -78,7 +81,9 @@ export function ListRow({
         </View>
       ) : null}
       <View style={{ flex: 1, gap: space.xxs }}>
-        <Text variant="body">{title}</Text>
+        <Text variant="body" color={accentTitle ? 'accentText' : 'label'}>
+          {title}
+        </Text>
         {badge ? (
           <Text variant="footnote" color="accentText" style={{ fontWeight: '600' }}>
             {badge}

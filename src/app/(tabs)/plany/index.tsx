@@ -107,6 +107,7 @@ export default function PlansScreen() {
             <ListGroup>
               <ListRow
                 title={t('planTab.browse')}
+                accentTitle
                 subtitle={t('planTab.browseBody')}
                 onPress={() => router.push('/plany/programy')}
               />

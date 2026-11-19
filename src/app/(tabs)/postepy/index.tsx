@@ -216,7 +216,9 @@ export default function ProgressScreen() {
             ))}
           </View>
           <Text variant="footnote" color="label2">
-            {t('progress.regularityHint', { count: overview.target })}
+            {t('progress.regularityHint', {
+              trainings: tPlural('units.trainings', overview.target),
+            })}
           </Text>
         </Card>
       ) : null}

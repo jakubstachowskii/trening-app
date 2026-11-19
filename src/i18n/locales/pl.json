@@ -1403,7 +1403,7 @@
       "many": "{count} tygodni z rzędu"
     },
     "regularityLabel": "Ostatnie {total} tygodni: {full} z pełnym celem, {streak} z rzędu",
-    "regularityHint": "Pełny pierścień to tydzień, w którym zrobiłeś cel ({count} na tydzień).",
+    "regularityHint": "Pełny pierścień to tydzień z osiągniętym celem: {trainings}.",
     "emptyKicker": "Postępy",
     "emptyTitle": "Tu zobaczysz, jak rośniesz",
     "emptyBody": "Po pierwszym treningu pojawi się tu regularność i historia treningów. Wykres siły i mapa mięśni dojdą w kolejnej wersji.",
