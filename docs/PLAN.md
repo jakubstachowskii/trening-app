@@ -26,30 +26,33 @@ Dla kogo: dla dowolnej osoby z App Store. Autor jest jednym z użytkowników, ni
 
 ## 3. Ekrany
 
-Nawigacja: dolny pasek z 5 kartami: **Dziś (Start), Plany, Ćwiczenia, Postępy, Historia**. Ustawienia otwierane z ikony na ekranie Start. Trening w toku otwiera się na pełnym ekranie.
+Nawigacja (od fazy „Ścieżka”, według `design/v2`): dolny pasek z 4 kartami, każda z jednym pytaniem: **Dziś** („co dziś robię?”), **Plan** („jak wygląda mój tydzień?”), **Postępy** („jak mi idzie?”, z Historią w środku), **Ćwiczenia** („jak to zrobić?”). Ustawienia otwierane zębatką na „Dziś”. Trening w toku otwiera się na pełnym ekranie.
 
-### 3.1 Pierwsze uruchomienie (onboarding, 3–4 kroki, każdy z „Pomiń”)
+### 3.1 Pierwsze uruchomienie (od fazy „Ścieżka”, DECISIONS #26)
 
-1. **Doświadczenie**: „Dopiero zaczynam” / „Trenuję już jakiś czas” / „Zaawansowany”. Ustawia tryb prowadzony albo samodzielny (podpowiedzi, domyślne wykresy). Da się zmienić w ustawieniach.
-2. **Motyw i akcent**: systemowy / jasny / ciemny oraz jeden z 5 kolorów akcentu, z podglądem na żywo.
-3. **Masa ciała** (opcjonalnie): jedno pole, z wyjaśnieniem, po co (wykres, ćwiczenia z masą ciała). Można pominąć.
-4. **Plan na start**: wybór gotowego programu albo „Zbuduję własny plan”.
+1. **Jedno pytanie**: „Ile razy w tygodniu chcesz trenować?” (2–6). Ustawia cel tygodnia. „Pomiń” = bez planu, cel 3.
+2. **Propozycja planu**: jeden program dobrany do liczby (2–3 całe ciało, 4 góra/dół, 5–6 PPL) z krótkim „dlaczego” i listą treningów; „Zaczynam z tym planem” ustawia go jako aktywny, „Inne plany albo własny” prowadzi do listy programów, „Na razie bez planu” zamyka wprowadzenie.
+3. Pokazuje się raz, tylko bez aktywnego planu; ponownie z „Pomóż mi wybrać” na liście programów. Po wyborze planu „Dziś” ma jednorazową podpowiedź do pierwszego treningu.
+
+Motyw, akcent i masa ciała są w Ustawieniach (motyw domyślnie za systemem); nie zmieniają propozycji planu, więc nie wydłużają wprowadzenia.
 
 ### 3.2 Start („Dziś”, od F6 według `design/v2/Start`)
 
-- **Pierścień tygodnia:** segment = trening. Z aktywnym planem tyle segmentów, ile dni ma plan (plan to rotacja dni, bez dni tygodnia); bez planu cel tygodnia 2–6 (ustawienie `weeklyGoal`, domyślnie 3) zmieniany na ekranie.
+- **Pierścień tygodnia:** segment = trening. Liczba segmentów = cel tygodnia (2–6, `weeklyGoal`, z wprowadzenia, Ustawień albo −/+ na „Dziś” bez planu), niezależny od liczby treningów planu (plan to tylko kolejność, rotacja). Wybrane dni tygodnia planu mają pierwszeństwo. Cel nigdy niezapisany = liczba treningów planu.
 - W środku pierścienia: następny dzień planu z „Zacznij” (liczba ćwiczeń, szacowany czas), „Trening trwa · Wznów”, „Zrobione · Podsumowanie” po dzisiejszym treningu albo cel tygodnia bez planu.
 - Pasek dni tygodnia (zrobione, dziś), kafle „Seria” (tygodnie z pełnym planem) i „Ostatni rekord”.
 - „Trening bez planu”: start pustego treningu, ćwiczenia dodawane na bieżąco.
 - Bez planu: „Wybierz gotowy plan” i „Ułóż własny plan”.
-- Wejście do ustawień: w F8.
+- Zębatka w prawym górnym rogu otwiera Ustawienia.
 
-### 3.3 Plany
+### 3.3 Plan (karta, według `design/v2/Plan`)
 
-- **Lista planów**: aktywny plan na górze, potem moje plany i gotowe programy.
-- **Szczegóły planu**: dni treningowe (np. „Push”, „Pull”, „Nogi”), kolejność, opis, poziom.
-- **Edycja dnia**: lista ćwiczeń, a przy każdym liczba serii, zakres powtórzeń, opcjonalny ciężar docelowy, przerwa i notatka. Kolejność zmieniana przeciąganiem.
-- **Gotowe programy**: kopiowane do moich planów, potem można je dowolnie edytować.
+- **Aktywny plan** na górze: „Aktywny plan · tydzień N”, nazwa, „N treningi w tygodniu · x z N zrobione”, segmenty i lista tygodnia: zrobione treningi, następny z „Zacznij”, kolejne w kolejności planu (tyle pozycji, ile wynosi cel tygodnia).
+- Niżej: **pozostałe plany** i **„Przeglądaj gotowe programy”** (na górze „Pomóż mi wybrać”, polecany program z plakietką i opisem „dla kogo”).
+- **„Wybieram ten plan”**: program albo inny własny plan staje się aktywnym jednym stuknięciem; kopia programu powstaje tylko raz.
+- **Własny plan**: sama nazwa → plan od razu aktywny z pierwszym treningiem i „Dodaj ćwiczenie”.
+- **Szczegóły planu**: treningi (np. „Push”, „Trening A”), kolejność, opcjonalnie „Kiedy trenujesz” (dni tygodnia), opis, poziom; w menu „Trenuj bez planu”.
+- **Edycja treningu**: lista ćwiczeń, a przy każdym liczba serii, zakres powtórzeń, opcjonalny ciężar docelowy, przerwa i notatka. Kolejność zmieniana przeciąganiem.
 
 ### 3.4 Trening w toku
 
@@ -81,13 +84,15 @@ Nawigacja: dolny pasek z 5 kartami: **Dziś (Start), Plany, Ćwiczenia, Postępy
 - **Masa ciała**: wykres i dodawanie wpisów (jeśli użytkownik włączył).
 - **Konfiguracja widoku**: które wykresy i rekordy pokazywać. Zestaw domyślny zależy od poziomu doświadczenia.
 
-### 3.7 Historia
+### 3.7 Historia (w karcie Postępy, przełącznik Przegląd | Historia)
 
+- Od fazy „Ścieżka”: kalendarz miesiąca, lista treningów miesiąca z liczbą rekordów, trening tylko do odczytu z usuwaniem.
 - Lista treningów od najnowszych (z widokiem miesiąca jako opcją później).
 - **Szczegóły treningu**: wszystkie serie. Można edytować i usunąć (z potwierdzeniem).
 
 ### 3.8 Ustawienia
 
+- Od fazy „Ścieżka” działa sekcja „Trening”: cel tygodnia, domyślna przerwa, krok ciężaru, „Nie wygaszaj ekranu w trakcie”. Reszta w F8.
 - Poziom doświadczenia (tryb prowadzony / samodzielny), motyw, **kolor akcentu (5 gotowych: niebieski — domyślny, indygo, pomarańcz, malina, zieleń)**, jednostki (kg; lb później).
 - Domyślna przerwa, podpowiedzi ciężaru, wzór na 1RM (Epley / Brzycki).
 - Masa ciała: włącz / wyłącz.
@@ -183,21 +188,22 @@ Każda zależność trafia do `docs/DECISIONS.md` z uzasadnieniem, alternatywami
 
 Jedna faza = jedna gałąź = jeden PR (od F3, gdy powstanie repo). Przed każdą fazą: plan w trybie planowania i Twoja zgoda. Po fazie: pokaz i Twoje OK.
 
-| Faza                           | Zakres                                                                                                                                                                                            | Kryteria akceptacji                                                                                                        |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| **F0 Specyfikacja**            | Ten dokument                                                                                                                                                                                      | Akceptacja Jakuba                                                                                                          |
-| **F1 Projekty ekranów**        | Interaktywne podglądy kluczowych ekranów (Start, Trening w toku, Postępy, Ćwiczenie) w 2–3 kierunkach wizualnych; Jakub przysyła wzory aplikacji                                                  | Jakub wybiera kierunek i zgłasza poprawki; zatwierdzone ekrany                                                             |
-| **F2 Design system**           | Tokeny: kolory (jasny / ciemny), typografia z Dynamic Type, odstępy, promienie, cienie, czasy i krzywe animacji; podgląd komponentów                                                              | Kontrast WCAG AA w obu motywach; Jakub zatwierdza; od tej chwili wygląd zmieniany tylko za zgodą                           |
-| **F3 Fundament repo**          | Repo GitHub (publiczne), Expo + TS strict, struktura, tokeny w kodzie, i18n, ESLint, Prettier, Jest, commitlint, hooki, CI, `ci:local`, Renovate, README, CLAUDE.md, docs; decyzja o koncie Apple | Pusta aplikacja z tokenami działa na iPhonie; CI zielone; `ci:local` zielone; ochrona main ustawiona                       |
-| **F4 Dane i logika**           | Schemat SQLite, migracje, repozytoria, logika (1RM, objętość, rekordy, podpowiedź), lista ćwiczeń i programów                                                                                     | Testy logiki przechodzą; migracje testowane; lista ćwiczeń zaakceptowana                                                   |
-| **F5 Ćwiczenia i plany**       | Ekrany bazy ćwiczeń (z zastępnikami ilustracji), własne ćwiczenia, plany i edycja dni, gotowe programy                                                                                            | Ścieżki przechodzą na urządzeniu; VoiceOver i Dynamic Type sprawdzone                                                      |
-| **F6 Trening w toku**          | Ekran treningu, serie, minutnik, podpowiedź, podsumowanie, odporność na zamknięcie aplikacji                                                                                                      | Pełny trening zapisany od początku do końca; dane przetrwają zamknięcie aplikacji                                          |
-| **F7 Historia i postępy**      | Historia, edycja treningu, wykresy, rekordy, masa ciała, konfiguracja widoku                                                                                                                      | Wykresy zgodne z danymi testowymi; płynne przewijanie na długiej historii                                                  |
-| **F8 Onboarding i ustawienia** | Pierwsze uruchomienie, ustawienia, eksport, import, usuń wszystko                                                                                                                                 | Eksport → usuń → import przywraca dane 1:1                                                                                 |
-| **F9 Asystent AI**             | Opcjonalny asystent: pomoc w ułożeniu planu i w korzystaniu z aplikacji (§3.9), zgoda, serwer pośredniczący z limitami                                                                            | Plan od AI zapisuje się w naszym formacie i daje się edytować; bez zgody nic nie wychodzi z telefonu; klucz poza aplikacją |
-| **F10 Ilustracje i animacje**  | Ilustracje ćwiczeń w jednym stylu, animacje z obsługą Reduce Motion                                                                                                                               | Wszystkie ćwiczenia z ilustracją; licencje udokumentowane                                                                  |
-| **F11 Dopracowanie**           | Przegląd całości: błędy, dostępność, wydajność, przypadki brzegowe, ikona, ekran startowy, nazwa                                                                                                  | Lista z przeglądu zamknięta; brak błędów krytycznych                                                                       |
-| **F12 Publikacja**             | Konto Apple, polityka prywatności, etykiety, TestFlight, App Store, wpis w portfolio                                                                                                              | Aplikacja w TestFlight / App Store; wpis w portfolio                                                                       |
+| Faza                           | Zakres                                                                                                                                                                                                  | Kryteria akceptacji                                                                                                        |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **F0 Specyfikacja**            | Ten dokument                                                                                                                                                                                            | Akceptacja Jakuba                                                                                                          |
+| **F1 Projekty ekranów**        | Interaktywne podglądy kluczowych ekranów (Start, Trening w toku, Postępy, Ćwiczenie) w 2–3 kierunkach wizualnych; Jakub przysyła wzory aplikacji                                                        | Jakub wybiera kierunek i zgłasza poprawki; zatwierdzone ekrany                                                             |
+| **F2 Design system**           | Tokeny: kolory (jasny / ciemny), typografia z Dynamic Type, odstępy, promienie, cienie, czasy i krzywe animacji; podgląd komponentów                                                                    | Kontrast WCAG AA w obu motywach; Jakub zatwierdza; od tej chwili wygląd zmieniany tylko za zgodą                           |
+| **F3 Fundament repo**          | Repo GitHub (publiczne), Expo + TS strict, struktura, tokeny w kodzie, i18n, ESLint, Prettier, Jest, commitlint, hooki, CI, `ci:local`, Renovate, README, CLAUDE.md, docs; decyzja o koncie Apple       | Pusta aplikacja z tokenami działa na iPhonie; CI zielone; `ci:local` zielone; ochrona main ustawiona                       |
+| **F4 Dane i logika**           | Schemat SQLite, migracje, repozytoria, logika (1RM, objętość, rekordy, podpowiedź), lista ćwiczeń i programów                                                                                           | Testy logiki przechodzą; migracje testowane; lista ćwiczeń zaakceptowana                                                   |
+| **F5 Ćwiczenia i plany**       | Ekrany bazy ćwiczeń (z zastępnikami ilustracji), własne ćwiczenia, plany i edycja dni, gotowe programy                                                                                                  | Ścieżki przechodzą na urządzeniu; VoiceOver i Dynamic Type sprawdzone                                                      |
+| **F6 Trening w toku**          | Ekran treningu, serie, minutnik, podpowiedź, podsumowanie, odporność na zamknięcie aplikacji                                                                                                            | Pełny trening zapisany od początku do końca; dane przetrwają zamknięcie aplikacji                                          |
+| **Ścieżka (między F6 a F7)**   | Pierwsze uruchomienie (1 pytanie → plan), karta Plan według `design/v2`, wybór planu jednym ruchem, cel tygodnia niezależny od planu, 4 karty, Historia i Regularność w Postępach, Ustawienia „Trening” | Nowa osoba bez pomocy dochodzi do pierwszego treningu; brak duplikatów planów                                              |
+| **F7 Historia i postępy**      | Historia, edycja treningu, wykresy, rekordy, masa ciała, konfiguracja widoku                                                                                                                            | Wykresy zgodne z danymi testowymi; płynne przewijanie na długiej historii                                                  |
+| **F8 Onboarding i ustawienia** | Pierwsze uruchomienie, ustawienia, eksport, import, usuń wszystko                                                                                                                                       | Eksport → usuń → import przywraca dane 1:1                                                                                 |
+| **F9 Asystent AI**             | Opcjonalny asystent: pomoc w ułożeniu planu i w korzystaniu z aplikacji (§3.9), zgoda, serwer pośredniczący z limitami                                                                                  | Plan od AI zapisuje się w naszym formacie i daje się edytować; bez zgody nic nie wychodzi z telefonu; klucz poza aplikacją |
+| **F10 Ilustracje i animacje**  | Ilustracje ćwiczeń w jednym stylu, animacje z obsługą Reduce Motion                                                                                                                                     | Wszystkie ćwiczenia z ilustracją; licencje udokumentowane                                                                  |
+| **F11 Dopracowanie**           | Przegląd całości: błędy, dostępność, wydajność, przypadki brzegowe, ikona, ekran startowy, nazwa                                                                                                        | Lista z przeglądu zamknięta; brak błędów krytycznych                                                                       |
+| **F12 Publikacja**             | Konto Apple, polityka prywatności, etykiety, TestFlight, App Store, wpis w portfolio                                                                                                                    | Aplikacja w TestFlight / App Store; wpis w portfolio                                                                       |
 
 ## 11. Otwarte sprawy (TODO)
 

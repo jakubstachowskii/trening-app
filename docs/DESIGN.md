@@ -62,11 +62,13 @@ Status: **wersja robocza F2** (2026-11-03, po 10 czystych przebiegach przeglądu
 | Minutnik przerwy       | szklany pasek w miejscu głównego przycisku (czas `brandMetric`, −15, +15, Pomiń, pasek postępu 3 pt); stuknięcie w czas otwiera arkusz z pierścieniem 232 pt                      |
 | Rekord                 | plakietka „Rekord” w wierszu serii + „Nowy rekord” w pasku przerwy (ok. 3 s), wibracja, ogłoszenie VoiceOver; bez komunikatu zasłaniającego nagłówek                              |
 | Pierścień tygodnia     | segment = trening (dni planu albo cel tygodnia), dzisiejszy pulsuje, w podsumowaniu domyka się; przy Ogranicz ruch bez ruchu                                                      |
-| Pasek kart             | szkło `bar`, pływający, 5 kart, aktywna w `accentText`                                                                                                                            |
+| Pasek kart             | szkło `bar`, pływający, 4 karty (Dziś, Plan, Postępy, Ćwiczenia), aktywna w `accentText`                                                                                          |
 | Kafelek z liczbą       | `surface`, etykieta Footnote, wartość `metric`                                                                                                                                    |
 | Wiersz listy           | min. 64 pt, miniatura 40 pt, strzałka                                                                                                                                             |
 | Pusty stan             | tytuł, jedno zdanie, jedno działanie                                                                                                                                              |
 | Ładowanie              | szkielet z `fill`, pulsuje; przy Reduce Motion stały                                                                                                                              |
+
+**Ekrany wprowadzenia** (pytanie i propozycja planu) nie mają makiety w `design/v2`; wyprowadzone z jej stylu: tytuł `brandL`, kafle liczb `brandMetric` na `surface` z ramką `accent` dla wybranego, karta propozycji `surface`, wiersze treningów na `raised` (w jasnym na `bg`), główny przycisk 56 pt w zasięgu kciuka.
 
 ## 7. Ruch i haptyka
 

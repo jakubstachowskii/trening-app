@@ -10,7 +10,25 @@ Fazy z `docs/PLAN.md`. Jedna faza = jedna gałąź = jeden PR.
 | F3 Fundament         | zrobione (PR #1)                                                         |
 | F4 Dane i logika     | zrobione (PR #4)                                                         |
 | F5 Ćwiczenia i plany | zrobione (PR #5)                                                         |
-| F6 Trening w toku    | w PR: `feat/f6-trening`                                                  |
+| F6 Trening w toku    | zrobione (PR #6)                                                         |
+| Ścieżka użytkownika  | w toku: `feat/sciezka-uzytkownika`                                       |
+
+## Ścieżka użytkownika
+
+Dlaczego: po teście F6 nie było wiadomo, „co w aplikacji robić” (DECISIONS #26).
+
+Zrobione:
+
+- **Pierwsze uruchomienie**: jedno pytanie (ile razy w tygodniu) → jeden proponowany plan → „Zaczynam z tym planem”; „Pomiń” = bez planu. Pokazuje się raz, bez aktywnego planu; ponownie z „Pomóż mi wybrać”.
+- **Cel tygodnia** niezależny od liczby treningów planu (plan = kolejność).
+- **Karta Plan** według `design/v2/Plan`: aktywny plan z tygodniem i „Zacznij”, pozostałe plany, gotowe programy z „Polecany”.
+- **„Wybieram ten plan”** jednym stuknięciem, bez duplikatów; własny plan od razu aktywny z pierwszym treningiem.
+- **Nazwy**: Plan, Treningi, Kiedy trenujesz, programy bez liczby dni.
+- **4 karty**: Dziś, Plan, Postępy, Ćwiczenia; w Postępach Regularność (12 tygodni) i Historia (kalendarz, lista, trening z usuwaniem).
+- **Ustawienia** (zębatka na „Dziś”): cel tygodnia, domyślna przerwa, krok ciężaru, nie wygaszaj ekranu.
+- Testy: domena (polecany program, tydzień planu, regularność, cel tygodnia), repozytoria (wybór bez duplikatu, własny plan, treningi z zakresu dat), ekrany (wprowadzenie, warunek na „Dziś”, karta Plan, Postępy, Ustawienia).
+
+Do sprawdzenia na iPhonie: wprowadzenie po pierwszym uruchomieniu (bez aktywnego planu), wybór planu i powrót na „Dziś”, „Pomiń”, „Pomóż mi wybrać”, karta Plan i „Zacznij”, Historia i usuwanie treningu, menu w Ustawieniach, przerwa i krok ciężaru z Ustawień w treningu, wygaszanie ekranu.
 
 ## F6 Trening w toku
 
