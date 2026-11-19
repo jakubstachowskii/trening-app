@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
 import { Button } from '@/components/Button';
@@ -93,8 +93,11 @@ export default function TodayScreen() {
   // Kto ma już plan, nie zobaczy wprowadzenia (także później, po „Trenuj bez planu”).
   const needsOnboarding = data ? !data.onboardingDone : false;
   const hasPlan = Boolean(data?.plan);
+  // Tylko raz na wejście ekranu (bez podwójnego otwarcia przy ponownym renderze albo podwójnym efekcie).
+  const onboardingOpened = useRef(false);
   useEffect(() => {
-    if (!needsOnboarding) return;
+    if (!needsOnboarding || onboardingOpened.current) return;
+    onboardingOpened.current = true;
     if (hasPlan) void markOnboardingDone(db);
     else router.push('/start');
   }, [needsOnboarding, hasPlan, db]);

@@ -12,7 +12,7 @@ import {
   setPlanWeekdays,
 } from '@/data/repositories/plans';
 import { mondayIndex } from '@/domain/week';
-import { getSetting } from '@/data/repositories/settings';
+import { getSetting, setSetting } from '@/data/repositories/settings';
 import {
   completeWorkout,
   getUnfinishedWorkout,
@@ -174,6 +174,27 @@ describe('Dziś', () => {
 });
 
 describe('trening w toku', () => {
+  it('krok ciężaru z Ustawień: „+” na klawiaturze dodaje 5 kg', async () => {
+    await setSetting(mockDb, SETTING.weightStepKg, 5);
+    const { dayId } = await activePlan();
+    const workoutId = await startWorkoutFromDay(mockDb, dayId);
+    await renderWithTheme(<WorkoutScreen />);
+
+    await fireEvent.press(
+      await screen.findByRole('button', {
+        name: t('workout.editWeight', { n: '1', value: '60' }),
+      }),
+    );
+    await fireEvent.press(
+      screen.getByRole('button', { name: t('workout.keypad.plusLabelWeight', { step: '5' }) }),
+    );
+    await fireEvent.press(screen.getByRole('button', { name: t('workout.keypad.nextReps') }));
+    await waitFor(async () => {
+      const set = (await getWorkout(mockDb, workoutId))!.exercises[0].sets[0];
+      expect(set.weightKg).toBe(65);
+    });
+  });
+
   it('wpisanie ciężaru klawiaturą, odhaczenie serii, przerwa i zakończenie', async () => {
     const { dayId } = await activePlan();
     const workoutId = await startWorkoutFromDay(mockDb, dayId);

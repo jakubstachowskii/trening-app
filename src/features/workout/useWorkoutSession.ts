@@ -223,14 +223,23 @@ export function useWorkoutSession() {
     setEditing((e) => (e ? { ...e, text: pressKey(e.text, key, e.field, replace) } : e));
   }, []);
 
-  const onStep = useCallback((direction: 1 | -1) => {
-    setEditing((e) => {
-      if (!e) return e;
-      const value = stepValue(parseKeypadValue(e.text, e.field), direction, e.field);
-      return { ...e, text: formatKeypadValue(value, e.field) };
-    });
-    replaceNext.current = true;
-  }, []);
+  const onStep = useCallback(
+    (direction: 1 | -1) => {
+      setEditing((e) => {
+        if (!e) return e;
+        // Krok ciężaru z Ustawień (ten sam, który pokazuje podpis klawisza).
+        const value = stepValue(
+          parseKeypadValue(e.text, e.field),
+          direction,
+          e.field,
+          weightStepKg,
+        );
+        return { ...e, text: formatKeypadValue(value, e.field) };
+      });
+      replaceNext.current = true;
+    },
+    [weightStepKg],
+  );
 
   const closeEditor = useCallback(async () => {
     await commit();
