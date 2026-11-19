@@ -3,29 +3,20 @@
     "start": "Dziś",
     "plans": "Plan",
     "exercises": "Ćwiczenia",
-    "progress": "Postępy",
-    "history": "Historia"
+    "progress": "Postępy"
   },
   "screens": {
     "start": {
-      "title": "Dziś",
-      "body": "Tu zobaczysz dzisiejszy trening, ostatnie wyniki i swój tydzień w skrócie."
+      "title": "Dziś"
     },
     "plans": {
-      "title": "Plan",
-      "body": "Tu ułożysz plany treningowe: dni, ćwiczenia i liczbę serii."
+      "title": "Plan"
     },
     "exercises": {
-      "title": "Ćwiczenia",
-      "body": "Tu znajdziesz bazę ćwiczeń z opisami i dodasz własne."
+      "title": "Ćwiczenia"
     },
     "progress": {
-      "title": "Postępy",
-      "body": "Tu zobaczysz wykresy postępów i swoje rekordy."
-    },
-    "history": {
-      "title": "Historia",
-      "body": "Tu znajdziesz wszystkie zakończone treningi."
+      "title": "Postępy"
     }
   },
   "common": {
@@ -490,17 +481,6 @@
     "noDays": "Ten plan nie ma jeszcze treningów.",
     "added": "Dodano do: {plan} · {day}"
   },
-  "plans": {
-    "active": "Aktywny plan",
-    "mine": "Moje plany",
-    "programs": "Gotowe programy",
-    "add": "Nowy plan",
-    "emptyTitle": "Nie masz jeszcze planu",
-    "emptyBody": "Ułóż własny plan albo zacznij od gotowego programu.",
-    "emptyAction": "Ułóż plan",
-    "activeBadge": "Aktywny",
-    "programMeta": "{level} · {days}"
-  },
   "planDetail": {
     "setActive": "Wybieram ten plan",
     "isActive": "To jest Twój aktywny plan",
@@ -558,8 +538,7 @@
   },
   "program": {
     "copy": "Wybieram ten plan",
-    "copyHint": "Plan od razu staje się Twoim aktywnym planem. Możesz go dowolnie zmieniać, a program zostaje bez zmian.",
-    "days": "Dni"
+    "copyHint": "Plan od razu staje się Twoim aktywnym planem. Możesz go dowolnie zmieniać, a program zostaje bez zmian."
   },
   "picker": {
     "title": "Wybierz ćwiczenie"
@@ -1388,7 +1367,6 @@
     "today": "dziś",
     "next": "następny",
     "nextMeta": "{when} · {exercises} · ok. {min} min",
-    "nextMetaShort": "{exercises}",
     "emptyTraining": "bez ćwiczeń",
     "start": "Zacznij",
     "startLabel": "Zacznij trening {name}",
