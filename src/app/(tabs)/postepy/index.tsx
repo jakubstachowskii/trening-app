@@ -9,16 +9,14 @@ import { ListGroup, ListRow } from '@/components/ListRow';
 import { SegmentedControl } from '@/components/SegmentedControl';
 import { Skeleton } from '@/components/Skeleton';
 import { Text } from '@/components/Text';
-import { useDb } from '@/data/DatabaseProvider';
 import { useDbQuery } from '@/data/useDbQuery';
 import { formatClock } from '@/domain/workout';
 import { loadMonth, loadOverview, type MonthHistory } from '@/features/progress/progressData';
 import { MiniRing } from '@/features/progress/MiniRing';
-import { beginWorkout } from '@/features/workout/startWorkout';
 import { formatNumber, t, tPlural } from '@/i18n';
 import { useTheme } from '@/theme';
 
-type View_ = 'overview' | 'history';
+type ProgressView = 'overview' | 'history';
 
 function kickerStyle() {
   return { textTransform: 'uppercase' as const, letterSpacing: 0.6, fontWeight: '600' as const };
@@ -115,10 +113,9 @@ function MonthCalendar({ history, now }: { history: MonthHistory; now: Date }) {
 /** Karta „Postępy” (design/v2/Postepy): Przegląd (Regularność) | Historia (kalendarz i lista). */
 export default function ProgressScreen() {
   const router = useRouter();
-  const db = useDb();
   const { colors, space, size } = useTheme();
   const now = new Date();
-  const [view, setView] = useState<View_>('overview');
+  const [view, setView] = useState<ProgressView>('overview');
   const [month, setMonth] = useState({ year: now.getFullYear(), month: now.getMonth() });
   const overview = useDbQuery((d) => loadOverview(d), 'progress-overview').data;
   const history = useDbQuery(
@@ -158,7 +155,8 @@ export default function ProgressScreen() {
           <Text variant="body" color="label2">
             {t('progress.emptyBody')}
           </Text>
-          <Button label={t('progress.emptyAction')} onPress={() => void beginWorkout(db)} />
+          {/* Na „Dziś”, bo tam czeka zaplanowany trening (albo trening bez planu). */}
+          <Button label={t('progress.emptyAction')} onPress={() => router.navigate('/')} />
         </Card>
       </ScrollView>
     );
